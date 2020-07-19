@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./token.json');
 const fs = require('fs');
-let prefix = "!"
+let prefix = "!";
 
-function fetchAudio() {
+function playAudio() {
     
 }
 
@@ -37,6 +37,7 @@ client.on('message', async msg => {
     if (msg.member.voice.channel) {
         console.log("Connected to voice chat...")
       const connection = await msg.member.voice.channel.join();
+      playAudio();
       connection.play('./music/4616-werq-by-kevin-macleod.mp3');
       console.log(connection)
     } else {
