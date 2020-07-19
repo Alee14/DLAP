@@ -19,6 +19,7 @@ function playAudio() {
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   console.log(`Prefix: ${prefix}`);
+  client.user.setStatus("invisible");
   playAudio();
 });
 
@@ -32,13 +33,14 @@ client.on('message', async msg => {
     command = command.slice(prefix.length);
 
   if (command == 'ping') {
-    msg.reply('Pong! '  + Math.round(client.ping) + ' ms');
+    msg.reply('Pong!');
   }
 
-  if (command == 'poweroff') {
-      console.log("Powering off...");
-      client.destroy();
-      process.exit(0);
+  if (command == 'stop') {
+    await msg.reply("Powering off...")
+    console.log("Powering off...");
+    client.destroy();
+    process.exit(0);
   }
 
   if (command == 'join') {
