@@ -1,3 +1,11 @@
+/*********************************************
+ * 
+ *  Project Jul-2020 Discord Bot
+ *  By: Andrew Lee
+ * 
+ *  Licensed with GPL-3.0
+ * 
+ *********************************************/
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./token.json');
