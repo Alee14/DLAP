@@ -1,7 +1,7 @@
 {
   "name": "Project-Jul-2020-Discord-Bot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "bot.js",
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",

@@ -1,13 +1,10 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./token.json');
-const fs = require('fs');
-let prefix = "!";
+var prefix = "!";
 var voiceChannel = "734184921433899108";
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-  console.log('Prefix:', prefix);
+function playAudio() {
   const channel = client.channels.cache.get(voiceChannel);
   if (!channel) return console.error("The channel does not exist!");
   channel.join().then(connection => {
@@ -17,6 +14,12 @@ client.on('ready', () => {
     // Oh no, it errored! Let's log it to console :)
     console.error(e);
   });
+}
+
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Prefix: ${prefix}`);
+  playAudio();
 });
 
 client.on('message', async msg => {
@@ -40,8 +43,7 @@ client.on('message', async msg => {
 
   if (command == 'join') {
     // Only try to join the sender's voice channel if they are in one themselves
-      console.log("Connected to voice chat...")
-      const connection = await msg.member.voice.channel.join();
+      playAudio();
   }
   if (command == 'skip') {
     //TODO
