@@ -43,7 +43,9 @@ client.on('message', async msg => {
       msg.reply('You need to join a voice channel first!');
     }
   }
-
+  if (command == 'skip') {
+    //TODO
+  }
   if (command == 'leave') {
     // Only try to join the sender's voice channel if they are in one themselves
     if (msg.member.voice.channel) {
