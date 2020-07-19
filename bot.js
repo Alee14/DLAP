@@ -19,7 +19,6 @@ function playAudio() {
     console.log("Successfully connected to this channel.");
     connection.play('./music/4616-werq-by-kevin-macleod.mp3');
   }).catch(e => {
-    // Oh no, it errored! Let's log it to console :)
     console.error(e);
   });
 }
@@ -33,6 +32,7 @@ client.on('ready', () => {
 
 client.on('message', async msg => {
     if (!['242775871059001344'].includes(msg.author.id)) return;
+    const args = msg.content.slice(prefix.length).trim().split(/ +/g);
     if (!msg.guild) return;
     if (msg.author.bot) return;
     if (!msg.content.startsWith(prefix)) return;
