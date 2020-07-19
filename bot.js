@@ -5,19 +5,14 @@ const fs = require('fs');
 let prefix = "!";
 var voiceChannel = "734184921433899108";
 
-function playAudio() {
-    console.log("Play Audio Function Activated.")
-}
-
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   console.log('Prefix:', prefix);
   const channel = client.channels.cache.get(voiceChannel);
   if (!channel) return console.error("The channel does not exist!");
   channel.join().then(connection => {
-    // Yay, it worked!
     console.log("Successfully connected to this channel.");
-    playAudio()
+    connection.play('./music/4616-werq-by-kevin-macleod.mp3');
   }).catch(e => {
     // Oh no, it errored! Let's log it to console :)
     console.error(e);
@@ -46,10 +41,7 @@ client.on('message', async msg => {
   if (command == 'join') {
     // Only try to join the sender's voice channel if they are in one themselves
       console.log("Connected to voice chat...")
-      const connection = await msg.member.voice.channel.join(734184921433899108);
-      playAudio();
-      connection.play('./music/4616-werq-by-kevin-macleod.mp3');
-      console.log(connection)
+      const connection = await msg.member.voice.channel.join();
   }
   if (command == 'skip') {
     //TODO
