@@ -3,14 +3,25 @@ const client = new Discord.Client();
 const config = require('./token.json');
 const fs = require('fs');
 let prefix = "!";
+var voiceChannel = "734184921433899108";
 
 function playAudio() {
-    
+    console.log("Play Audio Function Activated.")
 }
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   console.log('Prefix:', prefix);
+  const channel = client.channels.cache.get(voiceChannel);
+  if (!channel) return console.error("The channel does not exist!");
+  channel.join().then(connection => {
+    // Yay, it worked!
+    console.log("Successfully connected to this channel.");
+    playAudio()
+  }).catch(e => {
+    // Oh no, it errored! Let's log it to console :)
+    console.error(e);
+  });
 });
 
 client.on('message', async msg => {
@@ -34,15 +45,11 @@ client.on('message', async msg => {
 
   if (command == 'join') {
     // Only try to join the sender's voice channel if they are in one themselves
-    if (msg.member.voice.channel) {
-        console.log("Connected to voice chat...")
-      const connection = await msg.member.voice.channel.join();
+      console.log("Connected to voice chat...")
+      const connection = await msg.member.voice.channel.join(734184921433899108);
       playAudio();
       connection.play('./music/4616-werq-by-kevin-macleod.mp3');
       console.log(connection)
-    } else {
-      msg.reply('You need to join a voice channel first!');
-    }
   }
   if (command == 'skip') {
     //TODO
