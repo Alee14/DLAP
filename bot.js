@@ -51,7 +51,7 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   console.log(`Prefix: ${config.prefix}`);
   console.log(`Owner ID: ${config.botOwner}`);
-  console.log(`Voice Channel: ${config.voiceChannel}`);
+  console.log(`Voice Channel: ${config.voiceChannel}\n\n`);
 
   client.user.setStatus('invisible');
   playAudio();
