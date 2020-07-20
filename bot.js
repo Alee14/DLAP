@@ -9,14 +9,15 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./token.json');
-var prefix = "!";
+let botOwner = "242775871059001344";
 var voiceChannel = "734184921433899108";
+var prefix = "!";
 
 function playAudio() {
   const channel = client.channels.cache.get(voiceChannel);
   if (!channel) return console.error("The channel does not exist!");
   channel.join().then(connection => {
-    console.log("Successfully connected to this channel.");
+    console.log("Connected to the voice channel.");
     connection.play('./music/4616-werq-by-kevin-macleod.mp3');
   }).catch(e => {
     console.error(e);
@@ -24,6 +25,7 @@ function playAudio() {
 }
 
 client.on('ready', () => {
+  console.log("Bot is ready!")
   console.log(`Logged in as ${client.user.tag}!`);
   console.log(`Prefix: ${prefix}`);
   client.user.setStatus("invisible");
@@ -31,11 +33,11 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-    if (!['242775871059001344'].includes(msg.author.id)) return;
-    const args = msg.content.slice(prefix.length).trim().split(/ +/g);
-    if (!msg.guild) return;
     if (msg.author.bot) return;
+    if (!msg.guild) return;
     if (!msg.content.startsWith(prefix)) return;
+    if (![botOwner].includes(msg.author.id)) return;
+    const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   
     let command = msg.content.split(" ")[0];
     command = command.slice(prefix.length);
@@ -59,13 +61,10 @@ client.on('message', async msg => {
     //TODO
   }
   if (command == 'leave') {
-    // Only try to join the sender's voice channel if they are in one themselves
-    if (msg.member.voice.channel) {
-        console.log("Disconnected from voice chat...")
-      const connection = await msg.member.voice.channel.leave();
-    } else {
-      msg.reply('You need to join a voice channel first!');
-    }
+    const channel = client.channels.cache.get(voiceChannel);
+    if (!channel) return console.error("The channel does not exist!");
+    console.log("Leaving voice channel.");
+    channel.leave();
   }
 });
 
