@@ -1,2 +1,2 @@
 # Put your music here
-Anything .mp3 should go here.
+Any mp3 file should go here.

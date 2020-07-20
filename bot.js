@@ -11,6 +11,7 @@ const fs = require('fs');
 const client = new Discord.Client();
 const config = require('./config.json');
 let dispatcher;
+let audio;
 
 client.login(config.token);
 
@@ -19,24 +20,25 @@ function playAudio() {
   if (!channel) return console.error('The channel does not exist!');
   
   channel.join().then(connection => {
-    console.log('Connected to the voice channel.');
     let files = fs.readdirSync('./music');
-    let audio;
 
     while (true) {
       audio = files[Math.floor(Math.random() * files.length)];
-      console.log('Searching file...');
+      console.log('Searching .mp3 file...');
       if (audio.endsWith('.mp3')) {
         break;
       }
     }
 
     dispatcher = connection.play('./music/' + audio);
-
-    console.log('Now playing ' + audio);
-    let serviceChannel = client.channels.cache.get('606602551634296968');
-    serviceChannel.send('**Project Jul-2020 Bot:**\nNow playing ' + audio);
+    dispatcher.on('start', () => {
+      console.log('Now playing ' + audio);
+      let serviceChannel = client.channels.cache.get('606602551634296968');
+      serviceChannel.send('**Project Jul-2020 Bot:**\nNow playing ' + audio);
+    });
     
+    dispatcher.on('error', console.error);
+
     dispatcher.on('finish', () => {
       playAudio();
     });
@@ -54,6 +56,7 @@ client.on('ready', () => {
   console.log(`Voice Channel: ${config.voiceChannel}\n`);
 
   client.user.setStatus('invisible');
+  console.log('Connected to the voice channel.');
   playAudio();
 });
 
@@ -67,7 +70,12 @@ client.on('message', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
-    msg.channel.send(`Bot help:\n\`\`\`${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about\n\nFeel free to either lower the volume or mute me if it gets annoying!\n\`\`\``)
+    const helpEmbed = new Discord.MessageEmbed()
+    .addField('Bot Help', `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about`)
+    .setFooter('© Copyright 2020, Andrew Lee. Licensed with GPL-3.0.')
+    .setColor('#0066ff')
+
+    msg.channel.send(helpEmbed);
   }
 
   if (command == 'ping') {
@@ -89,11 +97,12 @@ client.on('message', async msg => {
 
   if (command == 'join') {
     msg.reply('Joining voice channel.');
+    console.log('Connected to the voice channel.');
     playAudio();
   }
 
   if (command == 'skip') {
-    msg.reply("Skipping...")
+    msg.reply("Skipping `" + audio + "`...")
     dispatcher.pause();
     dispatcher = null
     playAudio();
