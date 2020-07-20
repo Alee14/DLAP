@@ -14,22 +14,24 @@ let botOwner = "242775871059001344";
 var voiceChannel = "734184921433899108";
 var prefix = "!";
 
-function fetchAudio() {
-  fs.readdir('./music', (err, files) => {
-    if (err) console.error(err);
-    files.forEach(function (file) {
-      console.log(`Fetching ${file}`);
-    });
-  });
-}
-
 function playAudio() {
+  let audio;
   const channel = client.channels.cache.get(voiceChannel);
   if (!channel) return console.error("The channel does not exist!");
+  
+  fs.readdir('./music', (err, files) => {
+    if (err) console.error(err);
+      audio = files[Math.floor(Math.random() * files.length)];
+      return audio;
+  });
+  
   channel.join().then(connection => {
     console.log("Connected to the voice channel.");
-    fetchAudio();
-    connection.play('./music/4616-werq-by-kevin-macleod.mp3');
+    const dispatcher = connection.play("./music/" + audio);
+
+    console.log("Project Jul-2020 Bot:\nNow playing " + audio);
+    let serviceChannel = client.channels.cache.get('606602551634296968');
+    serviceChannel.send("**Project Jul-2020 Bot:**\nNow playing " + audio);
   }).catch(e => {
     console.error(e);
   });
@@ -69,7 +71,7 @@ client.on('message', async msg => {
       playAudio();
   }
   if (command == 'skip') {
-    //TODO
+    //This feature might not make it in
   }
   if (command == 'leave') {
     const channel = client.channels.cache.get(voiceChannel);
