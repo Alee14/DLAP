@@ -1,4 +1,4 @@
 token.json
 node_modules
 yarn.lock
-music
+music/*.mp3

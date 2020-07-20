@@ -7,17 +7,29 @@
  * 
  *********************************************/
 const Discord = require('discord.js');
+const fs = require("fs");
 const client = new Discord.Client();
 const config = require('./token.json');
 let botOwner = "242775871059001344";
 var voiceChannel = "734184921433899108";
 var prefix = "!";
 
+function fetchAudio() {
+  fs.readdir('./music', (err, files) => {
+    if (err) console.error(err);
+    files.forEach(function (file) {
+      // Do whatever you want to do with the file
+      console.log(`Fetching ${file}`); 
+  });
+  });
+}
+
 function playAudio() {
   const channel = client.channels.cache.get(voiceChannel);
   if (!channel) return console.error("The channel does not exist!");
   channel.join().then(connection => {
     console.log("Connected to the voice channel.");
+    fetchAudio();
     connection.play('./music/4616-werq-by-kevin-macleod.mp3');
   }).catch(e => {
     console.error(e);
