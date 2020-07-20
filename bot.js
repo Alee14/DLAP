@@ -52,14 +52,26 @@ client.on('message', async msg => {
     if (msg.author.bot) return;
     if (!msg.guild) return;
     if (!msg.content.startsWith(config.prefix)) return;
-    if (![config.botOwner].includes(msg.author.id)) return;
-
     let command = msg.content.split(' ')[0];
     command = command.slice(config.prefix.length);
 
+  // Public allowed commands
+
+  if (command == 'help') {
+    msg.channel.send(`Bot help:\n\`\`\`${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n\`\`\``)
+  }
+
+  if (command == 'git') {
+    msg.reply("This is the source code of this project.\nhttps://github.com/Alee14/PJ2020-Discord-Bot")
+  }
+    
   if (command == 'ping') {
     msg.reply('Pong!');
   }
+
+  if (![config.botOwner].includes(msg.author.id)) return;
+
+  // Bot owner exclusive
 
   if (command == 'stop') {
     await msg.reply('Powering off...')
