@@ -39,6 +39,7 @@ function playAudio() {
   }).catch(e => {
     console.error(e);
   });
+  
 }
 client.on('ready', () => {
   console.log('Bot is ready!')
@@ -49,39 +50,36 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-    if (msg.author.bot) return;
-    if (!msg.guild) return;
-    if (!msg.content.startsWith(config.prefix)) return;
-    let command = msg.content.split(' ')[0];
-    command = command.slice(config.prefix.length);
+  if (msg.author.bot) return;
+  if (!msg.guild) return;
+  if (!msg.content.startsWith(config.prefix)) return;
+  let command = msg.content.split(' ')[0];
+  command = command.slice(config.prefix.length);
 
   // Public allowed commands
 
   if (command == 'help') {
-    msg.channel.send(`Bot help:\n\`\`\`${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n\`\`\``)
+    msg.channel.send(`Bot help:\n\`\`\`${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about\n\`\`\``)
+  }
+
+  if (command == 'ping') {
+    msg.reply('Pong!');
   }
 
   if (command == 'git') {
     msg.reply("This is the source code of this project.\nhttps://github.com/Alee14/PJ2020-Discord-Bot")
   }
-    
-  if (command == 'ping') {
-    msg.reply('Pong!');
+  
+  if (command == 'about') {
+    msg.channel.send("This bot was created by Andrew Lee. Written in Discord.JS and licensed with GPL-3.0.")
   }
 
   if (![config.botOwner].includes(msg.author.id)) return;
 
   // Bot owner exclusive
 
-  if (command == 'stop') {
-    await msg.reply('Powering off...')
-    console.log('Powering off...');
-    client.destroy();
-    process.exit(0);
-  }
 
   if (command == 'join') {
-    // Only try to join the sender's voice channel if they are in one themselves
     msg.reply('Joining voice channel.');
     playAudio();
   }
@@ -95,6 +93,13 @@ client.on('message', async msg => {
     msg.reply('Leaving voice channel.')
     console.log('Leaving voice channel.');
     channel.leave();
+  }
+
+  if (command == 'stop') {
+    await msg.reply('Powering off...')
+    console.log('Powering off...');
+    client.destroy();
+    process.exit(0);
   }
 
 });
