@@ -2,7 +2,7 @@
   "name": "Project-Jul-2020-Discord-Bot",
   "version": "1.0.0",
   "main": "bot.js",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "scripts": {
     "dev": "nodemon bot.js"
   },

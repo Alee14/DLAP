@@ -35,7 +35,11 @@ function playAudio() {
     console.log('Now playing ' + audio);
     let serviceChannel = client.channels.cache.get('606602551634296968');
     serviceChannel.send('**Project Jul-2020 Bot:**\nNow playing ' + audio);
-
+    
+    dispatcher.on('finish', () => {
+      playAudio();
+    });
+    
   }).catch(e => {
     console.error(e);
   });
@@ -45,6 +49,9 @@ client.on('ready', () => {
   console.log('Bot is ready!')
   console.log(`Logged in as ${client.user.tag}!`);
   console.log(`Prefix: ${config.prefix}`);
+  console.log(`Owner ID: ${config.botOwner}`)
+  console.log(`Voice Channel: ${config.voiceChannel}`)
+
   client.user.setStatus('invisible');
   playAudio();
 });
@@ -59,7 +66,7 @@ client.on('message', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
-    msg.channel.send(`Bot help:\n\`\`\`${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about\n\`\`\``)
+    msg.channel.send(`Bot help:\n\`\`\`${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about\n\nFeel free to either lower the volume or mute me if it gets annoying!\n\`\`\``)
   }
 
   if (command == 'ping') {
@@ -82,9 +89,6 @@ client.on('message', async msg => {
   if (command == 'join') {
     msg.reply('Joining voice channel.');
     playAudio();
-  }
-  if (command == 'skip') {
-
   }
 
   if (command == 'leave') {

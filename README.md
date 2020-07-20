@@ -11,3 +11,19 @@ Make a new file called `config.json`
     "botOwner": "your_id_here"
 }
 ```
+
+# Help Command
+```
+Public Only
+-----------
+help - Displays commands
+ping - Pong!
+git - Links to the source repo
+about - About the bot
+
+Bot Owner Only
+--------------
+join - Joins voice chat
+leave - Leaves voice chat
+stop - Stops bot
+```
