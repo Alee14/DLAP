@@ -18,8 +18,8 @@ function fetchAudio() {
   fs.readdir('./music', (err, files) => {
     if (err) console.error(err);
     files.forEach(function (file) {
-      console.log(`Fetching ${file}`); 
-  });
+      console.log(`Fetching ${file}`);
+    });
   });
 }
 
@@ -77,6 +77,7 @@ client.on('message', async msg => {
     console.log("Leaving voice channel.");
     channel.leave();
   }
+
 });
 
 client.login(config.token);
