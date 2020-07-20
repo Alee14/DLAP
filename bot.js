@@ -18,7 +18,6 @@ function fetchAudio() {
   fs.readdir('./music', (err, files) => {
     if (err) console.error(err);
     files.forEach(function (file) {
-      // Do whatever you want to do with the file
       console.log(`Fetching ${file}`); 
   });
   });
