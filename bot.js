@@ -10,6 +10,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
 const config = require('./config.json');
+let dispatcher;
 
 client.login(config.token);
 
@@ -30,7 +31,7 @@ function playAudio() {
       }
     }
 
-    const dispatcher = connection.play('./music/' + audio);
+    dispatcher = connection.play('./music/' + audio);
 
     console.log('Now playing ' + audio);
     let serviceChannel = client.channels.cache.get('606602551634296968');
@@ -46,11 +47,11 @@ function playAudio() {
   
 }
 client.on('ready', () => {
-  console.log('Bot is ready!')
+  console.log('Bot is ready!');
   console.log(`Logged in as ${client.user.tag}!`);
   console.log(`Prefix: ${config.prefix}`);
-  console.log(`Owner ID: ${config.botOwner}`)
-  console.log(`Voice Channel: ${config.voiceChannel}`)
+  console.log(`Owner ID: ${config.botOwner}`);
+  console.log(`Voice Channel: ${config.voiceChannel}`);
 
   client.user.setStatus('invisible');
   playAudio();
@@ -88,6 +89,13 @@ client.on('message', async msg => {
 
   if (command == 'join') {
     msg.reply('Joining voice channel.');
+    playAudio();
+  }
+
+  if (command == 'skip') {
+    msg.reply("Skipping...")
+    dispatcher.pause();
+    dispatcher = null
     playAudio();
   }
 

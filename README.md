@@ -24,6 +24,7 @@ about - About the bot
 Bot Owner Only
 --------------
 join - Joins voice chat
+skip - Skips the audio track
 leave - Leaves voice chat
 stop - Stops bot
 ```
