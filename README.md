@@ -1,5 +1,5 @@
 # Project Jul-2020 Discord Bot
-A Discord bot that's made for Alee's birthday. Written in Discord.JS
+A Discord bot that's made for Alee's birthday. Written in Discord.JS.
 
 # Configuration
 Make a new file called `config.json`
