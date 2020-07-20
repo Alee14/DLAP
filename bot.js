@@ -9,15 +9,12 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
-const config = require('./token.json');
-var botOwner = '242775871059001344';
-var voiceChannel = '734184921433899108';
-var prefix = '!';
+const config = require('./config.json');
 
 client.login(config.token);
 
 function playAudio() {
-  const channel = client.channels.cache.get(voiceChannel);
+  const channel = client.channels.cache.get(config.voiceChannel);
   if (!channel) return console.error('The channel does not exist!');
   
   channel.join().then(connection => {
@@ -46,7 +43,7 @@ function playAudio() {
 client.on('ready', () => {
   console.log('Bot is ready!')
   console.log(`Logged in as ${client.user.tag}!`);
-  console.log(`Prefix: ${prefix}`);
+  console.log(`Prefix: ${config.prefix}`);
   client.user.setStatus('invisible');
   playAudio();
 });
@@ -54,11 +51,11 @@ client.on('ready', () => {
 client.on('message', async msg => {
     if (msg.author.bot) return;
     if (!msg.guild) return;
-    if (!msg.content.startsWith(prefix)) return;
-    if (![botOwner].includes(msg.author.id)) return;
+    if (!msg.content.startsWith(config.prefix)) return;
+    if (![config.botOwner].includes(msg.author.id)) return;
 
     let command = msg.content.split(' ')[0];
-    command = command.slice(prefix.length);
+    command = command.slice(config.prefix.length);
 
   if (command == 'ping') {
     msg.reply('Pong!');
@@ -79,9 +76,9 @@ client.on('message', async msg => {
   if (command == 'skip') {
 
   }
-  
+
   if (command == 'leave') {
-    const channel = client.channels.cache.get(voiceChannel);
+    const channel = client.channels.cache.get(config.voiceChannel);
     if (!channel) return console.error('The channel does not exist!');
     msg.reply('Leaving voice channel.')
     console.log('Leaving voice channel.');

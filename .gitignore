@@ -1,4 +1,4 @@
-token.json
+config.json
 node_modules
 yarn.lock
 music/*.mp3
