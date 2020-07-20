@@ -7,41 +7,47 @@
  * 
  *********************************************/
 const Discord = require('discord.js');
-const fs = require("fs");
+const fs = require('fs');
 const client = new Discord.Client();
 const config = require('./token.json');
-let botOwner = "242775871059001344";
-var voiceChannel = "734184921433899108";
-var prefix = "!";
+var botOwner = '242775871059001344';
+var voiceChannel = '734184921433899108';
+var prefix = '!';
+
+client.login(config.token);
 
 function playAudio() {
-  let audio;
   const channel = client.channels.cache.get(voiceChannel);
-  if (!channel) return console.error("The channel does not exist!");
-  
-  fs.readdir('./music', (err, files) => {
-    if (err) console.error(err);
-      audio = files[Math.floor(Math.random() * files.length)];
-      return audio;
-  });
+  if (!channel) return console.error('The channel does not exist!');
   
   channel.join().then(connection => {
-    console.log("Connected to the voice channel.");
-    const dispatcher = connection.play("./music/" + audio);
+    console.log('Connected to the voice channel.');
+    let files = fs.readdirSync('./music');
+    let audio;
 
-    console.log("Project Jul-2020 Bot:\nNow playing " + audio);
+    while (true) {
+      audio = files[Math.floor(Math.random() * files.length)];
+      console.log('Searching file...');
+      if (audio.endsWith('.mp3')) {
+        break;
+      }
+    }
+
+    const dispatcher = connection.play('./music/' + audio);
+
+    console.log('Now playing ' + audio);
     let serviceChannel = client.channels.cache.get('606602551634296968');
-    serviceChannel.send("**Project Jul-2020 Bot:**\nNow playing " + audio);
+    serviceChannel.send('**Project Jul-2020 Bot:**\nNow playing ' + audio);
+
   }).catch(e => {
     console.error(e);
   });
 }
-
 client.on('ready', () => {
-  console.log("Bot is ready!")
+  console.log('Bot is ready!')
   console.log(`Logged in as ${client.user.tag}!`);
   console.log(`Prefix: ${prefix}`);
-  client.user.setStatus("invisible");
+  client.user.setStatus('invisible');
   playAudio();
 });
 
@@ -50,9 +56,8 @@ client.on('message', async msg => {
     if (!msg.guild) return;
     if (!msg.content.startsWith(prefix)) return;
     if (![botOwner].includes(msg.author.id)) return;
-    const args = msg.content.slice(prefix.length).trim().split(/ +/g);
-  
-    let command = msg.content.split(" ")[0];
+
+    let command = msg.content.split(' ')[0];
     command = command.slice(prefix.length);
 
   if (command == 'ping') {
@@ -60,26 +65,27 @@ client.on('message', async msg => {
   }
 
   if (command == 'stop') {
-    await msg.reply("Powering off...")
-    console.log("Powering off...");
+    await msg.reply('Powering off...')
+    console.log('Powering off...');
     client.destroy();
     process.exit(0);
   }
 
   if (command == 'join') {
     // Only try to join the sender's voice channel if they are in one themselves
-      playAudio();
+    msg.reply('Joining voice channel.');
+    playAudio();
   }
   if (command == 'skip') {
-    //This feature might not make it in
+
   }
+  
   if (command == 'leave') {
     const channel = client.channels.cache.get(voiceChannel);
-    if (!channel) return console.error("The channel does not exist!");
-    console.log("Leaving voice channel.");
+    if (!channel) return console.error('The channel does not exist!');
+    msg.reply('Leaving voice channel.')
+    console.log('Leaving voice channel.');
     channel.leave();
   }
 
 });
-
-client.login(config.token);

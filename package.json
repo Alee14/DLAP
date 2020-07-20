@@ -3,9 +3,15 @@
   "version": "1.0.0",
   "main": "bot.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon bot.js"
+  },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.2.0",
     "ffmpeg-static": "^4.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
