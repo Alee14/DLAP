@@ -1,4 +1,4 @@
-/*********************************************
+/**************************************************************************
  * 
  *  DLMP3 Bot: A Discord bot that plays local mp3 audio tracks.
  *  (C) Copyright 2020
@@ -16,7 +16,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *********************************************/
+ * 
+ ***************************************************************************/
 const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
