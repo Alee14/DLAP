@@ -15,7 +15,7 @@ Make a new file called `config.json`.
 }
 ```
 
-Add your own audio files using the mp3 file extension to `./music`.
+Add your own audio files using the mp3 file extension to the `music` folder.
 
 Launch the bot using `node bot.js` in terminal.
 
