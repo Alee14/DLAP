@@ -57,6 +57,7 @@ function playAudio() {
     dispatcher.on('error', console.error);
 
     dispatcher.on('finish', () => {
+      console.log('Music has finished playing.');
       playAudio();
     });
     
@@ -72,7 +73,7 @@ client.on('ready', () => {
   console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}\n`);
-  
+
   client.user.setStatus('online');
   console.log('Connected to the voice channel.');
   playAudio();
