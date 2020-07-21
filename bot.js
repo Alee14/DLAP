@@ -56,8 +56,7 @@ client.on('ready', () => {
   console.log(`Prefix: ${config.prefix}`);
   console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
-  console.log(`Status Channel: ${config.statusChannel}`);
-  console.log('\n');
+  console.log(`Status Channel: ${config.statusChannel}\n`);
 
   client.user.setStatus('invisible');
   console.log('Connected to the voice channel.');
@@ -116,8 +115,7 @@ client.on('message', async msg => {
     if (!channel) return console.error('The channel does not exist!');
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
-    dispatcher.pause();
-    dispatcher = null;
+    dispatcher.destroy();
     channel.leave();
   }
 
