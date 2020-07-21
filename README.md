@@ -10,9 +10,11 @@ Make a new file called `config.json`
     "token": "token_here",
     "prefix": "!",
     "voiceChannel": "voice_channel_id",
-    "botOwner": "your_id_here"
+    "botOwner": "your_user_id_here"
 }
 ```
+
+Add your own audio files using the mp3 file extension to `./music`
 
 # Help Command
 ```
