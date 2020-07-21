@@ -1,5 +1,7 @@
-# Project Jul-2020 Discord Bot
-A Discord bot that's made for Alee's birthday. Written in Discord.JS.
+# DLMP3-Bot
+A Discord bot that plays local mp3 audio tracks. Written in Discord.JS.
+
+(Originally for Alee's birthday)
 
 If there's anything wrong, feel free to make a fork and put a pull request.
 
