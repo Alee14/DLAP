@@ -31,6 +31,7 @@ function playAudio() {
     }
 
     dispatcher = connection.play('./music/' + audio);
+    
     dispatcher.on('start', () => {
       console.log('Now playing ' + audio);
       let serviceChannel = client.channels.cache.get('606602551634296968');
@@ -83,11 +84,11 @@ client.on('message', async msg => {
   }
 
   if (command == 'git') {
-    msg.reply("This is the source code of this project.\nhttps://github.com/Alee14/PJ2020-Discord-Bot")
+    msg.reply('This is the source code of this project.\nhttps://github.com/Alee14/PJ2020-Discord-Bot');
   }
   
   if (command == 'about') {
-    msg.channel.send("This bot was created by Andrew Lee. Written in Discord.JS and licensed with GPL-3.0.")
+    msg.channel.send('This bot was created by Andrew Lee. Written in Discord.JS and licensed with GPL-3.0.');
   }
 
   if (![config.botOwner].includes(msg.author.id)) return;
@@ -102,7 +103,7 @@ client.on('message', async msg => {
   }
 
   if (command == 'skip') {
-    msg.reply("Skipping `" + audio + "`...")
+    msg.reply('Skipping `' + audio + '`...')
     dispatcher.pause();
     dispatcher = null
     playAudio();
