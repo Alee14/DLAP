@@ -98,7 +98,6 @@ client.on('message', async msg => {
 
   // Bot owner exclusive
 
-
   if (command == 'join') {
     msg.reply('Joining voice channel.');
     console.log('Connected to the voice channel.');
@@ -108,7 +107,7 @@ client.on('message', async msg => {
   if (command == 'skip') {
     msg.reply('Skipping `' + audio + '`...');
     dispatcher.pause();
-    dispatcher = null
+    dispatcher = null;
     playAudio();
   }
 
@@ -117,6 +116,8 @@ client.on('message', async msg => {
     if (!channel) return console.error('The channel does not exist!');
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
+    dispatcher.pause();
+    dispatcher = null;
     channel.leave();
   }
 
