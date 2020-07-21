@@ -105,7 +105,7 @@ client.on('message', async msg => {
   }
 
   if (command == 'git') {
-    msg.reply('This is the source code of this project.\nhttps://github.com/Alee14/PJ2020-Discord-Bot');
+    msg.reply('This is the source code of this project.\nhttps://github.com/Alee14/DLMP3');
   }
   
   if (command == 'about') {
