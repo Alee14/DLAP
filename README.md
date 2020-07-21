@@ -10,7 +10,8 @@ Make a new file called `config.json`
     "token": "token_here",
     "prefix": "!",
     "voiceChannel": "voice_channel_id",
-    "botOwner": "your_user_id_here"
+    "botOwner": "your_user_id_here",
+    "statusChannel": "channel_id"
 }
 ```
 
