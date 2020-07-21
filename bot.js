@@ -72,8 +72,8 @@ client.on('ready', () => {
   console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}\n`);
-
-  client.user.setStatus('invisible');
+  
+  client.user.setStatus('online');
   console.log('Connected to the voice channel.');
   playAudio();
 });
