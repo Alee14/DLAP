@@ -46,9 +46,11 @@ function playAudio() {
     
     dispatcher.on('start', () => {
       console.log('Now playing ' + audio);
+
       const statusEmbed = new Discord.MessageEmbed()
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
+
       let statusChannel = client.channels.cache.get(config.statusChannel);
       if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
       statusChannel.send(statusEmbed);
@@ -66,6 +68,7 @@ function playAudio() {
   });
   
 }
+
 client.on('ready', () => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${client.user.tag}!`);
