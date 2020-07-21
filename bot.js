@@ -56,7 +56,8 @@ client.on('ready', () => {
   console.log(`Prefix: ${config.prefix}`);
   console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
-  console.log(`Status Channel: ${config.statusChannel}\n`)
+  console.log(`Status Channel: ${config.statusChannel}`);
+  console.log('\n');
 
   client.user.setStatus('invisible');
   console.log('Connected to the voice channel.');
@@ -105,7 +106,7 @@ client.on('message', async msg => {
   }
 
   if (command == 'skip') {
-    msg.reply('Skipping `' + audio + '`...')
+    msg.reply('Skipping `' + audio + '`...');
     dispatcher.pause();
     dispatcher = null
     playAudio();
@@ -114,13 +115,13 @@ client.on('message', async msg => {
   if (command == 'leave') {
     const channel = client.channels.cache.get(config.voiceChannel);
     if (!channel) return console.error('The channel does not exist!');
-    msg.reply('Leaving voice channel.')
+    msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
     channel.leave();
   }
 
   if (command == 'stop') {
-    await msg.reply('Powering off...')
+    await msg.reply('Powering off...');
     console.log('Powering off...');
     client.destroy();
     process.exit(0);
