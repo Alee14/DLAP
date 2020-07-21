@@ -1,4 +1,4 @@
-# DLMP3-Bot (Discord Local MP3)
+# DLMP3 Bot (Discord Local MP3)
 A Discord bot that plays local mp3 audio tracks. Written in Discord.JS.
 
 (Originally for Alee's birthday)
