@@ -46,9 +46,12 @@ function playAudio() {
     
     dispatcher.on('start', () => {
       console.log('Now playing ' + audio);
+      const statusEmbed = new Discord.MessageEmbed()
+      .addField('Now Playing', `${audio}`)
+      .setColor('#0066ff')
       let statusChannel = client.channels.cache.get(config.statusChannel);
       if (!statusChannel) return console.error('The channel does not exist!');
-      statusChannel.send('**Music Bot Status:**\nNow playing ' + audio);
+      statusChannel.send(statusEmbed);
     });
     
     dispatcher.on('error', console.error);
@@ -86,8 +89,8 @@ client.on('message', async msg => {
 
   if (command == 'help') {
     const helpEmbed = new Discord.MessageEmbed()
-    .addField('Bot Help', `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about`)
-    .setFooter('© Copyright 2020, Andrew Lee. Licensed with GPL-3.0.')
+    .addField('Bot Help', `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about\n`)
+    .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
     .setColor('#0066ff')
 
     msg.channel.send(helpEmbed);
