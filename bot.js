@@ -1,8 +1,9 @@
 /*********************************************
  * 
- *  Project Jul-2020 Discord Bot
- *  By: Andrew Lee
+ *  DLMP3 Bot
+ *  Programmed by Andrew Lee 
  * 
+ *  (C) Copyright 2020
  *  Licensed with GPL-3.0
  * 
  *********************************************/
