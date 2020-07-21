@@ -29,7 +29,7 @@ client.login(config.token);
 
 function playAudio() {
   const channel = client.channels.cache.get(config.voiceChannel);
-  if (!channel) return console.error('The channel does not exist!');
+  if (!channel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
   
   channel.join().then(connection => {
     let files = fs.readdirSync('./music');
@@ -50,7 +50,7 @@ function playAudio() {
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
       let statusChannel = client.channels.cache.get(config.statusChannel);
-      if (!statusChannel) return console.error('The channel does not exist!');
+      if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
       statusChannel.send(statusEmbed);
     });
     
@@ -128,7 +128,7 @@ client.on('message', async msg => {
 
   if (command == 'leave') {
     const channel = client.channels.cache.get(config.voiceChannel);
-    if (!channel) return console.error('The channel does not exist!');
+    if (!channel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
     dispatcher.destroy();
