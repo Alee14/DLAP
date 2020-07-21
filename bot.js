@@ -24,14 +24,15 @@ const client = new Discord.Client();
 const config = require('./config.json');
 let dispatcher;
 let audio;
+let voiceChannel;
 
 client.login(config.token);
 
 function playAudio() {
-  const channel = client.channels.cache.get(config.voiceChannel);
-  if (!channel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
+  voiceChannel = client.channels.cache.get(config.voiceChannel);
+  if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
   
-  channel.join().then(connection => {
+  voiceChannel.join().then(connection => {
     let files = fs.readdirSync('./music');
 
     while (true) {
@@ -130,12 +131,12 @@ client.on('message', async msg => {
   }
 
   if (command == 'leave') {
-    const channel = client.channels.cache.get(config.voiceChannel);
-    if (!channel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
+    voiceChannel = client.channels.cache.get(config.voiceChannel);
+    if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
     dispatcher.destroy();
-    channel.leave();
+    voiceChannel.leave();
   }
 
   if (command == 'stop') {
