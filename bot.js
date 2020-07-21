@@ -36,7 +36,7 @@ function playAudio() {
       console.log('Now playing ' + audio);
       let statusChannel = client.channels.cache.get(config.statusChannel);
       if (!statusChannel) return console.error('The channel does not exist!');
-      statusChannel.send('**Project Jul-2020 Bot:**\nNow playing ' + audio);
+      statusChannel.send('Now playing ' + audio);
     });
     
     dispatcher.on('error', console.error);
