@@ -95,7 +95,7 @@ client.on('message', async msg => {
   if (command == 'help') {
     if (!msg.guild.member(client.user).hasPermission('EMBED_LINKS')) return msg.reply('ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.');
     const helpEmbed = new Discord.MessageEmbed()
-    .setAuthor(`${client.user.username} Help`, client.user.avatarURL)
+    .setAuthor(`${client.user.username} Help`)
     .setDescription(`Currently playing \`${audio}\`.`)
     .addField(`Commands`, `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`)
     .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
