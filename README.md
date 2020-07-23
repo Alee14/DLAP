@@ -36,6 +36,8 @@ about - About the bot.
 Bot Owner Only
 --------------
 join - Joins voice chat.
+resume - Resumes music.
+pause - Pauses music.
 skip - Skips the audio track.
 leave - Leaves voice chat.
 stop - Stops bot.

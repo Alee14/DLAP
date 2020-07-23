@@ -93,7 +93,7 @@ client.on('message', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
-    if (!msg.guild.member(client.user).hasPermission('EMBED_LINKS')) return msg.reply('ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.');
+    if (!msg.guild.member(client.user).hasPermission('EMBED_LINKS')) return msg.reply('**ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.**');
     const helpEmbed = new Discord.MessageEmbed()
     .setAuthor(`${client.user.username} Help`)
     .setDescription(`Currently playing \`${audio}\`.`)
@@ -115,7 +115,6 @@ client.on('message', async msg => {
   if (command == 'playing') {
     msg.channel.send('Currently playing `' + audio + '`.');
   }
-
   
   if (command == 'about') {
     msg.channel.send('The bot code was created by Andrew Lee (Alee#4277). Written in Discord.JS and licensed with GPL-3.0.');
@@ -129,6 +128,16 @@ client.on('message', async msg => {
     msg.reply('Joining voice channel.');
     console.log('Connected to the voice channel.');
     playAudio();
+  }
+
+  if (command == 'resume') {
+    msg.reply('Resuming music.');
+    dispatcher.resume();
+  }
+
+  if (command == 'pause') {
+    msg.reply('Pausing music.');
+    dispatcher.pause();
   }
 
   if (command == 'skip') {
@@ -150,6 +159,7 @@ client.on('message', async msg => {
   if (command == 'stop') {
     await msg.reply('Powering off...');
     console.log('Powering off...');
+    dispatcher.destroy();
     client.destroy();
     process.exit(0);
   }
