@@ -93,7 +93,7 @@ client.on('message', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
-    if (!message.guild.member(client.user).hasPermission('EMBED_LINKS')) return message.reply('ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.');
+    if (!msg.guild.member(client.user).hasPermission('EMBED_LINKS')) return msg.reply('ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.');
     const helpEmbed = new Discord.MessageEmbed()
     .setAuthor(`${client.user.username} Help`, client.user.avatarURL)
     .setDescription(`Currently playing \`${audio}\`.`)
