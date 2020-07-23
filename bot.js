@@ -97,7 +97,7 @@ bot.on('message', async msg => {
     const helpEmbed = new Discord.MessageEmbed()
     .setAuthor(`${bot.user.username} Help`)
     .setDescription(`Currently playing \`${audio}\`.`)
-    .addField(`Commands`, `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`)
+    .addField(`Public Commands`, `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`)
     .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
     .setColor('#0066ff')
 
@@ -158,6 +158,12 @@ bot.on('message', async msg => {
 
   if (command == 'stop') {
     await msg.reply('Powering off...');
+    const statusEmbed = new Discord.MessageEmbed()
+    .setTitle('That\'s all folks!')
+    .setColor('#0066ff')
+    let statusChannel = bot.channels.cache.get(config.statusChannel);
+      if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+    statusChannel.send(statusEmbed);
     console.log('Powering off...');
     dispatcher.destroy();
     bot.destroy();
