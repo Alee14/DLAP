@@ -168,7 +168,7 @@ bot.on('message', async msg => {
     await msg.reply('Powering off...');
     const statusEmbed = new Discord.MessageEmbed()
     .setTitle(bot.user.username)
-    .setDescription('That\'s all folks!')
+    .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
     .setColor('#0066ff')
     let statusChannel = bot.channels.cache.get(config.statusChannel);
     if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
