@@ -49,6 +49,7 @@ function playAudio() {
       console.log('Now playing ' + audio);
 
       const statusEmbed = new Discord.MessageEmbed()
+      .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
 
@@ -78,15 +79,23 @@ bot.on('ready', () => {
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}\n`);
 
+  bot.user.setPresence({
+    activity: {
+      name: `Music | ${config.prefix}help`
+    },
+    status: 'online',
+    afk: false,
+  }).then(console.log)
+  .catch(console.error);
+
   const readyEmbed = new Discord.MessageEmbed()
-  .setTitle(bot.user.username)
+  .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
   .setDescription('Starting bot...')
   .setColor('#0066ff')
 
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send(readyEmbed);
-  bot.user.setStatus('online');
   console.log('Connected to the voice channel.');
   playAudio();
 });
@@ -167,7 +176,7 @@ bot.on('message', async msg => {
   if (command == 'stop') {
     await msg.reply('Powering off...');
     const statusEmbed = new Discord.MessageEmbed()
-    .setTitle(bot.user.username)
+    .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
     .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
     .setColor('#0066ff')
     let statusChannel = bot.channels.cache.get(config.statusChannel);
