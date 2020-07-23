@@ -78,6 +78,14 @@ bot.on('ready', () => {
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}\n`);
 
+  const readyEmbed = new Discord.MessageEmbed()
+  .setTitle(bot.user.username)
+  .setDescription('Starting bot...')
+  .setColor('#0066ff')
+
+  let statusChannel = bot.channels.cache.get(config.statusChannel);
+  if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+  statusChannel.send(readyEmbed);
   bot.user.setStatus('online');
   console.log('Connected to the voice channel.');
   playAudio();
@@ -159,10 +167,11 @@ bot.on('message', async msg => {
   if (command == 'stop') {
     await msg.reply('Powering off...');
     const statusEmbed = new Discord.MessageEmbed()
-    .setTitle('That\'s all folks!')
+    .setTitle(bot.user.username)
+    .setDescription('That\'s all folks!')
     .setColor('#0066ff')
     let statusChannel = bot.channels.cache.get(config.statusChannel);
-      if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+    if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
     await statusChannel.send(statusEmbed);
     console.log('Powering off...');
     dispatcher.destroy();
