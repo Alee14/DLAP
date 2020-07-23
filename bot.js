@@ -93,8 +93,11 @@ client.on('message', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
+    if (!message.guild.member(client.user).hasPermission('EMBED_LINKS')) return message.reply('ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.');
     const helpEmbed = new Discord.MessageEmbed()
-    .addField('Bot Help', `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}about\n`)
+    .setAuthor(`${client.user.username} Help`, client.user.avatarURL)
+    .setDescription(`Currently playing \`${audio}\`.`)
+    .addField(`Commands`, `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`)
     .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
     .setColor('#0066ff')
 
@@ -108,9 +111,14 @@ client.on('message', async msg => {
   if (command == 'git') {
     msg.reply('This is the source code of this project.\nhttps://github.com/Alee14/DLMP3');
   }
+
+  if (command == 'playing') {
+    msg.channel.send('Currently playing `' + audio + '`.');
+  }
+
   
   if (command == 'about') {
-    msg.channel.send('This bot was created by Andrew Lee. Written in Discord.JS and licensed with GPL-3.0.');
+    msg.channel.send('The bot code was created by Andrew Lee (Alee#4277). Written in Discord.JS and licensed with GPL-3.0.');
   }
 
   if (![config.botOwner].includes(msg.author.id)) return;
