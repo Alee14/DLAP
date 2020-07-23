@@ -20,16 +20,16 @@
  ***************************************************************************/
 const Discord = require('discord.js');
 const fs = require('fs');
-const client = new Discord.Client();
+const bot = new Discord.Client();
 const config = require('./config.json');
 let dispatcher;
 let audio;
 let voiceChannel;
 
-client.login(config.token);
+bot.login(config.token);
 
 function playAudio() {
-  voiceChannel = client.channels.cache.get(config.voiceChannel);
+  voiceChannel = bot.channels.cache.get(config.voiceChannel);
   if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
   
   voiceChannel.join().then(connection => {
@@ -52,7 +52,7 @@ function playAudio() {
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
 
-      let statusChannel = client.channels.cache.get(config.statusChannel);
+      let statusChannel = bot.channels.cache.get(config.statusChannel);
       if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
       statusChannel.send(statusEmbed);
     });
@@ -70,20 +70,20 @@ function playAudio() {
   
 }
 
-client.on('ready', () => {
+bot.on('ready', () => {
   console.log('Bot is ready!');
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Prefix: ${config.prefix}`);
   console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}\n`);
 
-  client.user.setStatus('online');
+  bot.user.setStatus('online');
   console.log('Connected to the voice channel.');
   playAudio();
 });
 
-client.on('message', async msg => {
+bot.on('message', async msg => {
   if (msg.author.bot) return;
   if (!msg.guild) return;
   if (!msg.content.startsWith(config.prefix)) return;
@@ -93,9 +93,9 @@ client.on('message', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
-    if (!msg.guild.member(client.user).hasPermission('EMBED_LINKS')) return msg.reply('**ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.**');
+    if (!msg.guild.member(bot.user).hasPermission('EMBED_LINKS')) return msg.reply('**ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.**');
     const helpEmbed = new Discord.MessageEmbed()
-    .setAuthor(`${client.user.username} Help`)
+    .setAuthor(`${bot.user.username} Help`)
     .setDescription(`Currently playing \`${audio}\`.`)
     .addField(`Commands`, `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`)
     .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
@@ -148,7 +148,7 @@ client.on('message', async msg => {
   }
 
   if (command == 'leave') {
-    voiceChannel = client.channels.cache.get(config.voiceChannel);
+    voiceChannel = bot.channels.cache.get(config.voiceChannel);
     if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
@@ -160,7 +160,7 @@ client.on('message', async msg => {
     await msg.reply('Powering off...');
     console.log('Powering off...');
     dispatcher.destroy();
-    client.destroy();
+    bot.destroy();
     process.exit(0);
   }
 
