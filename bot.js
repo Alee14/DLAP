@@ -49,7 +49,6 @@ function playAudio() {
       console.log('Now playing ' + audio);
 
       const statusEmbed = new Discord.MessageEmbed()
-      .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
 
@@ -112,7 +111,8 @@ bot.on('message', async msg => {
     const helpEmbed = new Discord.MessageEmbed()
     .setAuthor(`${bot.user.username} Help`, bot.user.avatarURL())
     .setDescription(`Currently playing \`${audio}\`.`)
-    .addField(`Public Commands`, `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`)
+    .addField('Public Commands', `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`, true)
+    .addField('Bot Owner Only', `${config.prefix}join\n${config.prefix}resume\n${config.prefix}pause\n${config.prefix}skip\n${config.prefix}leave\n${config.prefix}stop\n`, true)
     .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
     .setColor('#0066ff')
 
