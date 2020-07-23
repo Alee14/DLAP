@@ -163,7 +163,7 @@ bot.on('message', async msg => {
     .setColor('#0066ff')
     let statusChannel = bot.channels.cache.get(config.statusChannel);
       if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-    statusChannel.send(statusEmbed);
+    await statusChannel.send(statusEmbed);
     console.log('Powering off...');
     dispatcher.destroy();
     bot.destroy();
