@@ -84,9 +84,7 @@ bot.on('ready', () => {
       name: `Music | ${config.prefix}help`
     },
     status: 'online',
-    afk: false,
-  }).then(presence => console.log(`Activity set to "${presence.activities[0].name}"`))
-  .catch(console.error);
+  }).then(presence => console.log(`Activity set to "${presence.activities[0].name}"`)).catch(console.error);
 
   const readyEmbed = new Discord.MessageEmbed()
   .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
