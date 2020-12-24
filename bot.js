@@ -25,6 +25,7 @@ const config = require('./config.json');
 let dispatcher;
 let audio;
 let voiceChannel;
+let fileData;
 
 bot.login(config.token);
 
@@ -47,8 +48,8 @@ function playAudio() {
     
     dispatcher.on('start', () => {
       console.log('Now playing ' + audio);
-      let data = "Now Playing: " + audio;
-      fs.writeFile("now-playing.txt", data, (err) => { 
+      fileData = "Now Playing: " + audio;
+      fs.writeFile("now-playing.txt", fileData, (err) => { 
       if (err) 
       console.log(err); 
       }); 
@@ -171,12 +172,23 @@ bot.on('message', async msg => {
     if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
+    fileData = "Now Playing: Nothing";
+    fs.writeFile("now-playing.txt", fileData, (err) => { 
+    if (err) 
+    console.log(err); 
+    }); 
+    audio = "Not Playing";
     dispatcher.destroy();
     voiceChannel.leave();
   }
 
   if (command == 'stop') {
     await msg.reply('Powering off...');
+    fileData = "Now Playing: Nothing";
+    await fs.writeFile("now-playing.txt", fileData, (err) => { 
+    if (err) 
+    console.log(err); 
+    }); 
     const statusEmbed = new Discord.MessageEmbed()
     .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
     .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
