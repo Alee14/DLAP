@@ -25,6 +25,7 @@ const config = require('./config.json');
 let dispatcher;
 let audio;
 let voiceChannel;
+let writeTextFile = false;
 
 bot.login(config.token);
 
@@ -47,7 +48,13 @@ function playAudio() {
     
     dispatcher.on('start', () => {
       console.log('Now playing ' + audio);
-
+      if writeTextFile == true {
+      let data = "Now Playing: " + audio;
+      fs.writeFile("now-playing.txt", data, (err) => { 
+      if (err) 
+      console.log(err); 
+      }); 
+      }
       const statusEmbed = new Discord.MessageEmbed()
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
