@@ -52,7 +52,6 @@ function playAudio() {
       if (err) 
       console.log(err); 
       }); 
-      } else return
       const statusEmbed = new Discord.MessageEmbed()
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
