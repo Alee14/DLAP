@@ -20,64 +20,74 @@
  ***************************************************************************/
 const Discord = require('discord.js');
 const fs = require('fs');
-const bot = new Discord.Client();
+const { createAudioPlayer, createAudioResource, joinVoiceChannel } = require('@discordjs/voice');
+const bot = new Discord.Client({intents: ['GUILDS', 'GUILD_MESSAGES']});
 const config = require('./config.json');
+const player = createAudioPlayer();
+const connection = joinVoiceChannel({
+	channelId: config.voiceChannel,
+	guildId: config.guildID,
+  adapterCreator: config.guildID
+});
 let dispatcher;
 let audio;
 let voiceChannel;
 let fileData;
+let resource;
 
 bot.login(config.token);
 
 function playAudio() {
-  voiceChannel = bot.channels.cache.get(config.voiceChannel);
-  if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
+  //voiceChannel = bot.channels.cache.get(config.voiceChannel);
+  //if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
   
-  voiceChannel.join().then(connection => {
-    let files = fs.readdirSync('./music');
+  let files = fs.readdirSync('./music');
 
-    while (true) {
-      audio = files[Math.floor(Math.random() * files.length)];
-      console.log('Searching .mp3 file...');
-      if (audio.endsWith('.mp3')) {
-        break;
-      }
+  while (true) {
+    audio = files[Math.floor(Math.random() * files.length)];
+    console.log('Searching .mp3 file...');
+    if (audio.endsWith('.mp3')) {
+      break;
     }
+  }
 
-    dispatcher = connection.play('./music/' + audio);
-    
-    dispatcher.on('start', () => {
-      console.log('Now playing ' + audio);
-      fileData = "Now Playing: " + audio;
-      fs.writeFile("now-playing.txt", fileData, (err) => { 
-      if (err) 
-      console.log(err); 
-      }); 
-      const statusEmbed = new Discord.MessageEmbed()
-      .addField('Now Playing', `${audio}`)
-      .setColor('#0066ff')
+  resource = createAudioResource('./music/' + audio);
+  
+  player.play(resource);
 
-      let statusChannel = bot.channels.cache.get(config.statusChannel);
-      if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-      statusChannel.send(statusEmbed);
-    });
-    
-    dispatcher.on('error', console.error);
+  console.log('Now playing ' + audio);
+  fileData = "Now Playing: " + audio;
+  fs.writeFile("now-playing.txt", fileData, (err) => { 
+  if (err) 
+  console.log(err); 
+  }); 
+  const statusEmbed = new Discord.MessageEmbed()
+  .addField('Now Playing', `${audio}`)
+  .setColor('#0066ff')
 
-    dispatcher.on('finish', () => {
-      console.log('Music has finished playing.');
-      playAudio();
-    });
+  let statusChannel = bot.channels.cache.get(config.statusChannel);
+  if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+  statusChannel.send({ embeds: [statusEmbed]});
+  
+  /*dispatcher.on('error', console.error);
+
+  dispatcher.on('finish', () => {
+    console.log('Music has finished playing.');
+    playAudio();
+  });
+
+  voiceChannel.join().then(connection => {
     
   }).catch(e => {
     console.error(e);
   });
-  
+  */
 }
 
 bot.on('ready', () => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
+  console.log(`Running on Discord.JS ${Discord.version}`)
   console.log(`Prefix: ${config.prefix}`);
   console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
@@ -88,7 +98,8 @@ bot.on('ready', () => {
       name: `Music | ${config.prefix}help`
     },
     status: 'online',
-  }).then(presence => console.log(`Activity set to "${presence.activities[0].name}"`)).catch(console.error);
+  });
+  console.log(`Updated bot presence to "${bot.user.activity}"`);
 
   const readyEmbed = new Discord.MessageEmbed()
   .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
@@ -97,12 +108,12 @@ bot.on('ready', () => {
 
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  statusChannel.send(readyEmbed);
-  console.log('Connected to the voice channel.');
+  statusChannel.send({ embeds: [readyEmbed]});
+  //console.log('Connected to the voice channel.');
   playAudio();
 });
 
-bot.on('message', async msg => {
+bot.on('messageCreate', async msg => {
   if (msg.author.bot) return;
   if (!msg.guild) return;
   if (!msg.content.startsWith(config.prefix)) return;
@@ -121,7 +132,7 @@ bot.on('message', async msg => {
     .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
     .setColor('#0066ff')
 
-    msg.channel.send(helpEmbed);
+    msg.channel.send({ embeds: [helpEmbed]});
   }
 
   if (command == 'ping') {
@@ -178,7 +189,7 @@ bot.on('message', async msg => {
     console.log(err); 
     }); 
     audio = "Not Playing";
-    dispatcher.destroy();
+    player.stop();
     voiceChannel.leave();
   }
 
@@ -195,9 +206,9 @@ bot.on('message', async msg => {
     .setColor('#0066ff')
     let statusChannel = bot.channels.cache.get(config.statusChannel);
     if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-    await statusChannel.send(statusEmbed);
+    await statusChannel.send({ embeds: [statusEmbed] });
     console.log('Powering off...');
-    dispatcher.destroy();
+    player.stop();
     bot.destroy();
     process.exit(0);
   }

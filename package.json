@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
-    "discord.js": "^12.2.0",
-    "ffmpeg-static": "^4.2.5"
+    "@discordjs/voice": "^0.5.5",
+    "discord.js": "^13.0.0-dev.t1627831263.774f5b7",
+    "ffmpeg-static": "^4.2.5",
+    "libsodium-wrappers": "^0.7.9"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
