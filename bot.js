@@ -20,36 +20,42 @@
  ***************************************************************************/
 const Discord = require('discord.js');
 const fs = require('fs');
+const { join } = require('node:path');
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus } = require('@discordjs/voice');
-const bot = new Discord.Client({intents: ['GUILDS', 'GUILD_MESSAGES']});
+const bot = new Discord.Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
 const config = require('./config.json');
 const player = createAudioPlayer();
 let audio;
-let voiceChannel;
 let fileData;
-let resource;
 
 bot.login(config.token);
 
-function joinChannel(channelID) {
-  bot.channels.fetch(channelID).then(channel => {
+function joinChannel() {
+  bot.channels.fetch(config.voiceChannel).then(channel => {
     const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
       adapterCreator: channel.guild.voiceAdapterCreator
     });
 
-    connection.subscribe(player);
+    connection.on('stateChange', (oldState, newState) => {
+      console.log(`Connection transitioned from ${oldState.status} to ${newState.status}`);
+    });
+    player.on('stateChange', (oldState, newState) => {
+      console.log(`Audio player transitioned from ${oldState.status} to ${newState.status}`);
+    });
 
     connection.on(VoiceConnectionStatus.Ready, () => {
       console.log('The connection has entered the Ready state - ready to play audio!');
     });
 
     playAudio();
+    connection.subscribe(player);
   })
 }
 
 function playAudio() {
+
   let files = fs.readdirSync('./music');
 
   while (true) {
@@ -60,23 +66,23 @@ function playAudio() {
     }
   }
 
-  resource = createAudioResource('./music/' + audio);
-  
+  let resource = createAudioResource(join(__dirname, 'music/' + audio));
+
   player.play(resource);
 
-  console.log('Now playing ' + audio);
+  console.log('Now playing: ' + audio);
   fileData = "Now Playing: " + audio;
-  fs.writeFile("now-playing.txt", fileData, (err) => { 
-  if (err) 
-  console.log(err); 
-  }); 
+  fs.writeFile("now-playing.txt", fileData, (err) => {
+    if (err)
+      console.log(err);
+  });
   const statusEmbed = new Discord.MessageEmbed()
-  .addField('Now Playing', `${audio}`)
-  .setColor('#0066ff')
+      .addField('Now Playing', `${audio}`)
+      .setColor('#0066ff')
 
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  statusChannel.send({ embeds: [statusEmbed]});
+  statusChannel.send({embeds: [statusEmbed]});
 
 }
 
@@ -104,7 +110,7 @@ bot.on('ready', () => {
 
   // Send bots' status to channel
   const readyEmbed = new Discord.MessageEmbed()
-  .setAuthor({name:`${bot.user.username}`, url:bot.user.avatarURL()})
+  .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
   .setDescription('Starting bot...')
   .setColor('#0066ff')
 
@@ -112,7 +118,7 @@ bot.on('ready', () => {
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({ embeds: [readyEmbed]});
 
-  joinChannel(config.voiceChannel)
+  joinChannel();
 
 });
 
@@ -161,23 +167,22 @@ bot.on('messageCreate', async msg => {
   if (command == 'join') {
     msg.reply('Joining voice channel.');
     console.log('Connected to the voice channel.');
-    playAudio();
+    joinChannel();
   }
 
   if (command == 'resume') {
     msg.reply('Resuming music.');
-    dispatcher.resume();
+    player.unpause();
   }
 
   if (command == 'pause') {
     msg.reply('Pausing music.');
-    dispatcher.pause();
+    player.pause();
   }
 
   if (command == 'skip') {
     msg.reply('Skipping `' + audio + '`...');
-    dispatcher.pause();
-    dispatcher = null;
+    player.pause()
     playAudio();
   }
 
@@ -204,7 +209,7 @@ bot.on('messageCreate', async msg => {
     console.log(err); 
     }); 
     const statusEmbed = new Discord.MessageEmbed()
-    .setAuthor({title:bot.user.username, url:bot.user.avatarURL()})
+    .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
     .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
     .setColor('#0066ff')
     let statusChannel = bot.channels.cache.get(config.statusChannel);
