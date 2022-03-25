@@ -1,4 +1,7 @@
 # DLMP3 Bot (Discord.JS Local MP3)
+
+**Project Status:** Currently bringing v13 to this bot, and things are messy. But hopefully I can bring slash and new voice system to this bot soon!
+
 A Discord bot that plays local mp3 audio tracks. Written in Discord.JS.
 
 [Video Tutorial](https://www.youtube.com/watch?v=7X3FAhYW31I)
