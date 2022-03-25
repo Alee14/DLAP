@@ -1,7 +1,7 @@
 /**************************************************************************
  * 
  *  DLMP3 Bot: A Discord bot that plays local mp3 audio tracks.
- *  (C) Copyright 2020
+ *  (C) Copyright 2022
  *  Programmed by Andrew Lee 
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -20,15 +20,10 @@
  ***************************************************************************/
 const Discord = require('discord.js');
 const fs = require('fs');
-const { createAudioPlayer, createAudioResource, joinVoiceChannel } = require('@discordjs/voice');
+const { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus } = require('@discordjs/voice');
 const bot = new Discord.Client({intents: ['GUILDS', 'GUILD_MESSAGES']});
 const config = require('./config.json');
 const player = createAudioPlayer();
-const connection = joinVoiceChannel({
-	channelId: config.voiceChannel,
-	guildId: config.guildID,
-  //adapterCreator: bot.guilds.client
-});
 let dispatcher;
 let audio;
 let voiceChannel;
@@ -37,10 +32,25 @@ let resource;
 
 bot.login(config.token);
 
+function joinChannel(channelID) {
+  bot.channels.fetch(channelID).then(channel => {
+    const connection = joinVoiceChannel({
+      channelId: channel.id,
+      guildId: channel.guild.id,
+      adapterCreator: channel.guild.voiceAdapterCreator
+    });
+
+    connection.subscribe(player);
+
+    connection.on(VoiceConnectionStatus.Ready, () => {
+      console.log('The connection has entered the Ready state - ready to play audio!');
+    });
+
+    playAudio();
+  })
+}
+
 function playAudio() {
-  //voiceChannel = bot.channels.cache.get(config.voiceChannel);
-  //if (!voiceChannel) return console.error('The voice channel does not exist!\n(Have you looked at your configuration?)');
-  
   let files = fs.readdirSync('./music');
 
   while (true) {
@@ -54,7 +64,6 @@ function playAudio() {
   resource = createAudioResource('./music/' + audio);
   
   player.play(resource);
-  connection.subscribe(player);
 
   console.log('Now playing ' + audio);
   fileData = "Now Playing: " + audio;
@@ -69,20 +78,7 @@ function playAudio() {
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({ embeds: [statusEmbed]});
-  
-  /*dispatcher.on('error', console.error);
 
-  dispatcher.on('finish', () => {
-    console.log('Music has finished playing.');
-    playAudio();
-  });
-
-  voiceChannel.join().then(connection => {
-    
-  }).catch(e => {
-    console.error(e);
-  });
-  */
 }
 
 bot.on('ready', () => {
@@ -94,14 +90,20 @@ bot.on('ready', () => {
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}\n`);
 
+  // Set bots' presence
+
   bot.user.setPresence({
-    activity: {
-      name: `Music | ${config.prefix}help`
-    },
+    activities: [{
+      name: `Music | ${config.prefix}help`,
+      type: 'LISTENING'
+    }],
     status: 'online',
   });
-  console.log(`Updated bot presence to "${bot.user.activity}"`);
 
+  const activity = bot.presence.activities[0];
+  console.log(`Updated bot presence to "${activity.name}"`);
+
+  // Send bots' status to channel
   const readyEmbed = new Discord.MessageEmbed()
   .setAuthor({name:`${bot.user.username}`, url:bot.user.avatarURL()})
   .setDescription('Starting bot...')
@@ -110,8 +112,9 @@ bot.on('ready', () => {
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({ embeds: [readyEmbed]});
-  console.log('Connected to the voice channel.');
-  playAudio();
+
+  joinChannel(config.voiceChannel)
+
 });
 
 bot.on('messageCreate', async msg => {
@@ -124,7 +127,6 @@ bot.on('messageCreate', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
-    //if (!msg.guild.member(bot.user).hasPermission('EMBED_LINKS')) return msg.reply('**ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.**');
     const helpEmbed = new Discord.MessageEmbed()
     .setAuthor({name:`${bot.user.username} Help`, iconURL:bot.user.avatarURL()})
     .setDescription(`Currently playing \`${audio}\`.`)
@@ -139,6 +141,7 @@ bot.on('messageCreate', async msg => {
 
   if (command == 'ping') {
     msg.reply('Pong!');
+    console.log(msg.guild.voiceAdapterCreator());
   }
 
   if (command == 'git') {
