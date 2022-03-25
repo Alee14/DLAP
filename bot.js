@@ -24,7 +24,6 @@ const { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectio
 const bot = new Discord.Client({intents: ['GUILDS', 'GUILD_MESSAGES']});
 const config = require('./config.json');
 const player = createAudioPlayer();
-let dispatcher;
 let audio;
 let voiceChannel;
 let fileData;
@@ -141,7 +140,6 @@ bot.on('messageCreate', async msg => {
 
   if (command == 'ping') {
     msg.reply('Pong!');
-    console.log(msg.guild.voiceAdapterCreator());
   }
 
   if (command == 'git') {
