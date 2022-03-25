@@ -27,7 +27,7 @@ const player = createAudioPlayer();
 const connection = joinVoiceChannel({
 	channelId: config.voiceChannel,
 	guildId: config.guildID,
-  adapterCreator: config.guildID
+  //adapterCreator: bot.guilds.client
 });
 let dispatcher;
 let audio;
@@ -54,6 +54,7 @@ function playAudio() {
   resource = createAudioResource('./music/' + audio);
   
   player.play(resource);
+  connection.subscribe(player);
 
   console.log('Now playing ' + audio);
   fileData = "Now Playing: " + audio;
@@ -102,14 +103,14 @@ bot.on('ready', () => {
   console.log(`Updated bot presence to "${bot.user.activity}"`);
 
   const readyEmbed = new Discord.MessageEmbed()
-  .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
+  .setAuthor({name:`${bot.user.username}`, url:bot.user.avatarURL()})
   .setDescription('Starting bot...')
   .setColor('#0066ff')
 
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({ embeds: [readyEmbed]});
-  //console.log('Connected to the voice channel.');
+  console.log('Connected to the voice channel.');
   playAudio();
 });
 
@@ -123,16 +124,17 @@ bot.on('messageCreate', async msg => {
   // Public allowed commands
 
   if (command == 'help') {
-    if (!msg.guild.member(bot.user).hasPermission('EMBED_LINKS')) return msg.reply('**ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.**');
+    //if (!msg.guild.member(bot.user).hasPermission('EMBED_LINKS')) return msg.reply('**ERROR: This bot doesn\'t have the permission to send embed links please enable them to use the full help.**');
     const helpEmbed = new Discord.MessageEmbed()
-    .setAuthor(`${bot.user.username} Help`, bot.user.avatarURL())
+    .setAuthor({name:`${bot.user.username} Help`, iconURL:bot.user.avatarURL()})
     .setDescription(`Currently playing \`${audio}\`.`)
     .addField('Public Commands', `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`, true)
     .addField('Bot Owner Only', `${config.prefix}join\n${config.prefix}resume\n${config.prefix}pause\n${config.prefix}skip\n${config.prefix}leave\n${config.prefix}stop\n`, true)
-    .setFooter('© Copyright 2020 Andrew Lee. Licensed with GPL-3.0.')
+    .setFooter({text:'© Copyright 2022 Andrew Lee. Licensed with GPL-3.0.'})
     .setColor('#0066ff')
 
     msg.channel.send({ embeds: [helpEmbed]});
+
   }
 
   if (command == 'ping') {
@@ -201,7 +203,7 @@ bot.on('messageCreate', async msg => {
     console.log(err); 
     }); 
     const statusEmbed = new Discord.MessageEmbed()
-    .setAuthor(`${bot.user.username}`, bot.user.avatarURL())
+    .setAuthor({title:bot.user.username, url:bot.user.avatarURL()})
     .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
     .setColor('#0066ff')
     let statusChannel = bot.channels.cache.get(config.statusChannel);

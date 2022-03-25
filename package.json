@@ -9,7 +9,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "@discordjs/voice": "^0.5.5",
-    "discord.js": "^13.0.0-dev.t1627831263.774f5b7",
+    "discord.js": "^13.6.0",
     "ffmpeg-static": "^4.2.5",
     "libsodium-wrappers": "^0.7.9"
   },
