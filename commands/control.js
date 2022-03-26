@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton} = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,13 +11,16 @@ module.exports = {
             .setAuthor({name:`${bot.user.username} Control Panel`, iconURL:bot.user.avatarURL()})
             .addField('Currently Playing', 'audio file here')
             .addField('Next Music', '(a possible feature?)')
+            .setColor('#0066ff')
+
         const controlButtons = new MessageActionRow()
             .addComponents(
                 new MessageButton()
                     .setStyle('PRIMARY')
-                    .setLabel('Pause/Play')
+                    .setLabel('Pause')
                     .setCustomId('soon')
             );
+
         return interaction.reply({embeds:[controlEmbed], components:[controlButtons]});
     },
 };

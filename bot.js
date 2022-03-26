@@ -18,11 +18,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * 
  ***************************************************************************/
-const Discord = require('discord.js');
+const { Client, MessageEmbed, Collection, version } = require('discord.js');
 const fs = require('fs');
 const { join } = require('node:path');
 const { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus, getVoiceConnection } = require('@discordjs/voice');
-const bot = new Discord.Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
+const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
 const config = require('./config.json');
 const player = createAudioPlayer();
 let audio;
@@ -80,7 +80,7 @@ function playAudio() {
         console.log(err);
     });
   }
-  const statusEmbed = new Discord.MessageEmbed()
+  const statusEmbed = new MessageEmbed()
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')
 
@@ -90,7 +90,9 @@ function playAudio() {
 
 }
 
-bot.commands = new Discord.Collection();
+// Slash Command Handler
+
+bot.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -101,14 +103,13 @@ for (const file of commandFiles) {
 bot.once('ready', () => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
-  console.log(`Running on Discord.JS ${Discord.version}`)
+  console.log(`Running on Discord.JS ${version}`)
   console.log(`Prefix: ${config.prefix}`);
   console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}\n`);
 
   // Set bots' presence
-
   bot.user.setPresence({
     activities: [{
       name: 'some beats',
@@ -121,7 +122,7 @@ bot.once('ready', () => {
   console.log(`Updated bot presence to "${activity.name}"`);
 
   // Send bots' status to channel
-  const readyEmbed = new Discord.MessageEmbed()
+  const readyEmbed = new MessageEmbed()
     .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
     .setDescription('Starting bot...')
     .setColor('#0066ff')
@@ -142,7 +143,7 @@ bot.on('interactionCreate', async interaction => {
   if (!command) return;
 
   try {
-    await command.execute(interaction, bot);
+    await command.execute(interaction, bot, player, audio);
   } catch (error) {
     console.error(error);
     await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
@@ -159,7 +160,7 @@ bot.on('messageCreate', async msg => {
   // Public allowed commands
 
   if (command === 'help') {
-    const helpEmbed = new Discord.MessageEmbed()
+    const helpEmbed = new MessageEmbed()
       .setAuthor({name:`${bot.user.username} Help`, iconURL:bot.user.avatarURL()})
       .setDescription(`Currently playing \`${audio}\`.`)
       .addField('Public Commands', `${config.prefix}help\n${config.prefix}ping\n${config.prefix}git\n${config.prefix}playing\n${config.prefix}about\n`, true)
@@ -238,7 +239,7 @@ bot.on('messageCreate', async msg => {
           console.log(err);
       });
     }
-    const statusEmbed = new Discord.MessageEmbed()
+    const statusEmbed = new MessageEmbed()
       .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
       .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
       .setColor('#0066ff')

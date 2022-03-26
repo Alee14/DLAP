@@ -24,6 +24,8 @@ Make a new file called `config.json`.
 
 Add your own audio files using the mp3 file extension to the `music` folder.
 
+Deploy the commands by doing `node deploy-command.js`
+
 Launch the bot using `node bot.js` in terminal.
 
 # Help Command
