@@ -31,7 +31,7 @@ let txtFile = true;
 
 bot.login(config.token);
 
-function joinChannel() {
+function voiceInit() {
   bot.channels.fetch(config.voiceChannel).then(channel => {
     const connection = joinVoiceChannel({
       channelId: channel.id,
@@ -123,7 +123,7 @@ bot.on('ready', () => {
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({ embeds: [readyEmbed]});
 
-  joinChannel();
+  voiceInit();
 
 });
 
@@ -171,8 +171,7 @@ bot.on('messageCreate', async msg => {
 
   if (command == 'join') {
     msg.reply('Joining voice channel.');
-    console.log('Connected to the voice channel.');
-    joinChannel();
+    voiceInit();
   }
 
   if (command == 'resume') {
