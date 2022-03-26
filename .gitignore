@@ -4,3 +4,4 @@ yarn.lock
 music/*.mp3
 package-lock.json
 now-playing.txt
+.idea/
