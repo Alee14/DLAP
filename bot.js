@@ -193,11 +193,13 @@ bot.on('messageCreate', async msg => {
   if (command === 'leave') {
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
-    fileData = "Now Playing: Nothing";
-    fs.writeFile("now-playing.txt", fileData, (err) => { 
-    if (err) 
-    console.log(err); 
-    }); 
+    if (txtFile === true) {
+      fileData = "Now Playing: Nothing";
+      fs.writeFile("now-playing.txt", fileData, (err) => {
+        if (err)
+          console.log(err);
+      });
+    }
     audio = "Not Playing";
     player.stop();
     const connection = getVoiceConnection(msg.guild.id);
