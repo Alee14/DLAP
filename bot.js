@@ -59,7 +59,7 @@ function voiceInit() {
 
 function playAudio() {
 
-  let files = fs.readdirSync('./music');
+  let files = fs.readdirSync(join(__dirname,'music'));
 
   while (true) {
     audio = files[Math.floor(Math.random() * files.length)];
