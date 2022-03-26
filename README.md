@@ -6,7 +6,7 @@ A Discord bot that plays local mp3 audio tracks. Written in Discord.JS.
 
 (Originally for Alee's birthday)
 
-If there's anything wrong, feel free to make a fork and put a pull request.
+If there's anything wrong or wanting to add a feature, feel free to make a fork and put a pull request.
 
 # Configuration
 Make a new file called `config.json`.
