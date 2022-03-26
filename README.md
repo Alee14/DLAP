@@ -17,6 +17,8 @@ Make a new file called `config.json`.
     "botOwner": "your_user_id_here",
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id"
+    "guildID": "guild_id",
+    "clientID": "client_id",
 }
 ```
 

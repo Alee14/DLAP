@@ -44,7 +44,7 @@ function voiceInit() {
     });
 
     connection.on(VoiceConnectionStatus.Destroyed, () => {
-      console.log('Stopping music...');
+      console.log('Destroying beats...');
     });
 
     player.on('idle', () => {
@@ -58,7 +58,6 @@ function voiceInit() {
 }
 
 function playAudio() {
-
   let files = fs.readdirSync(join(__dirname,'music'));
 
   while (true) {
@@ -91,7 +90,15 @@ function playAudio() {
 
 }
 
-bot.on('ready', () => {
+bot.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  bot.commands.set(command.data.name, command);
+}
+
+bot.once('ready', () => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Running on Discord.JS ${Discord.version}`)
@@ -104,7 +111,7 @@ bot.on('ready', () => {
 
   bot.user.setPresence({
     activities: [{
-      name: `Music | ${config.prefix}help`,
+      name: 'some beats',
       type: 'LISTENING'
     }],
     status: 'online',
@@ -125,6 +132,21 @@ bot.on('ready', () => {
 
   voiceInit();
 
+});
+
+bot.on('interactionCreate', async interaction => {
+  if (!interaction.isCommand()) return;
+
+  const command = bot.commands.get(interaction.commandName);
+
+  if (!command) return;
+
+  try {
+    await command.execute(interaction, bot);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+  }
 });
 
 bot.on('messageCreate', async msg => {
