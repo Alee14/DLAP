@@ -136,7 +136,7 @@ bot.on('messageCreate', async msg => {
 
   // Public allowed commands
 
-  if (command == 'help') {
+  if (command === 'help') {
     const helpEmbed = new Discord.MessageEmbed()
       .setAuthor({name:`${bot.user.username} Help`, iconURL:bot.user.avatarURL()})
       .setDescription(`Currently playing \`${audio}\`.`)
@@ -149,19 +149,19 @@ bot.on('messageCreate', async msg => {
 
   }
 
-  if (command == 'ping') {
+  if (command === 'ping') {
     msg.reply('Pong!');
   }
 
-  if (command == 'git') {
+  if (command === 'git') {
     msg.reply('This is the source code of this project.\nhttps://github.com/Alee14/DLMP3');
   }
 
-  if (command == 'playing') {
+  if (command === 'playing') {
     msg.channel.send('Currently playing `' + audio + '`.');
   }
   
-  if (command == 'about') {
+  if (command === 'about') {
     msg.channel.send('The bot code was created by Andrew Lee (Alee#4277). Written in Discord.JS and licensed with GPL-3.0.');
   }
 
@@ -169,28 +169,28 @@ bot.on('messageCreate', async msg => {
 
   // Bot owner exclusive
 
-  if (command == 'join') {
+  if (command === 'join') {
     msg.reply('Joining voice channel.');
     voiceInit();
   }
 
-  if (command == 'resume') {
+  if (command === 'resume') {
     msg.reply('Resuming music.');
     player.unpause();
   }
 
-  if (command == 'pause') {
+  if (command === 'pause') {
     msg.reply('Pausing music.');
     player.pause();
   }
 
-  if (command == 'skip') {
+  if (command === 'skip') {
     msg.reply('Skipping `' + audio + '`...');
     player.pause()
     playAudio();
   }
 
-  if (command == 'leave') {
+  if (command === 'leave') {
     msg.reply('Leaving voice channel.');
     console.log('Leaving voice channel.');
     fileData = "Now Playing: Nothing";
@@ -205,7 +205,7 @@ bot.on('messageCreate', async msg => {
 
   }
 
-  if (command == 'stop') {
+  if (command === 'stop') {
     await msg.reply('Powering off...');
     if (txtFile === true) {
       fileData = "Now Playing: Nothing";
