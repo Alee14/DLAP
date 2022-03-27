@@ -20,75 +20,15 @@
  ***************************************************************************/
 const { Client, MessageEmbed, Collection, version } = require('discord.js');
 const fs = require('fs');
-const { join } = require('node:path');
-const { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus, getVoiceConnection } = require('@discordjs/voice');
+const { getVoiceConnection } = require('@discordjs/voice');
 const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
 const config = require('./config.json');
-const player = createAudioPlayer();
+const AudioBackend = require('./AudioBackend');
 let audio;
 let fileData;
 let txtFile = true;
 
 bot.login(config.token);
-
-function voiceInit() {
-  bot.channels.fetch(config.voiceChannel).then(channel => {
-    const connection = joinVoiceChannel({
-      channelId: channel.id,
-      guildId: channel.guild.id,
-      adapterCreator: channel.guild.voiceAdapterCreator
-    });
-
-    connection.on(VoiceConnectionStatus.Ready, () => {
-      console.log('Ready to blast music!');
-    });
-
-    connection.on(VoiceConnectionStatus.Destroyed, () => {
-      console.log('Destroying beats...');
-    });
-
-    player.on('idle', () => {
-      console.log("Music has finished playing, shuffling music...")
-      playAudio();
-    })
-
-    playAudio();
-    connection.subscribe(player);
-  })
-}
-
-function playAudio() {
-  let files = fs.readdirSync(join(__dirname,'music'));
-
-  while (true) {
-    audio = files[Math.floor(Math.random() * files.length)];
-    console.log('Searching .mp3 file...');
-    if (audio.endsWith('.mp3')) {
-      break;
-    }
-  }
-
-  let resource = createAudioResource(join(__dirname, 'music/' + audio));
-
-  player.play(resource);
-
-  console.log('Now playing: ' + audio);
-  if (txtFile === true) {
-    fileData = "Now Playing: " + audio;
-    fs.writeFile("now-playing.txt", fileData, (err) => {
-      if (err)
-        console.log(err);
-    });
-  }
-  const statusEmbed = new MessageEmbed()
-      .addField('Now Playing', `${audio}`)
-      .setColor('#0066ff')
-
-  let statusChannel = bot.channels.cache.get(config.statusChannel);
-  if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  statusChannel.send({embeds: [statusEmbed]});
-
-}
 
 // Slash Command Handler
 
@@ -105,9 +45,11 @@ bot.once('ready', () => {
   console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Running on Discord.JS ${version}`)
   console.log(`Prefix: ${config.prefix}`);
-  console.log(`Owner ID: ${config.botOwner}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
-  console.log(`Status Channel: ${config.statusChannel}\n`);
+  console.log(`Status Channel: ${config.statusChannel}`);
+  console.log(`Owner ID: ${config.botOwner}`);
+  console.log(`Guild ID: ${config.guildID}`);
+  console.log(`Client ID: ${config.clientID}\n`);
 
   // Set bots' presence
   bot.user.setPresence({
@@ -131,7 +73,9 @@ bot.once('ready', () => {
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({ embeds: [readyEmbed]});
 
-  voiceInit();
+  //voiceInit();
+
+  AudioBackend(bot, config);
 
 });
 
@@ -194,23 +138,23 @@ bot.on('messageCreate', async msg => {
 
   if (command === 'join') {
     msg.reply('Joining voice channel.');
-    voiceInit();
+    //voiceInit();
   }
 
   if (command === 'resume') {
     msg.reply('Resuming music.');
-    player.unpause();
+    //player.unpause();
   }
 
   if (command === 'pause') {
     msg.reply('Pausing music.');
-    player.pause();
+    //player.pause();
   }
 
   if (command === 'skip') {
     msg.reply('Skipping `' + audio + '`...');
-    player.pause()
-    playAudio();
+    //player.pause()
+    //playAudio();
   }
 
   if (command === 'leave') {
@@ -224,7 +168,7 @@ bot.on('messageCreate', async msg => {
       });
     }
     audio = "Not Playing";
-    player.stop();
+    //player.stop();
     const connection = getVoiceConnection(msg.guild.id);
     connection.destroy();
 

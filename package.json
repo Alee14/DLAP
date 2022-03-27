@@ -7,6 +7,7 @@
     "dev": "nodemon bot.js"
   },
   "dependencies": {
+    "@discordjs/builders": "^0.12.0",
     "@discordjs/opus": "^0.3.2",
     "@discordjs/rest": "^0.3.0",
     "@discordjs/voice": "^0.5.5",
