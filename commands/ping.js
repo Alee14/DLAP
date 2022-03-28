@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 
-export const command = {
+export default {
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Replies with Pong!'),

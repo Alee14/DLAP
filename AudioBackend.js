@@ -74,13 +74,12 @@ export function playAudio(bot) {
   player.play(resource);
 
   console.log('Now playing: ' + audio);
-  if (txtFile === true) {
-    fileData = "Now Playing: " + audio;
-    fs.writeFile("./now-playing.txt", fileData, (err) => {
-      if (err)
-        console.log(err);
-    });
-  }
+  fileData = "Now Playing: " + audio;
+  fs.writeFile("./now-playing.txt", fileData, (err) => {
+    if (err)
+      console.log(err);
+  });
+
   const statusEmbed = new MessageEmbed()
       .addField('Now Playing', `${audio}`)
       .setColor('#0066ff')

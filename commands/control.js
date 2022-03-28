@@ -21,16 +21,17 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
+import { audio } from '../AudioBackend.js'
 
 
-export const command = {
+export default {
     data: new SlashCommandBuilder()
         .setName('control')
         .setDescription('Controlling the music'),
     async execute(interaction, bot) {
         const controlEmbed = new MessageEmbed()
             .setAuthor({name:`${bot.user.username} Control Panel`, iconURL:bot.user.avatarURL()})
-            .addField('Currently Playing', 'audio file here')
+            .addField('Currently Playing', audio)
             .addField('Next Music', '(a possible feature?)')
             .setColor('#0066ff')
 

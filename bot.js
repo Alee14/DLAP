@@ -34,6 +34,7 @@ bot.login(config.token);
  * Play directly the MP3 file
  * New queue system
  * List MP3 files
+ * Shuffle or "Play by order" mode
  */
 
 // Slash Command Handler
@@ -50,7 +51,6 @@ bot.once('ready', () => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Running on Discord.JS ${version}`)
-  console.log(`Prefix: ${config.prefix}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}`);
   console.log(`Owner ID: ${config.botOwner}`);
