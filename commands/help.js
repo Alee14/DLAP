@@ -26,7 +26,7 @@ import { audio } from '../AudioBackend.js'
 export default {
     data: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('Lists the commands'),
+        .setDescription('Displays commands.'),
     async execute(interaction, bot) {
         const helpEmbed = new MessageEmbed()
             .setAuthor({name:`${bot.user.username} Help`, iconURL:bot.user.avatarURL()})

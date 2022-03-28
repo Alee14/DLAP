@@ -33,7 +33,7 @@ help - Displays commands.
 ping - Pong!
 git - Links to the source repo.
 playing - Tells you what it's playing at the moment.
-about - About the bot.
+about - Information about the bot.
 
 Bot Owner Only
 --------------

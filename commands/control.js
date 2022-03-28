@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import { audio, player, playAudio, destroyAudio } from '../AudioBackend.js'
+import {audio, player, playAudio, destroyAudio, voiceInit} from '../AudioBackend.js'
 
 export default {
     data: new SlashCommandBuilder()
@@ -39,6 +39,10 @@ export default {
             .addComponents(
                 new MessageButton()
                     .setStyle('SUCCESS')
+                    .setLabel('Join')
+                    .setCustomId('join'),
+                new MessageButton()
+                    .setStyle('SUCCESS')
                     .setLabel('Play')
                     .setCustomId('play'),
                 new MessageButton()
@@ -50,14 +54,30 @@ export default {
                     .setLabel('Skip')
                     .setCustomId('skip'),
                 new MessageButton()
+                    .setStyle('SECONDARY')
+                    .setLabel('More')
+                    .setCustomId('soon'),
+            );
+
+        const controlButtons2 = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
                     .setStyle('DANGER')
                     .setLabel('Leave')
-                    .setCustomId('leave')
-            );
+                    .setCustomId('leave'),
+                new MessageButton()
+                    .setStyle('DANGER')
+                    .setLabel('Power Off')
+                    .setCustomId('stop')
+            )
 
         const collector = interaction.channel.createMessageComponentCollector();
 
         collector.on('collect', async ctlButton => {
+            if (ctlButton.customId === 'join') {
+                await ctlButton.reply({content:'Joining voice channel', ephemeral:true})
+                voiceInit(bot);
+            }
             if (ctlButton.customId === 'play') {
                 player.unpause();
                 await ctlButton.reply({content:'Resuming music', ephemeral:true})
@@ -75,6 +95,20 @@ export default {
                 await ctlButton.reply({content:'Leaving voice channel.', ephemeral:true})
                 console.log('Leaving voice channel...');
                 destroyAudio(interaction);
+            }
+            if (ctlButton.customId === 'stop') {
+                await ctlButton.reply({content:'Powering off...', ephemeral:true})
+                const statusEmbed = new MessageEmbed()
+                    .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
+                    .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
+                    .setColor('#0066ff')
+                let statusChannel = bot.channels.cache.get(config.statusChannel);
+                if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+                await statusChannel.send({ embeds: [statusEmbed] });
+                console.log('Powering off...');
+                destroyAudio(interaction);
+                bot.destroy();
+                process.exit(0);
             }
         });
 
