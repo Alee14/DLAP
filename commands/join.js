@@ -20,18 +20,15 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import fs from 'fs'
-
-const musicFolder = './music';
+import { voiceInit } from '../AudioBackend.js'
+import { bot } from "../bot.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('list')
-        .setDescription('Lists the available audio tracks'),
+        .setName('join')
+        .setDescription('Joins the voice chat'),
     async execute(interaction) {
-        /*
-        fs.readdirSync(musicFolder).forEach(file => {
-            return interaction.reply('Listing the available audio tracks...\n' + file);
-        });*/
+        interaction.reply('Joining the voice channel');
+        voiceInit(bot);
     },
 };

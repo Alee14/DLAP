@@ -20,12 +20,8 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { getVoiceConnection } from "@discordjs/voice";
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import { audio, player, playAudio } from '../AudioBackend.js'
-import fs from 'fs'
-
-let fileData;
+import { audio, player, playAudio, destroyAudio } from '../AudioBackend.js'
 
 export default {
     data: new SlashCommandBuilder()
@@ -61,32 +57,24 @@ export default {
 
         const collector = interaction.channel.createMessageComponentCollector();
 
-        collector.on('collect', async i => {
-            if (i.customId === 'play') {
+        collector.on('collect', async ctlButton => {
+            if (ctlButton.customId === 'play') {
                 player.unpause();
-                await i.reply({content:'Resuming music', ephemeral:true})
+                await ctlButton.reply({content:'Resuming music', ephemeral:true})
             }
-            if (i.customId === 'pause') {
+            if (ctlButton.customId === 'pause') {
                 player.pause();
-                await i.reply({content:'Pausing music', ephemeral:true})
+                await ctlButton.reply({content:'Pausing music', ephemeral:true})
             }
-            if (i.customId === 'skip') {
+            if (ctlButton.customId === 'skip') {
                 player.pause();
-                await i.reply({content:`Skipping \`${audio}\`...`, ephemeral:true})
+                await ctlButton.reply({content:`Skipping \`${audio}\`...`, ephemeral:true})
                 playAudio(bot);
             }
-            if (i.customId === 'leave') {
-                await i.reply({content:'Leaving voice channel.', ephemeral:true})
+            if (ctlButton.customId === 'leave') {
+                await ctlButton.reply({content:'Leaving voice channel.', ephemeral:true})
                 console.log('Leaving voice channel...');
-                fileData = "Now Playing: Nothing";
-                fs.writeFile("now-playing.txt", fileData, (err) => {
-                    if (err)
-                        console.log(err);
-                });
-                audio = "Not Playing";
-                player.stop();
-                const connection = getVoiceConnection(interaction.guild.id);
-                connection.destroy();
+                destroyAudio(interaction);
             }
         });
 

@@ -19,7 +19,13 @@
  * 
  ***************************************************************************/
 
-import { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus } from '@discordjs/voice'
+import {
+  createAudioPlayer,
+  createAudioResource,
+  getVoiceConnection,
+  joinVoiceChannel,
+  VoiceConnectionStatus
+} from '@discordjs/voice'
 import { MessageEmbed } from 'discord.js'
 import config from './config.json' assert {type: 'json'}
 import fs from 'fs'
@@ -87,4 +93,16 @@ export function playAudio(bot) {
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({embeds: [statusEmbed]});
 
+}
+
+export function destroyAudio(interaction) {
+  fileData = "Now Playing: Nothing";
+  fs.writeFile("now-playing.txt", fileData, (err) => {
+    if (err)
+      console.log(err);
+  });
+  audio = "Not Playing";
+  player.stop();
+  const connection = getVoiceConnection(interaction.guild.id);
+  connection.destroy();
 }
