@@ -20,9 +20,12 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { getVoiceConnection } from "@discordjs/voice";
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
 import { audio, player, playAudio } from '../AudioBackend.js'
+import fs from 'fs'
 
+let fileData;
 
 export default {
     data: new SlashCommandBuilder()
@@ -31,8 +34,9 @@ export default {
     async execute(interaction, bot) {
         const controlEmbed = new MessageEmbed()
             .setAuthor({name:`${bot.user.username} Control Panel`, iconURL:bot.user.avatarURL()})
+            .addField('State', 'Playing')
             .addField('Currently Playing', audio)
-            .addField('Next Music', '(a possible feature?)')
+            //.addField('Next Music', '(a possible feature when queue system is implemented?)')
             .setColor('#0066ff')
 
         const controlButtons = new MessageActionRow()
@@ -55,17 +59,34 @@ export default {
                     .setCustomId('leave')
             );
 
-        const filter = i => i.customId === 'pause' && i.user.id === '242775871059001344';
-
-        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+        const collector = interaction.channel.createMessageComponentCollector();
 
         collector.on('collect', async i => {
-            if (i.customId === 'pause') {
-                await i.reply({content:'test'})
+            if (i.customId === 'play') {
+                player.unpause();
+                await i.reply({content:'Resuming music', ephemeral:true})
             }
-
+            if (i.customId === 'pause') {
+                player.pause();
+                await i.reply({content:'Pausing music', ephemeral:true})
+            }
             if (i.customId === 'skip') {
-                await i.reply
+                player.pause();
+                await i.reply({content:`Skipping \`${audio}\`...`, ephemeral:true})
+                playAudio(bot);
+            }
+            if (i.customId === 'leave') {
+                await i.reply({content:'Leaving voice channel.', ephemeral:true})
+                console.log('Leaving voice channel...');
+                fileData = "Now Playing: Nothing";
+                fs.writeFile("now-playing.txt", fileData, (err) => {
+                    if (err)
+                        console.log(err);
+                });
+                audio = "Not Playing";
+                player.stop();
+                const connection = getVoiceConnection(interaction.guild.id);
+                connection.destroy();
             }
         });
 
