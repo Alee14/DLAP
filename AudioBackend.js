@@ -34,7 +34,6 @@ export const player = createAudioPlayer();
 export let audio;
 let fileData;
 
-
 export function voiceInit(bot) {
   bot.channels.fetch(config.voiceChannel).then(channel => {
     const connection = joinVoiceChannel({
@@ -64,7 +63,7 @@ export function voiceInit(bot) {
 export function playAudio(bot) {
   let files = fs.readdirSync('music');
 
-  // Eventually this system will need a rework so it won't repeat the same files.
+  //TODO: Eventually this system will need a rework so it won't repeat the same files.
 
   while (true) {
     audio = files[Math.floor(Math.random() * files.length)];
@@ -79,11 +78,14 @@ export function playAudio(bot) {
   player.play(resource);
 
   console.log('Now playing: ' + audio);
-  fileData = "Now Playing: " + audio;
-  fs.writeFile("./now-playing.txt", fileData, (err) => {
-    if (err)
-      console.log(err);
-  });
+
+  if (config.txtFile === true) {
+    fileData = "Now Playing: " + audio;
+    fs.writeFile("./now-playing.txt", fileData, (err) => {
+      if (err)
+        console.log(err);
+    });
+  }
 
   const statusEmbed = new MessageEmbed()
       .addField('Now Playing', `${audio}`)
@@ -96,11 +98,15 @@ export function playAudio(bot) {
 }
 
 export function destroyAudio(interaction) {
-  fileData = "Now Playing: Nothing";
-  fs.writeFile("now-playing.txt", fileData, (err) => {
-    if (err)
-      console.log(err);
-  });
+
+  if (config.txtFile === true) {
+    fileData = "Now Playing: Nothing";
+    fs.writeFile("now-playing.txt", fileData, (err) => {
+      if (err)
+        console.log(err);
+    });
+  }
+
   audio = "Not Playing";
   player.stop();
   const connection = getVoiceConnection(interaction.guild.id);

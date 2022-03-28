@@ -21,7 +21,9 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import {audio, player, playAudio, destroyAudio, voiceInit} from '../AudioBackend.js'
+import { audio, player, playAudio, destroyAudio, voiceInit } from '../AudioBackend.js'
+
+import config from '../config.json' assert {type: 'json'}
 
 export default {
     data: new SlashCommandBuilder()
@@ -38,7 +40,7 @@ export default {
         const controlButtons = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setStyle('SUCCESS')
+                    .setStyle('SECONDARY')
                     .setLabel('Join')
                     .setCustomId('join'),
                 new MessageButton()
@@ -47,7 +49,7 @@ export default {
                     .setCustomId('play'),
                 new MessageButton()
                     .setStyle('PRIMARY')
-                    .setLabel('Pause') //possible toggle button instead
+                    .setLabel('Pause') //TODO: possibly toggle button instead
                     .setCustomId('pause'),
                 new MessageButton()
                     .setStyle('SECONDARY')
@@ -98,6 +100,7 @@ export default {
             }
             if (ctlButton.customId === 'stop') {
                 await ctlButton.reply({content:'Powering off...', ephemeral:true})
+
                 const statusEmbed = new MessageEmbed()
                     .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
                     .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
@@ -105,6 +108,7 @@ export default {
                 let statusChannel = bot.channels.cache.get(config.statusChannel);
                 if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
                 await statusChannel.send({ embeds: [statusEmbed] });
+
                 console.log('Powering off...');
                 destroyAudio(interaction);
                 bot.destroy();

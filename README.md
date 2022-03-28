@@ -4,7 +4,7 @@ A Discord bot that plays local MP3 audio tracks. Written in Discord.JS.
 
 [Video Tutorial](https://www.youtube.com/watch?v=7X3FAhYW31I)
 
-If there's anything wrong or wanting to add a feature, feel free to make a fork and put a pull request.
+If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
 # Configuration
 Make a new file called `config.json`.
@@ -12,6 +12,7 @@ Make a new file called `config.json`.
 {
     "token": "token_here",
     "botOwner": "your_user_id_here",
+    "txtFile": true/false
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id"
     "guildID": "guild_id",
@@ -32,7 +33,6 @@ Public Only
 help - Displays commands.
 ping - Pong!
 git - Links to the source repo.
-playing - Tells you what it's playing at the moment.
 about - Information about the bot.
 
 Bot Owner Only
@@ -44,3 +44,13 @@ skip - Skips the audio track.
 leave - Leaves voice chat.
 stop - Stops bot.
 ```
+
+# Forking
+When forking the project, you can make your own version of DLMP3 or help contribute to the project (See the "Contributing" section).
+
+But you need to edit `/commands/about.js` to uncomment the `.addField('Forked by', '[your name] (discord#0000)')` section.
+
+Be sure to replace that with your name.
+
+# Contributing
+When contributing, be sure to add yourself to the contributors list in `/commands/about.js`.

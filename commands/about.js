@@ -31,6 +31,8 @@ export default {
             .setAuthor({name:`About ${bot.user.username}`, iconURL:bot.user.avatarURL()})
             .addField('Information', 'A Discord bot that plays local MP3 audio tracks.')
             .addField('Original Creator', 'Andrew Lee (Alee#4277)')
+            //.addField('Contributors', '[your name] (discord#0000)')
+            //.addField('Forked by', '[your name] (discord#0000)')
             .addField('Frameworks', `Discord.JS ${version} + Voice`)
             .addField('License', 'GNU General Public License v3.0')
             .setFooter({text:'© Copyright 2020-2022 Andrew Lee. Licensed with GPL-3.0.'})

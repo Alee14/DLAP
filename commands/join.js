@@ -20,22 +20,14 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed } from "discord.js";
-import { audio } from '../AudioBackend.js'
+import { voiceInit } from "../AudioBackend.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('help')
-        .setDescription('Displays commands'),
+        .setName('join')
+        .setDescription('Joins voice chat.'),
     async execute(interaction, bot) {
-        const helpEmbed = new MessageEmbed()
-            .setAuthor({name:`${bot.user.username} Help`, iconURL:bot.user.avatarURL()})
-            .setDescription(`Currently playing \`${audio}\``)
-            .addField('Public Commands', `/help\n/ping\n/about\n`, true)
-            .addField('Bot Owner Only', `/join\n/control\n/stop\n`, true)
-            .setFooter({text:'© Copyright 2020-2022 Andrew Lee. Licensed with GPL-3.0.'})
-            .setColor('#0066ff')
-
-        return interaction.reply({ embeds: [helpEmbed]});
+        await interaction.reply('Joining voice channel')
+        voiceInit(bot);
     },
 };

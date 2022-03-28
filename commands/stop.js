@@ -21,21 +21,27 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed } from "discord.js";
-import { audio } from '../AudioBackend.js'
+import config from '../config.json' assert {type: 'json'}
+import { destroyAudio } from "../AudioBackend.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('help')
-        .setDescription('Displays commands'),
+        .setName('stop')
+        .setDescription('Powers off the bot'),
     async execute(interaction, bot) {
-        const helpEmbed = new MessageEmbed()
-            .setAuthor({name:`${bot.user.username} Help`, iconURL:bot.user.avatarURL()})
-            .setDescription(`Currently playing \`${audio}\``)
-            .addField('Public Commands', `/help\n/ping\n/about\n`, true)
-            .addField('Bot Owner Only', `/join\n/control\n/stop\n`, true)
-            .setFooter({text:'© Copyright 2020-2022 Andrew Lee. Licensed with GPL-3.0.'})
-            .setColor('#0066ff')
+        await interaction.reply('Powering off...')
 
-        return interaction.reply({ embeds: [helpEmbed]});
+        const statusEmbed = new MessageEmbed()
+            .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
+            .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
+            .setColor('#0066ff')
+        let statusChannel = bot.channels.cache.get(config.statusChannel);
+        if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+        await statusChannel.send({ embeds: [statusEmbed] });
+
+        console.log('Powering off...');
+        destroyAudio(interaction);
+        bot.destroy();
+        process.exit(0);
     },
 };
