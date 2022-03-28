@@ -1,6 +1,7 @@
 {
   "name": "dlmp3",
   "version": "1.0.0",
+  "type": "module",
   "main": "bot.js",
   "license": "GPL-3.0",
   "scripts": {

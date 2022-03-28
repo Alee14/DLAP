@@ -1,6 +1,6 @@
 /**************************************************************************
  * 
- *  DLMP3 Bot: A Discord bot that plays local mp3 audio tracks.
+ *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee 
  *  
@@ -19,74 +19,74 @@
  * 
  ***************************************************************************/
 
-const { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus } = require('@discordjs/voice');
+import { createAudioPlayer, createAudioResource, joinVoiceChannel, VoiceConnectionStatus } from '@discordjs/voice'
+import { MessageEmbed } from 'discord.js'
+import config from './config.json' assert {type: 'json'}
+import fs from 'fs'
+
 const player = createAudioPlayer();
-const fs = require('fs');
-const { join } = require('node:path');
-let audio;
+export let audio;
 let fileData;
 let txtFile = true;
-const { MessageEmbed } = require('discord.js');
 
-module.exports = (bot, config) => {
-    function voiceInit() {
-        bot.channels.fetch(config.voiceChannel).then(channel => {
-          const connection = joinVoiceChannel({
-            channelId: channel.id,
-            guildId: channel.guild.id,
-            adapterCreator: channel.guild.voiceAdapterCreator
-          });
-      
-          connection.on(VoiceConnectionStatus.Ready, () => {
-            console.log('Ready to blast music!');
-          });
-      
-          connection.on(VoiceConnectionStatus.Destroyed, () => {
-            console.log('Destroying beats...');
-          });
-      
-          player.on('idle', () => {
-            console.log("Music has finished playing, shuffling music...")
-            playAudio();
-          })
-      
-          playAudio();
-          connection.subscribe(player);
-        })
-      }
 
-      function playAudio() {
-        let files = fs.readdirSync(join(__dirname,'music'));
-      
-        while (true) {
-          audio = files[Math.floor(Math.random() * files.length)];
-          console.log('Searching .mp3 file...');
-          if (audio.endsWith('.mp3')) {
-            break;
-          }
-        }
-      
-        let resource = createAudioResource(join(__dirname, 'music/' + audio));
-      
-        player.play(resource);
-      
-        console.log('Now playing: ' + audio);
-        if (txtFile === true) {
-          fileData = "Now Playing: " + audio;
-          fs.writeFile("./now-playing.txt", fileData, (err) => {
-            if (err)
-              console.log(err);
-          });
-        }
-        const statusEmbed = new MessageEmbed()
-            .addField('Now Playing', `${audio}`)
-            .setColor('#0066ff')
-      
-        let statusChannel = bot.channels.cache.get(config.statusChannel);
-        if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-        statusChannel.send({embeds: [statusEmbed]});
-      
-      }
+export function voiceInit(bot) {
+  bot.channels.fetch(config.voiceChannel).then(channel => {
+    const connection = joinVoiceChannel({
+      channelId: channel.id,
+      guildId: channel.guild.id,
+      adapterCreator: channel.guild.voiceAdapterCreator
+    });
 
-      voiceInit();
+    connection.on(VoiceConnectionStatus.Ready, () => {
+      console.log('Ready to blast music!');
+    });
+
+    connection.on(VoiceConnectionStatus.Destroyed, () => {
+      console.log('Destroying beats...');
+    });
+
+    player.on('idle', () => {
+      console.log("Music has finished playing, shuffling music...")
+      playAudio();
+    })
+
+    playAudio(bot);
+    connection.subscribe(player);
+  })
+}
+
+export function playAudio(bot) {
+  let files = fs.readdirSync('music');
+
+  // Eventually this system will need a rework so it won't repeat the same files.
+
+  while (true) {
+    audio = files[Math.floor(Math.random() * files.length)];
+    console.log('Searching .mp3 file...');
+    if (audio.endsWith('.mp3')) {
+      break;
+    }
+  }
+
+  let resource = createAudioResource('music/' + audio);
+
+  player.play(resource);
+
+  console.log('Now playing: ' + audio);
+  if (txtFile === true) {
+    fileData = "Now Playing: " + audio;
+    fs.writeFile("./now-playing.txt", fileData, (err) => {
+      if (err)
+        console.log(err);
+    });
+  }
+  const statusEmbed = new MessageEmbed()
+      .addField('Now Playing', `${audio}`)
+      .setColor('#0066ff')
+
+  let statusChannel = bot.channels.cache.get(config.statusChannel);
+  if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+  statusChannel.send({embeds: [statusEmbed]});
+
 }

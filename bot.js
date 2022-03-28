@@ -1,6 +1,6 @@
 /**************************************************************************
  * 
- *  DLMP3 Bot: A Discord bot that plays local mp3 audio tracks.
+ *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee 
  *  
@@ -18,17 +18,23 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * 
  ***************************************************************************/
-const { Client, MessageEmbed, Collection, version } = require('discord.js');
-const fs = require('fs');
-const { getVoiceConnection } = require('@discordjs/voice');
-const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
-const config = require('./config.json');
-const AudioBackend = require('./AudioBackend');
-let audio;
+import { Client, MessageEmbed, Collection, version } from "discord.js"
+import { voiceInit } from "./AudioBackend.js"
+import fs from "fs"
+import config from './config.json' assert {type: 'json'}
+
+export const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
 let fileData;
 let txtFile = true;
 
 bot.login(config.token);
+
+/**
+ * Project Ideas:
+ * Play directly the MP3 file
+ * New queue system
+ * List MP3 files
+ */
 
 // Slash Command Handler
 
@@ -36,7 +42,7 @@ bot.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+  const { default: command } = await import(`./commands/${file}`);
   bot.commands.set(command.data.name, command);
 }
 
@@ -73,9 +79,7 @@ bot.once('ready', () => {
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   statusChannel.send({ embeds: [readyEmbed]});
 
-  //voiceInit();
-
-  AudioBackend(bot, config);
+  voiceInit(bot);
 
 });
 
@@ -87,13 +91,18 @@ bot.on('interactionCreate', async interaction => {
   if (!command) return;
 
   try {
-    await command.execute(interaction, bot, player, audio);
+    await command.execute(interaction, bot);
   } catch (error) {
     console.error(error);
-    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    if (error == null) {
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    } else {
+      await interaction.reply({ content: `There was an error while executing this command!\nShare this to the bot owner!\n\nDetails:\`\`\`${error}\`\`\``, ephemeral: true });
+    }
   }
 });
 
+/*
 bot.on('messageCreate', async msg => {
   if (msg.author.bot) return;
   if (!msg.guild) return;
@@ -198,4 +207,4 @@ bot.on('messageCreate', async msg => {
     process.exit(0);
   }
 
-});
+});*/
