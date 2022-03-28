@@ -24,8 +24,6 @@ import fs from "fs"
 import config from './config.json' assert {type: 'json'}
 
 export const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
-let fileData;
-let txtFile = true;
 
 bot.login(config.token);
 
@@ -71,7 +69,7 @@ bot.once('ready', () => {
 
   // Send bots' status to channel
   const readyEmbed = new MessageEmbed()
-    .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
+    .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL()} )
     .setDescription('Starting bot...')
     .setColor('#0066ff')
 

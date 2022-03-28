@@ -24,10 +24,9 @@ import { MessageEmbed } from 'discord.js'
 import config from './config.json' assert {type: 'json'}
 import fs from 'fs'
 
-const player = createAudioPlayer();
+export const player = createAudioPlayer();
 export let audio;
 let fileData;
-let txtFile = true;
 
 
 export function voiceInit(bot) {
@@ -48,12 +47,12 @@ export function voiceInit(bot) {
 
     player.on('idle', () => {
       console.log("Music has finished playing, shuffling music...")
-      playAudio();
+      playAudio(bot);
     })
 
     playAudio(bot);
     connection.subscribe(player);
-  })
+  }).catch(e => { console.error("The voice channel does not exist!\\n(Have you looked at your configuration?)") })
 }
 
 export function playAudio(bot) {

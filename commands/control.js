@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import { audio } from '../AudioBackend.js'
+import { audio, player, playAudio } from '../AudioBackend.js'
 
 
 export default {
@@ -38,10 +38,36 @@ export default {
         const controlButtons = new MessageActionRow()
             .addComponents(
                 new MessageButton()
+                    .setStyle('SUCCESS')
+                    .setLabel('Play')
+                    .setCustomId('play'),
+                new MessageButton()
                     .setStyle('PRIMARY')
-                    .setLabel('Pause')
-                    .setCustomId('soon')
+                    .setLabel('Pause') //possible toggle button instead
+                    .setCustomId('pause'),
+                new MessageButton()
+                    .setStyle('SECONDARY')
+                    .setLabel('Skip')
+                    .setCustomId('skip'),
+                new MessageButton()
+                    .setStyle('DANGER')
+                    .setLabel('Leave')
+                    .setCustomId('leave')
             );
+
+        const filter = i => i.customId === 'pause' && i.user.id === '242775871059001344';
+
+        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+
+        collector.on('collect', async i => {
+            if (i.customId === 'pause') {
+                await i.reply({content:'test'})
+            }
+
+            if (i.customId === 'skip') {
+                await i.reply
+            }
+        });
 
         return interaction.reply({embeds:[controlEmbed], components:[controlButtons]});
     },
