@@ -20,9 +20,8 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed } from "discord.js";
 import config from '../config.json' assert {type: 'json'}
-import { destroyAudio } from "../AudioBackend.js";
+import { stopBot } from "../AudioBackend.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -31,18 +30,6 @@ export default {
     async execute(interaction, bot) {
         if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
         await interaction.reply('Powering off...')
-
-        const statusEmbed = new MessageEmbed()
-            .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
-            .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
-            .setColor('#0066ff')
-        let statusChannel = bot.channels.cache.get(config.statusChannel);
-        if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-        await statusChannel.send({ embeds: [statusEmbed] });
-
-        console.log('Powering off...');
-        destroyAudio(interaction);
-        bot.destroy();
-        process.exit(0);
+        await stopBot(bot, interaction);
     },
 };

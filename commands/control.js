@@ -21,9 +21,10 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import { audio, player, playAudio, destroyAudio, voiceInit } from '../AudioBackend.js'
-
+import { audio, player, playAudio, destroyAudio, voiceInit, stopBot } from '../AudioBackend.js'
 import config from '../config.json' assert {type: 'json'}
+
+export let controlEmbed
 
 export default {
     data: new SlashCommandBuilder()
@@ -31,7 +32,7 @@ export default {
         .setDescription('Controlling the music'),
     async execute(interaction, bot) {
         if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
-        const controlEmbed = new MessageEmbed()
+        controlEmbed = new MessageEmbed()
             .setAuthor({name: `${bot.user.username} Control Panel`, iconURL: bot.user.avatarURL()})
             .addField('State', 'Playing')
             .addField('Currently Playing', audio)
@@ -50,20 +51,24 @@ export default {
                     .setCustomId('play'),
                 new MessageButton()
                     .setStyle('PRIMARY')
-                    .setLabel('Pause') //TODO: possibly toggle button instead
+                    .setLabel('Pause')
                     .setCustomId('pause'),
                 new MessageButton()
-                    .setStyle('SECONDARY')
+                    .setStyle('DANGER')
                     .setLabel('Skip')
                     .setCustomId('skip'),
                 new MessageButton()
                     .setStyle('SECONDARY')
-                    .setLabel('More')
-                    .setCustomId('soon'),
+                    .setLabel('>>')
+                    .setCustomId('more'),
             );
 
         const controlButtons2 = new MessageActionRow()
             .addComponents(
+                new MessageButton()
+                    .setStyle('SECONDARY')
+                    .setLabel('<<')
+                    .setCustomId('less'),
                 new MessageButton()
                     .setStyle('DANGER')
                     .setLabel('Leave')
@@ -74,7 +79,9 @@ export default {
                     .setCustomId('stop')
             )
 
-        const collector = interaction.channel.createMessageComponentCollector();
+        const filter = i => i.user.id === config.botOwner;
+
+        const collector = interaction.channel.createMessageComponentCollector({filter});
 
         collector.on('collect', async ctlButton => {
             if (ctlButton.customId === 'join') {
@@ -82,17 +89,23 @@ export default {
                 voiceInit(bot);
             }
             if (ctlButton.customId === 'play') {
-                player.unpause();
                 await ctlButton.reply({content:'Resuming music', ephemeral:true})
+                player.unpause();
             }
             if (ctlButton.customId === 'pause') {
-                player.pause();
                 await ctlButton.reply({content:'Pausing music', ephemeral:true})
+                player.pause();
             }
             if (ctlButton.customId === 'skip') {
-                player.pause();
                 await ctlButton.reply({content:`Skipping \`${audio}\`...`, ephemeral:true})
+                player.pause();
                 playAudio(bot);
+            }
+            if (ctlButton.customId === 'more') {
+                await interaction.editReply({ components: [controlButtons2] });
+            }
+            if (ctlButton.customId === 'less') {
+                await interaction.editReply({ components: [controlButtons] });
             }
             if (ctlButton.customId === 'leave') {
                 await ctlButton.reply({content:'Leaving voice channel.', ephemeral:true})
@@ -101,21 +114,11 @@ export default {
             }
             if (ctlButton.customId === 'stop') {
                 await ctlButton.reply({content:'Powering off...', ephemeral:true})
-
-                const statusEmbed = new MessageEmbed()
-                    .setAuthor({name:bot.user.username, iconURL:bot.user.avatarURL()})
-                    .setDescription(`That\'s all folks! Powering down ${bot.user.username}...`)
-                    .setColor('#0066ff')
-                let statusChannel = bot.channels.cache.get(config.statusChannel);
-                if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-                await statusChannel.send({ embeds: [statusEmbed] });
-
-                console.log('Powering off...');
-                destroyAudio(interaction);
-                bot.destroy();
-                process.exit(0);
+                await stopBot(bot, interaction);
             }
         });
+
+        collector.on('end', collected => console.log(`Collected ${collected.size} items`));
 
         return interaction.reply({embeds:[controlEmbed], components:[controlButtons]});
     },
