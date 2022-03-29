@@ -29,6 +29,7 @@ export default {
         .setName('stop')
         .setDescription('Powers off the bot'),
     async execute(interaction, bot) {
+        if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
         await interaction.reply('Powering off...')
 
         const statusEmbed = new MessageEmbed()

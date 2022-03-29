@@ -30,8 +30,9 @@ export default {
         .setName('control')
         .setDescription('Controlling the music'),
     async execute(interaction, bot) {
+        if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
         const controlEmbed = new MessageEmbed()
-            .setAuthor({name:`${bot.user.username} Control Panel`, iconURL:bot.user.avatarURL()})
+            .setAuthor({name: `${bot.user.username} Control Panel`, iconURL: bot.user.avatarURL()})
             .addField('State', 'Playing')
             .addField('Currently Playing', audio)
             //.addField('Next Music', '(a possible feature when queue system is implemented?)')

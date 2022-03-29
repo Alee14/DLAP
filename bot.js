@@ -52,8 +52,6 @@ bot.once('ready', () => {
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}`);
   console.log(`Owner ID: ${config.botOwner}`);
-  console.log(`Guild ID: ${config.guildID}`);
-  console.log(`Client ID: ${config.clientID}\n`);
 
   // Set bots' presence
   bot.user.setPresence({

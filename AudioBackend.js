@@ -43,7 +43,7 @@ export function voiceInit(bot) {
     });
 
     connection.on(VoiceConnectionStatus.Ready, () => {
-      console.log('Ready to blast music!');
+      console.log('Ready to blast some beats!');
     });
 
     connection.on(VoiceConnectionStatus.Destroyed, () => {
@@ -51,7 +51,7 @@ export function voiceInit(bot) {
     });
 
     player.on('idle', () => {
-      console.log("Music has finished playing, shuffling music...")
+      console.log("Music has finished playing, shuffling the beats...")
       playAudio(bot);
     })
 

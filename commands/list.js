@@ -29,9 +29,9 @@ export default {
         .setName('list')
         .setDescription('Lists the available audio tracks'),
     async execute(interaction) {
-        /*
+        interaction.reply('Listing the available audio tracks...');
         fs.readdirSync(musicFolder).forEach(file => {
-            return interaction.reply('Listing the available audio tracks...\n' + file);
-        });*/
+            console.log(file);
+        });
     },
 };
