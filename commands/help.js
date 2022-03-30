@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed } from 'discord.js';
 import { audio } from '../AudioBackend.js'
 
 export default {
@@ -36,6 +36,6 @@ export default {
             .setFooter({text:'© Copyright 2020-2022 Andrew Lee. Licensed with GPL-3.0.'})
             .setColor('#0066ff')
 
-        return interaction.reply({ embeds: [helpEmbed]});
+        return await interaction.reply({ embeds: [helpEmbed]});
     },
 };

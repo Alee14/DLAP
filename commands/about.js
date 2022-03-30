@@ -46,6 +46,6 @@ export default {
                     .setURL('https://github.com/Alee14/DLMP3'),
             );
 
-        return interaction.reply({ embeds:[aboutEmbed], components:[srcOrig] });
+        return await interaction.reply({ embeds:[aboutEmbed], components:[srcOrig] });
     },
 };

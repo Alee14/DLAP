@@ -32,10 +32,11 @@ import fs from 'fs'
 
 export const player = createAudioPlayer();
 export let audio;
+export let files = fs.readdirSync('music');
 let fileData;
 
-export function voiceInit(bot) {
-  bot.channels.fetch(config.voiceChannel).then(channel => {
+export async function voiceInit(bot) {
+  bot.channels.fetch(config.voiceChannel).then(async channel => {
     const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
@@ -52,17 +53,15 @@ export function voiceInit(bot) {
 
     player.on('idle', () => {
       console.log("Music has finished playing, shuffling the beats...")
-      playAudio(bot);
+      searchAudio(bot);
     })
 
-    playAudio(bot);
-    connection.subscribe(player);
+    await searchAudio(bot);
+    return connection.subscribe(player);
   }).catch(e => { console.error("The voice channel does not exist!\\n(Have you looked at your configuration?)") })
 }
 
-export function playAudio(bot) {
-  let files = fs.readdirSync('music');
-
+export async function searchAudio(bot){
   //TODO: Eventually this system will need a rework so it won't repeat the same files.
 
   while (true) {
@@ -73,9 +72,19 @@ export function playAudio(bot) {
     }
   }
 
+  return await playAudio(bot);
+}
+
+export async function inputAudio(bot, integer) {
+  audio = files[integer]
+
+  return await playAudio(bot);
+}
+
+export async function playAudio(bot) {
   let resource = createAudioResource('music/' + audio);
 
-  player.play(resource);
+  await player.play(resource);
 
   console.log('Now playing: ' + audio);
 
@@ -93,7 +102,7 @@ export function playAudio(bot) {
 
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  statusChannel.send({embeds: [statusEmbed]});
+  return await statusChannel.send({embeds: [statusEmbed]});
 
 }
 
@@ -110,7 +119,7 @@ export function destroyAudio(interaction) {
   audio = "Not Playing";
   player.stop();
   const connection = getVoiceConnection(interaction.guild.id);
-  connection.destroy();
+  return connection.destroy();
 }
 
 export async function stopBot(bot, interaction) {
@@ -125,5 +134,5 @@ export async function stopBot(bot, interaction) {
   console.log('Powering off...');
   destroyAudio(interaction);
   bot.destroy();
-  process.exit(0);
+  return process.exit(0);
 }

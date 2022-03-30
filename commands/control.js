@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import { audio, player, playAudio, destroyAudio, voiceInit, stopBot } from '../AudioBackend.js'
+import {audio, player, destroyAudio, voiceInit, stopBot, searchAudio} from '../AudioBackend.js'
 import config from '../config.json' assert {type: 'json'}
 
 export let controlEmbed
@@ -60,7 +60,7 @@ export default {
                 new MessageButton()
                     .setStyle('SECONDARY')
                     .setLabel('>>')
-                    .setCustomId('more'),
+                    .setCustomId('next'),
             );
 
         const controlButtons2 = new MessageActionRow()
@@ -68,7 +68,7 @@ export default {
                 new MessageButton()
                     .setStyle('SECONDARY')
                     .setLabel('<<')
-                    .setCustomId('less'),
+                    .setCustomId('back'),
                 new MessageButton()
                     .setStyle('DANGER')
                     .setLabel('Leave')
@@ -86,7 +86,7 @@ export default {
         collector.on('collect', async ctlButton => {
             if (ctlButton.customId === 'join') {
                 await ctlButton.reply({content:'Joining voice channel', ephemeral:true})
-                voiceInit(bot);
+                await voiceInit(bot);
             }
             if (ctlButton.customId === 'play') {
                 await ctlButton.reply({content:'Resuming music', ephemeral:true})
@@ -99,12 +99,12 @@ export default {
             if (ctlButton.customId === 'skip') {
                 await ctlButton.reply({content:`Skipping \`${audio}\`...`, ephemeral:true})
                 player.pause();
-                playAudio(bot);
+                await searchAudio(bot);
             }
-            if (ctlButton.customId === 'more') {
+            if (ctlButton.customId === 'next') {
                 await interaction.editReply({ components: [controlButtons2] });
             }
-            if (ctlButton.customId === 'less') {
+            if (ctlButton.customId === 'back') {
                 await interaction.editReply({ components: [controlButtons] });
             }
             if (ctlButton.customId === 'leave') {
@@ -120,6 +120,6 @@ export default {
 
         collector.on('end', collected => console.log(`Collected ${collected.size} items`));
 
-        return interaction.reply({embeds:[controlEmbed], components:[controlButtons]});
+        return await interaction.reply({embeds:[controlEmbed], components:[controlButtons]});
     },
 };

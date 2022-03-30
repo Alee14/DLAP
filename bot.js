@@ -45,7 +45,7 @@ for (const file of commandFiles) {
   bot.commands.set(command.data.name, command);
 }
 
-bot.once('ready', () => {
+bot.once('ready', async () => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Running on Discord.JS ${version}`)
@@ -67,15 +67,15 @@ bot.once('ready', () => {
 
   // Send bots' status to channel
   const readyEmbed = new MessageEmbed()
-    .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL()} )
-    .setDescription('Starting bot...')
-    .setColor('#0066ff')
+      .setAuthor({name: bot.user.username, iconURL: bot.user.avatarURL()})
+      .setDescription('Starting bot...')
+      .setColor('#0066ff')
 
   let statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  statusChannel.send({ embeds: [readyEmbed]});
+  await statusChannel.send({embeds: [readyEmbed]});
 
-  voiceInit(bot);
+  await voiceInit(bot);
 
 });
 

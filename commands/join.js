@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { voiceInit } from "../AudioBackend.js";
+import { voiceInit } from '../AudioBackend.js';
 import config from '../config.json' assert {type: 'json'}
 
 export default {
@@ -29,7 +29,7 @@ export default {
         .setDescription('Joins voice chat.'),
     async execute(interaction, bot) {
         if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
-        await interaction.reply('Joining voice channel')
-        voiceInit(bot);
+        await interaction.reply({ content: 'Joining voice channel', ephemeral: true })
+        return await voiceInit(bot);
     },
 };
