@@ -1,6 +1,6 @@
-# DLMP3 Bot (Discord.JS Local MP3)
+# DLAP Bot (Discord.JS Local Audio Player)
 
-A Discord bot that plays local MP3 audio tracks. Written in Discord.JS.
+A Discord bot that plays local audio tracks. Written in Discord.JS.
 
 [Video Tutorial](https://www.youtube.com/watch?v=7X3FAhYW31I)
 
@@ -20,9 +20,11 @@ Make a new file called `config.json`.
 }
 ```
 
-Add your own audio files using the mp3 file extension to the `music` folder.
+Create the `music` folder.
 
-Deploy the commands by doing `node deploy-command.js`
+Add your own audio files to the `music` folder.
+
+Deploy the commands by doing `node deploy-command.js`.
 
 Launch the bot using `node bot.js` in terminal.
 
@@ -48,7 +50,7 @@ stop - Stops bot.
 # Forking
 When forking the project, you can make your own version of DLMP3 or help contribute to the project (See the "Contributing" section).
 
-But you need to edit `/commands/about.js` to uncomment the `.addField('Forked by', '[your name] (discord#0000)')` section.
+You need to edit `/commands/about.js` to uncomment the `.addField('Forked by', '[your name] (discord#0000)')` section.
 
 Be sure to replace that with your name.
 

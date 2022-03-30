@@ -1,6 +1,6 @@
 /**************************************************************************
  *
- *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
+ *  DLAP Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee
  *
@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import {audio, player, destroyAudio, voiceInit, stopBot, searchAudio} from '../AudioBackend.js'
+import { audio, player, destroyAudio, voiceInit, stopBot, searchAudio } from '../AudioBackend.js'
 import config from '../config.json' assert {type: 'json'}
 
 export let controlEmbed
@@ -42,11 +42,11 @@ export default {
         const controlButtons = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setStyle('SECONDARY')
+                    .setStyle('SUCCESS')
                     .setLabel('Join')
                     .setCustomId('join'),
                 new MessageButton()
-                    .setStyle('SUCCESS')
+                    .setStyle('PRIMARY')
                     .setLabel('Play')
                     .setCustomId('play'),
                 new MessageButton()
@@ -54,7 +54,7 @@ export default {
                     .setLabel('Pause')
                     .setCustomId('pause'),
                 new MessageButton()
-                    .setStyle('DANGER')
+                    .setStyle('SECONDARY')
                     .setLabel('Skip')
                     .setCustomId('skip'),
                 new MessageButton()
@@ -86,35 +86,35 @@ export default {
         collector.on('collect', async ctlButton => {
             if (ctlButton.customId === 'join') {
                 await ctlButton.reply({content:'Joining voice channel', ephemeral:true})
-                await voiceInit(bot);
+                return await voiceInit(bot);
             }
             if (ctlButton.customId === 'play') {
                 await ctlButton.reply({content:'Resuming music', ephemeral:true})
-                player.unpause();
+                return player.unpause();
             }
             if (ctlButton.customId === 'pause') {
                 await ctlButton.reply({content:'Pausing music', ephemeral:true})
-                player.pause();
+                return player.pause();
             }
             if (ctlButton.customId === 'skip') {
                 await ctlButton.reply({content:`Skipping \`${audio}\`...`, ephemeral:true})
-                player.pause();
-                await searchAudio(bot);
+                player.stop();
+                return await searchAudio(bot);
             }
             if (ctlButton.customId === 'next') {
-                await interaction.editReply({ components: [controlButtons2] });
+                return await interaction.editReply({ components: [controlButtons2] });
             }
             if (ctlButton.customId === 'back') {
-                await interaction.editReply({ components: [controlButtons] });
+                return await interaction.editReply({ components: [controlButtons] });
             }
             if (ctlButton.customId === 'leave') {
                 await ctlButton.reply({content:'Leaving voice channel.', ephemeral:true})
                 console.log('Leaving voice channel...');
-                destroyAudio(interaction);
+                return destroyAudio(interaction);
             }
             if (ctlButton.customId === 'stop') {
                 await ctlButton.reply({content:'Powering off...', ephemeral:true})
-                await stopBot(bot, interaction);
+                return await stopBot(bot, interaction);
             }
         });
 

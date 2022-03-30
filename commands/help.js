@@ -1,6 +1,6 @@
 /**************************************************************************
  *
- *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
+ *  DLAP Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee
  *

@@ -1,6 +1,6 @@
 /**************************************************************************
  * 
- *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
+ *  DLMP3 Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee 
  *  
@@ -18,18 +18,27 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * 
  ***************************************************************************/
-import { Client, MessageEmbed, Collection, version } from "discord.js"
-import { voiceInit } from "./AudioBackend.js"
-import fs from "fs"
-import config from './config.json' assert {type: 'json'}
+import { Client, MessageEmbed, Collection, version } from 'discord.js'
+import { voiceInit } from './AudioBackend.js'
+import fs from 'fs'
+import config from './config.json' assert { type: 'json' }
+import path from 'path'
 
 export const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
+const dir = './music';
 
-bot.login(config.token);
+if (fs.existsSync(dir)) {
+  console.log('Music folder detected');
+  bot.login(config.token);
+} else {
+  console.log('Directory not found. Creating music folder...');
+  console.log('Insert your beats to that folder.');
+  fs.mkdirSync(dir);
+  process.exit(0);
+}
 
 /**
  * Project Ideas:
- * Play directly the MP3 file
  * New queue system
  * List MP3 files
  * Shuffle or "Play by order" mode

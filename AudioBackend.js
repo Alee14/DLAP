@@ -1,6 +1,6 @@
 /**************************************************************************
  * 
- *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
+ *  DLAP Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee 
  *  
@@ -64,20 +64,12 @@ export async function voiceInit(bot) {
 export async function searchAudio(bot){
   //TODO: Eventually this system will need a rework so it won't repeat the same files.
 
-  while (true) {
-    audio = files[Math.floor(Math.random() * files.length)];
-    console.log('Searching .mp3 file...');
-    if (audio.endsWith('.mp3')) {
-      break;
-    }
-  }
-
+  audio = files[Math.floor(Math.random() * files.length)];
   return await playAudio(bot);
 }
 
 export async function inputAudio(bot, integer) {
-  audio = files[integer]
-
+  audio = files[integer];
   return await playAudio(bot);
 }
 
@@ -86,6 +78,7 @@ export async function playAudio(bot) {
 
   await player.play(resource);
 
+  audio = audio.split('.').slice(0, -1).join('.');
   console.log('Now playing: ' + audio);
 
   if (config.txtFile === true) {
@@ -107,7 +100,6 @@ export async function playAudio(bot) {
 }
 
 export function destroyAudio(interaction) {
-
   if (config.txtFile === true) {
     fileData = "Now Playing: Nothing";
     fs.writeFile("now-playing.txt", fileData, (err) => {

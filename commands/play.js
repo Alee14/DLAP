@@ -1,6 +1,6 @@
 /**************************************************************************
  *
- *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
+ *  DLAP Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee
  *
@@ -32,7 +32,7 @@ export default {
         .addIntegerOption(option =>
             option.setName('int')
                 .setDescription('Input a number for the selection for the audio file.')
-                .setRequired(true),
+                .setRequired(false),
         ),
     async execute(interaction, bot) {
         if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });

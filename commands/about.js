@@ -1,6 +1,6 @@
 /**************************************************************************
  *
- *  DLMP3 Bot: A Discord bot that plays local MP3 audio tracks.
+ *  DLAP Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee
  *
@@ -21,6 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, version, MessageActionRow, MessageButton } from 'discord.js'
+import npmPackage from '../package.json' assert { type:'json' }
 
 export default {
     data: new SlashCommandBuilder()
@@ -30,6 +31,7 @@ export default {
         const aboutEmbed = new MessageEmbed()
             .setAuthor({name:`About ${bot.user.username}`, iconURL:bot.user.avatarURL()})
             .addField('Information', 'A Discord bot that plays local MP3 audio tracks.')
+            .addField('Version', npmPackage.version)
             .addField('Original Creator', 'Andrew Lee (Alee#4277)')
             //.addField('Contributors', '[your name] (discord#0000)')
             //.addField('Forked by', '[your name] (discord#0000)')
