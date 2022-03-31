@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import fs from 'fs'
+import { readdirSync } from 'fs'
 
 const musicFolder = './music';
 
@@ -29,9 +29,7 @@ export default {
         .setName('list')
         .setDescription('Lists the available audio tracks'),
     async execute(interaction) {
-        await interaction.reply('Listing the available audio tracks...');
-        fs.readdirSync(musicFolder).forEach(file => {
-            console.log(file);
-        });
+        const beats = readdirSync(musicFolder).join('\n');
+        await interaction.reply(`Listing the available audio tracks...\`\`\`${beats}\`\`\``);
     },
 };

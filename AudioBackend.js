@@ -28,11 +28,11 @@ import {
 } from '@discordjs/voice'
 import { MessageEmbed } from 'discord.js'
 import config from './config.json' assert {type: 'json'}
-import fs from 'fs'
+import { readdirSync, writeFile } from 'node:fs'
 
 export const player = createAudioPlayer();
 export let audio;
-export let files = fs.readdirSync('music');
+export let files = readdirSync('music');
 let fileData;
 
 export async function voiceInit(bot) {
@@ -52,13 +52,13 @@ export async function voiceInit(bot) {
     });
 
     player.on('idle', () => {
-      console.log("Music has finished playing, shuffling the beats...")
+      console.log("Beat has finished playing, shuffling the beats...")
       searchAudio(bot);
     })
 
     await searchAudio(bot);
     return connection.subscribe(player);
-  }).catch(e => { console.error("The voice channel does not exist!\\n(Have you looked at your configuration?)") })
+  }).catch(e => { console.error(e) })
 }
 
 export async function searchAudio(bot){
@@ -78,12 +78,13 @@ export async function playAudio(bot) {
 
   await player.play(resource);
 
-  audio = audio.split('.').slice(0, -1).join('.');
   console.log('Now playing: ' + audio);
+
+  audio = audio.split('.').slice(0, -1).join('.');
 
   if (config.txtFile === true) {
     fileData = "Now Playing: " + audio;
-    fs.writeFile("./now-playing.txt", fileData, (err) => {
+    writeFile("./now-playing.txt", fileData, (err) => {
       if (err)
         console.log(err);
     });
@@ -102,7 +103,7 @@ export async function playAudio(bot) {
 export function destroyAudio(interaction) {
   if (config.txtFile === true) {
     fileData = "Now Playing: Nothing";
-    fs.writeFile("now-playing.txt", fileData, (err) => {
+    writeFile("now-playing.txt", fileData, (err) => {
       if (err)
         console.log(err);
     });

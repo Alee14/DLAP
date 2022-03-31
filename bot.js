@@ -1,6 +1,6 @@
 /**************************************************************************
  * 
- *  DLMP3 Bot: A Discord bot that plays local audio tracks.
+ *  DLAP Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
  *  Programmed by Andrew Lee 
  *  
@@ -20,22 +20,13 @@
  ***************************************************************************/
 import { Client, MessageEmbed, Collection, version } from 'discord.js'
 import { voiceInit } from './AudioBackend.js'
-import fs from 'fs'
+import { readdirSync } from 'node:fs'
 import config from './config.json' assert { type: 'json' }
-import path from 'path'
 
 export const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
-const dir = './music';
 
-if (fs.existsSync(dir)) {
-  console.log('Music folder detected');
-  bot.login(config.token);
-} else {
-  console.log('Directory not found. Creating music folder...');
-  console.log('Insert your beats to that folder.');
-  fs.mkdirSync(dir);
-  process.exit(0);
-}
+bot.login(config.token);
+
 
 /**
  * Project Ideas:
@@ -47,7 +38,7 @@ if (fs.existsSync(dir)) {
 // Slash Command Handler
 
 bot.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
   const { default: command } = await import(`./commands/${file}`);
