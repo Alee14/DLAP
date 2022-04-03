@@ -29,11 +29,15 @@ import {
 import { MessageEmbed } from 'discord.js'
 import config from './config.json' assert {type: 'json'}
 import { readdirSync, writeFile } from 'node:fs'
+import {controlEmbed} from "./commands/control.js";
 
 export const player = createAudioPlayer();
 export let audio;
 export let files = readdirSync('music');
 let fileData;
+
+export let playerState;
+let isAudioStatePaused;
 
 export async function voiceInit(bot) {
   bot.channels.fetch(config.voiceChannel).then(async channel => {
@@ -52,7 +56,7 @@ export async function voiceInit(bot) {
     });
 
     player.on('idle', () => {
-      console.log("Beat has finished playing, shuffling the beats...")
+      console.log("Beat has finished playing, shuffling the beats...");
       searchAudio(bot);
     })
 
@@ -76,14 +80,17 @@ export async function inputAudio(bot, integer) {
 export async function playAudio(bot) {
   let resource = createAudioResource('music/' + audio);
 
-  await player.play(resource);
+  player.play(resource);
 
   console.log('Now playing: ' + audio);
+
+  playerState = "Playing"
+  isAudioStatePaused = false
 
   audio = audio.split('.').slice(0, -1).join('.');
 
   if (config.txtFile === true) {
-    fileData = "Now Playing: " + audio;
+    fileData = "Now Playing: " + audio
     writeFile("./now-playing.txt", fileData, (err) => {
       if (err)
         console.log(err);
@@ -100,7 +107,7 @@ export async function playAudio(bot) {
 
 }
 
-export function destroyAudio(interaction) {
+export async function destroyAudio(interaction) {
   if (config.txtFile === true) {
     fileData = "Now Playing: Nothing";
     writeFile("now-playing.txt", fileData, (err) => {
@@ -109,10 +116,25 @@ export function destroyAudio(interaction) {
     });
   }
 
-  audio = "Not Playing";
-  player.stop();
+  audio = "Not Playing"
+  playerState = "Stopped"
+  isAudioStatePaused = true
+
   const connection = getVoiceConnection(interaction.guild.id);
-  return connection.destroy();
+  if (VoiceConnectionStatus.Ready) {
+    player.stop();
+    return connection.destroy();
+  }
+}
+
+export function audioState() {
+  if (isAudioStatePaused === false) {
+    isAudioStatePaused = true
+    playerState = "Paused"
+  } else if (isAudioStatePaused === true) {
+    isAudioStatePaused = false
+    playerState = "Playing"
+  }
 }
 
 export async function stopBot(bot, interaction) {
@@ -125,7 +147,7 @@ export async function stopBot(bot, interaction) {
   await statusChannel.send({embeds: [statusEmbed]});
 
   console.log('Powering off...');
-  destroyAudio(interaction);
+  await destroyAudio(interaction);
   bot.destroy();
   return process.exit(0);
 }

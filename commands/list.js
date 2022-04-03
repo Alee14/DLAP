@@ -29,7 +29,9 @@ export default {
         .setName('list')
         .setDescription('Lists the available audio tracks'),
     async execute(interaction) {
+        //If someone figures out how to either split the list or make pages when the max character reaches, please do so and make a pull request.
+
         const beats = readdirSync(musicFolder).join('\n');
-        await interaction.reply(`Listing the available audio tracks...\`\`\`${beats}\`\`\``);
+        await interaction.reply(`Listing the available audio tracks...\n\`\`\`\n${beats}\n\`\`\``);
     },
 };

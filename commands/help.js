@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js'
 import { audio } from '../AudioBackend.js'
 
 export default {
@@ -33,7 +33,7 @@ export default {
             .setDescription(`Currently playing \`${audio}\``)
             .addField('Public Commands', `/help\n/ping\n/about\n`, true)
             .addField('Bot Owner Only', `/join\n/control\n/stop\n`, true)
-            .setFooter({text:'© Copyright 2020-2022 Andrew Lee. Licensed with GPL-3.0.'})
+            .setFooter({text:'© Copyright 2020-2022 Andrew Lee'})
             .setColor('#0066ff')
 
         return await interaction.reply({ embeds: [helpEmbed]});

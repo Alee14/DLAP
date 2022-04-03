@@ -21,10 +21,11 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import { audio, player, destroyAudio, voiceInit, stopBot, searchAudio } from '../AudioBackend.js'
+import { audio, player, destroyAudio, voiceInit, stopBot, searchAudio, playerState, audioState } from '../AudioBackend.js'
 import config from '../config.json' assert {type: 'json'}
 
 export let controlEmbed
+let runOnce = false
 
 export default {
     data: new SlashCommandBuilder()
@@ -32,94 +33,105 @@ export default {
         .setDescription('Controlling the music'),
     async execute(interaction, bot) {
         if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
-        controlEmbed = new MessageEmbed()
-            .setAuthor({name: `${bot.user.username} Control Panel`, iconURL: bot.user.avatarURL()})
-            .addField('State', 'Playing')
-            .addField('Currently Playing', audio)
-            //.addField('Next Music', '(a possible feature when queue system is implemented?)')
-            .setColor('#0066ff')
+        if (runOnce === false) {
+            controlEmbed = new MessageEmbed()
+                .setAuthor({name: `${bot.user.username} Control Panel`, iconURL: bot.user.avatarURL()})
+                .addField('State', playerState)
+                .addField('Currently Playing', audio)
+                //.addField('Next Music', '(a possible feature when queue system is implemented?)')
+                .setColor('#0066ff')
 
-        const controlButtons = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setStyle('SUCCESS')
-                    .setLabel('Join')
-                    .setCustomId('join'),
-                new MessageButton()
-                    .setStyle('PRIMARY')
-                    .setLabel('Play')
-                    .setCustomId('play'),
-                new MessageButton()
-                    .setStyle('PRIMARY')
-                    .setLabel('Pause')
-                    .setCustomId('pause'),
-                new MessageButton()
-                    .setStyle('SECONDARY')
-                    .setLabel('Skip')
-                    .setCustomId('skip'),
-                new MessageButton()
-                    .setStyle('SECONDARY')
-                    .setLabel('>>')
-                    .setCustomId('next'),
-            );
+            const controlButtons = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setStyle('SUCCESS')
+                        .setLabel('Join')
+                        .setCustomId('join'),
+                    new MessageButton()
+                        .setStyle('PRIMARY')
+                        .setLabel('Play')
+                        .setCustomId('play'),
+                    new MessageButton()
+                        .setStyle('PRIMARY')
+                        .setLabel('Pause')
+                        .setCustomId('pause'),
+                    new MessageButton()
+                        .setStyle('SECONDARY')
+                        .setLabel('Skip')
+                        .setCustomId('skip'),
+                    new MessageButton()
+                        .setStyle('SECONDARY')
+                        .setLabel('>>')
+                        .setCustomId('next'),
+                );
 
-        const controlButtons2 = new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setStyle('SECONDARY')
-                    .setLabel('<<')
-                    .setCustomId('back'),
-                new MessageButton()
-                    .setStyle('DANGER')
-                    .setLabel('Leave')
-                    .setCustomId('leave'),
-                new MessageButton()
-                    .setStyle('DANGER')
-                    .setLabel('Power Off')
-                    .setCustomId('stop')
-            )
+            const controlButtons2 = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setStyle('SECONDARY')
+                        .setLabel('<<')
+                        .setCustomId('back'),
+                    new MessageButton()
+                        .setStyle('DANGER')
+                        .setLabel('Leave')
+                        .setCustomId('leave'),
+                    new MessageButton()
+                        .setStyle('DANGER')
+                        .setLabel('Power Off')
+                        .setCustomId('stop')
+                )
 
-        const filter = i => i.user.id === config.botOwner;
+            const filter = i => i.user.id === config.botOwner;
 
-        const collector = interaction.channel.createMessageComponentCollector({filter});
+            const collector = interaction.channel.createMessageComponentCollector({filter});
 
-        collector.on('collect', async ctlButton => {
-            if (ctlButton.customId === 'join') {
-                await ctlButton.reply({content:'Joining voice channel', ephemeral:true})
-                return await voiceInit(bot);
-            }
-            if (ctlButton.customId === 'play') {
-                await ctlButton.reply({content:'Resuming music', ephemeral:true})
-                return player.unpause();
-            }
-            if (ctlButton.customId === 'pause') {
-                await ctlButton.reply({content:'Pausing music', ephemeral:true})
-                return player.pause();
-            }
-            if (ctlButton.customId === 'skip') {
-                await ctlButton.reply({content:`Skipping \`${audio}\`...`, ephemeral:true})
-                player.stop();
-                return await searchAudio(bot);
-            }
-            if (ctlButton.customId === 'next') {
-                return await interaction.editReply({ components: [controlButtons2] });
-            }
-            if (ctlButton.customId === 'back') {
-                return await interaction.editReply({ components: [controlButtons] });
-            }
-            if (ctlButton.customId === 'leave') {
-                await ctlButton.reply({content:'Leaving voice channel.', ephemeral:true})
-                console.log('Leaving voice channel...');
-                return destroyAudio(interaction);
-            }
-            if (ctlButton.customId === 'stop') {
-                await ctlButton.reply({content:'Powering off...', ephemeral:true})
-                return await stopBot(bot, interaction);
-            }
-        });
+            collector.on('collect', async ctlButton => {
+                if (ctlButton.customId === 'join') {
+                    await ctlButton.reply({content:'Joining voice channel', ephemeral:true});
+                    return await voiceInit(bot);
+                }
+                if (ctlButton.customId === 'play') {
+                    await ctlButton.reply({content:'Resuming music', ephemeral:true});
+                    audioState();
+                    return player.unpause();
+                }
+                if (ctlButton.customId === 'pause') {
+                    await ctlButton.reply({content:'Pausing music', ephemeral:true});
+                    audioState();
+                    return player.pause();
+                }
+                if (ctlButton.customId === 'skip') {
+                    await ctlButton.reply({content:`Skipping ${audio}`, ephemeral:true});
+                    player.stop();
+                    return await searchAudio(bot, interaction);
+                }
+                if (ctlButton.customId === 'next') {
+                    return await interaction.editReply({ components: [controlButtons2] }).then(ctlButton.deferUpdate());
+                }
+                if (ctlButton.customId === 'back') {
+                    return await interaction.editReply({ components: [controlButtons] }).then(ctlButton.deferUpdate());
+                }
+                if (ctlButton.customId === 'leave') {
+                    await ctlButton.reply({content:'Leaving voice channel', ephemeral:true});
+                    console.log('Leaving voice channel...');
+                    runOnce = false
+                    await interaction.deleteReply();
+                    return await destroyAudio(interaction);
+                }
+                if (ctlButton.customId === 'stop') {
+                    await ctlButton.reply({content:`Powering off ${bot.user.username}...`, ephemeral:true});
+                    runOnce = false
+                    await interaction.deleteReply();
+                    return await stopBot(bot, interaction);
+                }
+            });
 
-        collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+            collector.on('end', collected => console.log(`Collected ${collected.size} items`));
 
-        return await interaction.reply({embeds:[controlEmbed], components:[controlButtons]});
+            runOnce = true
+            return await interaction.reply({embeds:[controlEmbed], components:[controlButtons]});
+        } else {
+            return await interaction.reply({content:'You already executed this command', ephemeral:true})
+        }
     },
 };

@@ -16,7 +16,7 @@ Make a new file called `config.json`.
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id"
     "guildID": "guild_id",
-    "clientID": "client_id",
+    "clientID": "client_id"
 }
 ```
 

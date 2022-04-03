@@ -31,13 +31,12 @@ export default {
         .setDescription('Plays the audio by number')
         .addIntegerOption(option =>
             option.setName('int')
-                .setDescription('Input a number for the selection for the audio file.')
-                .setRequired(false),
+                .setDescription('Input a number for the selection for the audio file.'),
         ),
     async execute(interaction, bot) {
         if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
         integer = interaction.options.getInteger('int');
         await inputAudio(bot, integer);
-        return await interaction.reply({ content: `Now playing: ${audio}`, ephemeral: true});
+        return await interaction.reply({ content: `Now playing: ${audio}`, ephemeral: true });
     },
 };

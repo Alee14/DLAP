@@ -31,8 +31,9 @@ bot.login(config.token);
 /**
  * Project Ideas:
  * New queue system
- * List MP3 files
  * Shuffle or "Play by order" mode
+ * Audio streaming
+ * Attempt to disable buttons (for control command) for regular users
  */
 
 // Slash Command Handler
@@ -93,7 +94,7 @@ bot.on('interactionCreate', async interaction => {
     if (error == null) {
       await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     } else {
-      await interaction.reply({ content: `There was an error while executing this command!\nShare this to the bot owner!\n\nDetails:\`\`\`${error}\`\`\``, ephemeral: true });
+      await interaction.reply({ content: `There was an error while executing this command! Share this to the bot owner!\n\nDetails:\`\`\`${error}\`\`\``, ephemeral: true });
     }
   }
 });
