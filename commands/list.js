@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { readdirSync } from 'fs'
+import { readdirSync, readdir } from 'fs'
 
 const musicFolder = './music';
 
@@ -32,6 +32,8 @@ export default {
         //If someone figures out how to either split the list or make pages when the max character reaches, please do so and make a pull request.
 
         const beats = readdirSync(musicFolder).join('\n');
-        await interaction.reply(`Listing the available audio tracks...\n\`\`\`\n${beats}\n\`\`\``);
+        readdir(musicFolder, async (err, files) => {
+            await interaction.reply(`Listing ${files.length} audio tracks...\n\`\`\`\n${beats}\n\`\`\``);
+        });
     },
 };

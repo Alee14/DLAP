@@ -29,7 +29,6 @@ import {
 import { MessageEmbed } from 'discord.js'
 import config from './config.json' assert {type: 'json'}
 import { readdirSync, writeFile } from 'node:fs'
-import {controlEmbed} from "./commands/control.js";
 
 export const player = createAudioPlayer();
 export let audio;
@@ -146,7 +145,7 @@ export async function stopBot(bot, interaction) {
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   await statusChannel.send({embeds: [statusEmbed]});
 
-  console.log('Powering off...');
+  console.log(`Powering off ${bot.user.username}...`);
   await destroyAudio(interaction);
   bot.destroy();
   return process.exit(0);
