@@ -89,12 +89,12 @@ bot.on('interactionCreate', async interaction => {
 
   try {
     await command.execute(interaction, bot);
-  } catch (error) {
-    console.error(error);
-    if (error == null) {
+  } catch (e) {
+    console.error(e);
+    if (e == null) {
       await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     } else {
-      await interaction.reply({ content: `There was an error while executing this command! Share this to the bot owner!\n\nDetails:\`\`\`${error}\`\`\``, ephemeral: true });
+      await interaction.reply({ content: `There was an error while executing this command! Share this to the bot owner!\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
     }
   }
 });

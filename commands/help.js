@@ -36,6 +36,6 @@ export default {
             .setFooter({text:'© Copyright 2020-2022 Andrew Lee'})
             .setColor('#0066ff')
 
-        return await interaction.reply({ embeds: [helpEmbed]});
+        return await interaction.reply({ embeds: [helpEmbed] });
     },
 };

@@ -28,7 +28,7 @@ export let integer;
 export default {
     data: new SlashCommandBuilder()
         .setName('play')
-        .setDescription('Plays the audio by number')
+        .setDescription('Plays the player')
         .addIntegerOption(option =>
             option.setName('int')
                 .setDescription('Input a number for the selection for the audio file.'),

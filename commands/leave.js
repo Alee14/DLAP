@@ -20,17 +20,13 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { controlPanel } from '../AudioBackend.js'
-import config from '../config.json' assert {type: 'json'}
-
-let runOnce = false
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('control')
-        .setDescription('Controlling the music'),
-    async execute(interaction, bot) {
-        if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
-        await controlPanel(interaction, bot);
+        .setName('leave')
+        .setDescription('Leaves the voice chat'),
+    async execute(interaction) {
+
+
     },
 };
