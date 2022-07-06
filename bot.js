@@ -51,7 +51,6 @@ bot.once('ready', async () => {
   console.log(`Running on Discord.JS ${version}`)
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}`);
-  console.log(`Owner ID: ${config.botOwner}`);
 
   // Set bots' presence
   bot.user.setPresence({
