@@ -20,12 +20,15 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { audio, player, searchAudio } from "../AudioBackend.js";
 
 export default {
     data: new SlashCommandBuilder()
         .setName('skip')
         .setDescription('Skips the track'),
-    async execute(interaction) {
-
+    async execute(interaction, bot) {
+        player.stop();
+        await searchAudio(bot, interaction);
+        return await interaction.reply({content:`Skipping ${audio}`, ephemeral:true});
     },
 };

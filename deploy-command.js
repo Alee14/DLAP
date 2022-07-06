@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import { REST } from '@discordjs/rest'
-import { Routes } from 'discord-api-types/v9'
+import { Routes } from 'discord-api-types/v10'
 import config from './config.json' assert {type: 'json'}
 
 const commands = [];

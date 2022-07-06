@@ -20,13 +20,15 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { destroyAudio } from "../AudioBackend.js";
 
 export default {
     data: new SlashCommandBuilder()
         .setName('leave')
         .setDescription('Leaves the voice chat'),
     async execute(interaction) {
-
-
+        console.log('Leaving voice channel...');
+        await destroyAudio(interaction);
+        return await interaction.reply({content:'Leaving voice channel', ephemeral:true});
     },
 };

@@ -20,13 +20,20 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { readdirSync, readdir } from 'fs'
+import { MessageEmbed } from "discord.js";
+import { audio, playerState } from "../AudioBackend.js";
 
 export default {
     data: new SlashCommandBuilder()
         .setName('status')
         .setDescription('Checks what audio file is playing currently'),
-    async execute(interaction) {
-
+    async execute(interaction, bot) {
+        let controlEmbed = new MessageEmbed()
+                .setAuthor({name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL()})
+                .addField('State', playerState)
+                .addField('Currently Playing', audio)
+                //.addField('Next Music', '(a possible feature when queue system is implemented?)')
+                .setColor('#0066ff')
+        interaction.reply({embeds:[controlEmbed], ephemeral:true})
     },
 };
