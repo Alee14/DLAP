@@ -33,7 +33,6 @@ bot.login(config.token);
  * New queue system
  * Shuffle or "Play by order" mode
  * Audio streaming
- * Attempt to disable buttons (for control command) for regular users
  */
 
 // Slash Command Handler

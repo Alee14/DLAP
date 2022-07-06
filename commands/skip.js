@@ -27,8 +27,8 @@ export default {
         .setName('skip')
         .setDescription('Skips the track'),
     async execute(interaction, bot) {
+        await interaction.reply({content:`Skipping ${audio}`, ephemeral:true});
         player.stop();
-        await searchAudio(bot, interaction);
-        return await interaction.reply({content:`Skipping ${audio}`, ephemeral:true});
+        return await searchAudio(bot, interaction);
     },
 };

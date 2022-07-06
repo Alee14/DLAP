@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { inputAudio, audio } from '../AudioBackend.js'
+import { isAudioStatePaused, inputAudio, audio, audioState, player } from '../AudioBackend.js'
 import config from '../config.json' assert {type: 'json'}
 
 export let integer;
@@ -33,10 +33,19 @@ export default {
             option.setName('int')
                 .setDescription('Input a number for the selection for the audio file.'),
         ),
+
     async execute(interaction, bot) {
-        if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
         integer = interaction.options.getInteger('int');
-        await inputAudio(bot, integer);
-        return await interaction.reply({ content: `Now playing: ${audio}`, ephemeral: true });
+        if (integer) {
+            await inputAudio(bot, integer);
+            return await interaction.reply({ content: `Now playing: ${audio}`, ephemeral: true });
+        }
+        if (isAudioStatePaused === true) {
+            audioState();
+            player.unpause();
+            return await interaction.reply({content:'Resuming music', ephemeral:true});
+        } else {
+            return await interaction.reply({content:"Music is already playing", ephemeral:true})
+        }
     },
 };

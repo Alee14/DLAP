@@ -21,15 +21,19 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import config from '../config.json' assert {type: 'json'}
-
-export let integer;
+import {audioState, isAudioStatePaused, player} from "../AudioBackend.js";
 
 export default {
     data: new SlashCommandBuilder()
         .setName('pause')
         .setDescription('Pauses the player'),
-    async execute(interaction, bot) {
-        if (![config.botOwner].includes(interaction.user.id)) return await interaction.reply({ content: "You do not have permissions to execute this command.", ephemeral: true });
-
+    async execute(interaction) {
+        if (isAudioStatePaused === false) {
+            audioState();
+            player.pause();
+            return await interaction.reply({content:'Pausing music', ephemeral:true});
+        } else {
+            return await interaction.reply({content:"Music is already paused", ephemeral:true})
+        }
     },
 };
