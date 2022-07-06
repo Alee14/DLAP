@@ -11,7 +11,6 @@ Make a new file called `config.json`.
 ```
 {
     "token": "token_here",
-    "botOwner": "your_user_id_here",
     "txtFile": true/false
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id"
@@ -32,19 +31,19 @@ Launch the bot using `node bot.js` in terminal.
 ```
 Public Only
 -----------
-help - Displays commands.
 ping - Pong!
-git - Links to the source repo.
+status - Checks what audio file is playing currently.
 about - Information about the bot.
 
 Bot Owner Only
 --------------
 join - Joins voice chat.
-resume - Resumes music.
+play - Resumes music.
+play (int) - Input a number for the selection for the audio file.
 pause - Pauses music.
 skip - Skips the audio track.
 leave - Leaves voice chat.
-stop - Stops bot.
+stop - Powers off the bot.
 ```
 
 # Forking

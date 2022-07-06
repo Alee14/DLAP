@@ -20,13 +20,14 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { voiceInit } from '../AudioBackend.js';
-import config from '../config.json' assert {type: 'json'}
+import { voiceInit } from '../AudioBackend.js'
+import { PermissionFlagsBits } from 'discord-api-types/v10'
 
 export default {
     data: new SlashCommandBuilder()
         .setName('join')
-        .setDescription('Joins voice chat.'),
+        .setDescription('Joins voice chat')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction, bot) {
         await interaction.reply({ content: 'Joining voice channel', ephemeral: true })
         return await voiceInit(bot);

@@ -20,8 +20,8 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed } from "discord.js";
-import { audio, playerState } from "../AudioBackend.js";
+import { MessageEmbed } from "discord.js"
+import { audio, playerState } from "../AudioBackend.js"
 
 export default {
     data: new SlashCommandBuilder()

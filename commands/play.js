@@ -21,18 +21,19 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { isAudioStatePaused, inputAudio, audio, audioState, player } from '../AudioBackend.js'
-import config from '../config.json' assert {type: 'json'}
+import { PermissionFlagsBits } from "discord-api-types/v10"
 
 export let integer;
 
 export default {
     data: new SlashCommandBuilder()
         .setName('play')
-        .setDescription('Plays the player')
+        .setDescription('Resumes music')
         .addIntegerOption(option =>
             option.setName('int')
                 .setDescription('Input a number for the selection for the audio file.'),
-        ),
+        )
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction, bot) {
         integer = interaction.options.getInteger('int');

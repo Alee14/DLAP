@@ -26,7 +26,7 @@ import {
   joinVoiceChannel,
   VoiceConnectionStatus
 } from '@discordjs/voice'
-import { MessageActionRow, MessageButton, MessageEmbed } from 'discord.js'
+import { MessageEmbed } from 'discord.js'
 import config from './config.json' assert {type: 'json'}
 import { readdirSync, writeFile } from 'node:fs'
 
@@ -35,7 +35,6 @@ export let audio;
 export let files = readdirSync('music');
 let fileData;
 
-let runOnce = false
 export let playerState;
 export let isAudioStatePaused;
 

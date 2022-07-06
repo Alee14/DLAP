@@ -20,13 +20,14 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import config from '../config.json' assert {type: 'json'}
-import {audioState, isAudioStatePaused, player} from "../AudioBackend.js";
+import { audioState, isAudioStatePaused, player } from "../AudioBackend.js"
+import { PermissionFlagsBits } from "discord-api-types/v10"
 
 export default {
     data: new SlashCommandBuilder()
         .setName('pause')
-        .setDescription('Pauses the player'),
+        .setDescription('Pauses music')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         if (isAudioStatePaused === false) {
             audioState();

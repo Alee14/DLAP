@@ -20,13 +20,14 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import config from '../config.json' assert {type: 'json'}
-import { stopBot } from "../AudioBackend.js";
+import { stopBot } from "../AudioBackend.js"
+import { PermissionFlagsBits } from "discord-api-types/v10"
 
 export default {
     data: new SlashCommandBuilder()
         .setName('stop')
-        .setDescription('Powers off the bot'),
+        .setDescription('Powers off the bot')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction, bot) {
         await interaction.reply({ content: 'Powering off...', ephemeral: true})
         return await stopBot(bot, interaction);
