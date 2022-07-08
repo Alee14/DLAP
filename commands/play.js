@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { isAudioStatePaused, inputAudio, audio, audioState, player } from '../AudioBackend.js'
+import { isAudioStatePaused, inputAudio, audio, audioState, player, files } from '../AudioBackend.js'
 import { PermissionFlagsBits } from "discord-api-types/v10"
 
 export let integer;
@@ -38,8 +38,12 @@ export default {
     async execute(interaction, bot) {
         integer = interaction.options.getInteger('int');
         if (integer) {
-            await inputAudio(bot, integer);
-            return await interaction.reply({ content: `Now playing: ${audio}`, ephemeral: true });
+            if (integer < files.length) {
+                await inputAudio(bot, integer);
+                return await interaction.reply({content:`Now playing: ${audio}`, ephemeral:true});
+            } else {
+                return await interaction.reply({content:'Number is too big, choose a number that\'s less than ' + files.length + '.', ephemeral:true})
+            }
         }
         if (isAudioStatePaused === true) {
             audioState();

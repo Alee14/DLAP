@@ -34,6 +34,8 @@ export const player = createAudioPlayer();
 export let audio;
 export let files = readdirSync('music');
 let fileData;
+export let audioArray;
+export let currentTrack;
 
 export let playerState;
 export let isAudioStatePaused;
@@ -55,20 +57,57 @@ export async function voiceInit(bot) {
     });
 
     player.on('idle', () => {
-      console.log("Beat has finished playing, shuffling the beats...");
-      searchAudio(bot);
+      console.log("Beat has finished playing, now to the next beat...");
+      nextAudio(bot);
     })
 
-    await searchAudio(bot);
+    await shufflePlaylist(bot);
     return connection.subscribe(player);
   }).catch(e => { console.error(e) })
 }
 
-export async function searchAudio(bot){
-  //TODO: Eventually this system will need a rework so it won't repeat the same files.
+function shuffleArray(array) {
+   let currentIndex = array.length,  randomIndex;
 
-  audio = files[Math.floor(Math.random() * files.length)];
-  return await playAudio(bot);
+   // While there remain elements to shuffle.
+   while (currentIndex !== 0) {
+
+     // Pick a remaining element.
+     randomIndex = Math.floor(Math.random() * currentIndex);
+     currentIndex--;
+
+     // And swap it with the current element.
+     [array[currentIndex], array[randomIndex]] = [
+       array[randomIndex], array[currentIndex]];
+   }
+
+   return array;
+}
+
+async function shufflePlaylist(bot) {
+    console.log('Shuffling beats...');
+    currentTrack = 0
+    audioArray = files;
+    shuffleArray(audioArray);
+    console.log(audioArray);
+    audio = audioArray[currentTrack]
+    return await playAudio(bot);
+}
+
+export async function nextAudio(bot) {
+    let totalTrack = files.length
+    totalTrack--
+     console.log(totalTrack)
+    if (currentTrack > totalTrack) {
+        console.log('All beats in the playlist has finished, reshuffling...')
+        await shufflePlaylist();
+    } else {
+        console.log(files.length)
+        currentTrack++
+        audio = audioArray[currentTrack];
+    }
+
+ return await playAudio(bot);
 }
 
 export async function inputAudio(bot, integer) {

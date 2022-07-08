@@ -23,14 +23,13 @@ import { voiceInit } from './AudioBackend.js'
 import { readdirSync } from 'node:fs'
 import config from './config.json' assert { type: 'json' }
 
-export const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
+const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
 
 bot.login(config.token);
 
 
 /**
  * Project Ideas:
- * New queue system
  * Shuffle or "Play by order" mode
  * Audio streaming
  */
@@ -92,7 +91,7 @@ bot.on('interactionCreate', async interaction => {
     if (e == null) {
       await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     } else {
-      await interaction.reply({ content: `There was an error while executing this command! Share this to the bot owner!\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
+      await interaction.reply({ content: `There was an error while executing this command!\nShare this to the bot owner!\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
     }
   }
 });

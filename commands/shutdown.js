@@ -25,7 +25,7 @@ import { PermissionFlagsBits } from "discord-api-types/v10"
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('stop')
+        .setName('shutdown')
         .setDescription('Powers off the bot')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction, bot) {

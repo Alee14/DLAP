@@ -43,7 +43,7 @@ play (int) - Input a number for the selection for the audio file.
 pause - Pauses music.
 skip - Skips the audio track.
 leave - Leaves voice chat.
-stop - Powers off the bot.
+shutdown - Powers off the bot.
 ```
 
 # Forking

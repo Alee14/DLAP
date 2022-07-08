@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { audio, player, searchAudio } from "../AudioBackend.js"
+import { audio, player, nextAudio } from "../AudioBackend.js"
 import { PermissionFlagsBits } from "discord-api-types/v10"
 
 export default {
@@ -31,6 +31,6 @@ export default {
     async execute(interaction, bot) {
         await interaction.reply({content:`Skipping ${audio}`, ephemeral:true});
         player.stop();
-        return await searchAudio(bot, interaction);
+        return await nextAudio(bot, interaction);
     },
 };
