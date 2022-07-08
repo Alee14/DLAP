@@ -48,8 +48,9 @@ export async function voiceInit(bot) {
       adapterCreator: channel.guild.voiceAdapterCreator
     });
 
-    connection.on(VoiceConnectionStatus.Ready, () => {
+    connection.on(VoiceConnectionStatus.Ready, async () => {
       console.log('Ready to blast some beats!');
+      await shufflePlaylist(bot);
     });
 
     connection.on(VoiceConnectionStatus.Destroyed, () => {
@@ -61,7 +62,6 @@ export async function voiceInit(bot) {
       nextAudio(bot);
     })
 
-    await shufflePlaylist(bot);
     return connection.subscribe(player);
   }).catch(e => { console.error(e) })
 }
@@ -84,7 +84,7 @@ function shuffleArray(array) {
    return array;
 }
 
-async function shufflePlaylist(bot) {
+export async function shufflePlaylist(bot) {
     console.log('Shuffling beats...');
     currentTrack = 0
     audioArray = files;
@@ -97,12 +97,10 @@ async function shufflePlaylist(bot) {
 export async function nextAudio(bot) {
     let totalTrack = files.length
     totalTrack--
-     console.log(totalTrack)
     if (currentTrack > totalTrack) {
         console.log('All beats in the playlist has finished, reshuffling...')
         await shufflePlaylist();
     } else {
-        console.log(files.length)
         currentTrack++
         audio = audioArray[currentTrack];
     }

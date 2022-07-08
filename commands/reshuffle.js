@@ -20,27 +20,18 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { MessageEmbed } from "discord.js"
-import {audio, audioArray, currentTrack, playerState} from "../AudioBackend.js"
+import { player, shufflePlaylist } from "../AudioBackend.js"
+import { PermissionFlagsBits } from "discord-api-types/v10"
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('status')
-        .setDescription('Checks what audio file is playing currently'),
-    async execute(interaction, bot) {
-
-        let audioID = currentTrack
-        audioID++
-
-        let audioName = audioArray[audioID]
-        audioName = audioName.split('.').slice(0, -1).join('.');
-
-        let controlEmbed = new MessageEmbed()
-                .setAuthor({name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL()})
-                .addField('State', playerState)
-                .addField('Currently Playing', audio)
-                .addField('Up Next', audioName)
-                .setColor('#0066ff')
-        interaction.reply({embeds:[controlEmbed], ephemeral:true})
+        .setName('reshuffle')
+        .setDescription('Reshuffles the playlist')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    async execute(interaction) {
+        // Command not fully functional yet
+        await interaction.reply({content:`Reshuffling the playlist...`, ephemeral:true});
+        player.stop();
+        return await shufflePlaylist();
     },
 };
