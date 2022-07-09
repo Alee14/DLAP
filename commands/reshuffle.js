@@ -28,10 +28,10 @@ export default {
         .setName('reshuffle')
         .setDescription('Reshuffles the playlist')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async execute(interaction) {
+    async execute(interaction, bot) {
         // Command not fully functional yet
         await interaction.reply({content:`Reshuffling the playlist...`, ephemeral:true});
         player.stop();
-        return await shufflePlaylist();
+        return await shufflePlaylist(bot);
     },
 };

@@ -43,23 +43,28 @@ export let isAudioStatePaused;
 export async function voiceInit(bot) {
   bot.channels.fetch(config.voiceChannel).then(async channel => {
     const connection = joinVoiceChannel({
-      channelId: channel.id,
-      guildId: channel.guild.id,
-      adapterCreator: channel.guild.voiceAdapterCreator
+        channelId: channel.id,
+        guildId: channel.guild.id,
+        adapterCreator: channel.guild.voiceAdapterCreator
     });
 
     connection.on(VoiceConnectionStatus.Ready, async () => {
-      console.log('Ready to blast some beats!');
-      await shufflePlaylist(bot);
+        console.log('Ready to blast some beats!');
+        await shufflePlaylist(bot);
     });
 
     connection.on(VoiceConnectionStatus.Destroyed, () => {
-      console.log('Destroyed the beats...');
+        console.log('Destroyed the beats...');
+    });
+
+    player.on('error', error => {
+        console.error(error);
+        nextAudio(bot);
     });
 
     player.on('idle', () => {
-      console.log("Beat has finished playing, now to the next beat...");
-      nextAudio(bot);
+        console.log("Beat has finished playing, now to the next beat...");
+        nextAudio(bot);
     })
 
     return connection.subscribe(player);
@@ -87,9 +92,9 @@ export async function nextAudio(bot) {
     let totalTrack = files.length
     totalTrack--
 
-    if (currentTrack > totalTrack) {
+    if (currentTrack >= totalTrack) {
         console.log('All beats in the playlist has finished, reshuffling...');
-        await shufflePlaylist();
+        await shufflePlaylist(bot);
     } else {
         currentTrack++
         audio = audioArray[currentTrack];
