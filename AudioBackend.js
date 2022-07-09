@@ -67,21 +67,10 @@ export async function voiceInit(bot) {
 }
 
 function shuffleArray(array) {
-   let currentIndex = array.length,  randomIndex;
-
-   // While there remain elements to shuffle.
-   while (currentIndex !== 0) {
-
-     // Pick a remaining element.
-     randomIndex = Math.floor(Math.random() * currentIndex);
-     currentIndex--;
-
-     // And swap it with the current element.
-     [array[currentIndex], array[randomIndex]] = [
-       array[randomIndex], array[currentIndex]];
-   }
-
-   return array;
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
 }
 
 export async function shufflePlaylist(bot) {
@@ -97,8 +86,9 @@ export async function shufflePlaylist(bot) {
 export async function nextAudio(bot) {
     let totalTrack = files.length
     totalTrack--
+
     if (currentTrack > totalTrack) {
-        console.log('All beats in the playlist has finished, reshuffling...')
+        console.log('All beats in the playlist has finished, reshuffling...');
         await shufflePlaylist();
     } else {
         currentTrack++
@@ -109,37 +99,38 @@ export async function nextAudio(bot) {
 }
 
 export async function inputAudio(bot, integer) {
-  audio = files[integer];
-  return await playAudio(bot);
+    let inputFiles = readdirSync('music');
+    audio = inputFiles[integer];
+    return await playAudio(bot);
 }
 
 export async function playAudio(bot) {
-  let resource = createAudioResource('music/' + audio);
+    let resource = createAudioResource('music/' + audio);
 
-  player.play(resource);
+    player.play(resource);
 
-  console.log('Now playing: ' + audio);
+    console.log('Now playing: ' + audio);
 
-  playerState = "Playing"
-  isAudioStatePaused = false
+    playerState = "Playing"
+    isAudioStatePaused = false
 
-  audio = audio.split('.').slice(0, -1).join('.');
+    audio = audio.split('.').slice(0, -1).join('.');
 
-  if (config.txtFile === true) {
-    fileData = "Now Playing: " + audio
-    writeFile("./now-playing.txt", fileData, (err) => {
-      if (err)
-        console.log(err);
-    });
-  }
+    if (config.txtFile === true) {
+        fileData = "Now Playing: " + audio
+        writeFile("./now-playing.txt", fileData, (err) => {
+        if (err)
+            console.log(err);
+        });
+    }
 
-  const statusEmbed = new MessageEmbed()
-      .addField('Now Playing', `${audio}`)
-      .setColor('#0066ff')
+    const statusEmbed = new MessageEmbed()
+          .addField('Now Playing', `${audio}`)
+         .setColor('#0066ff')
 
-  let statusChannel = bot.channels.cache.get(config.statusChannel);
-  if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  return await statusChannel.send({embeds: [statusEmbed]});
+    let statusChannel = bot.channels.cache.get(config.statusChannel);
+    if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
+    return await statusChannel.send({embeds: [statusEmbed]});
 
 }
 

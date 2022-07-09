@@ -32,7 +32,7 @@ export default {
             .setAuthor({name:`About ${bot.user.username}`, iconURL:bot.user.avatarURL()})
             .addField('Information', 'A Discord bot that plays local audio tracks.')
             .addField('Version', `DLAP ${npmPackage.version}`)
-            .addField('Original Creator', 'Andrew Lee (Alee#4277)')
+            .addField('Original Creator', 'Andrew Lee (Alee#4277)') // Do not remove this since I created this :)
             //.addField('Contributors', '[your name] (discord#0000)')
             //.addField('Forked by', '[your name] (discord#0000)')
             .addField('Frameworks', `Discord.JS ${version} + Voice`)
