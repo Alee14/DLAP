@@ -19,13 +19,13 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
+import { SlashCommandBuilder } from '@discordjs/builders';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('Pong!'),
-    async execute(interaction, bot) {
-        return await interaction.reply(`Pong! ${Math.round(bot.ws.ping)}ms`);
-    },
+  data: new SlashCommandBuilder()
+    .setName('ping')
+    .setDescription('Pong!'),
+  async execute (interaction, bot) {
+    return await interaction.reply(`Pong! ${Math.round(bot.ws.ping)}ms`);
+  }
 };

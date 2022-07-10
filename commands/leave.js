@@ -19,18 +19,18 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { destroyAudio } from "../AudioBackend.js"
-import { PermissionFlagsBits } from "discord-api-types/v10"
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { destroyAudio } from '../AudioBackend.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('leave')
-        .setDescription('Leaves the voice chat')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async execute(interaction) {
-        console.log('Leaving voice channel...');
-        await destroyAudio(interaction);
-        return await interaction.reply({content:'Leaving voice channel', ephemeral:true});
-    },
+  data: new SlashCommandBuilder()
+    .setName('leave')
+    .setDescription('Leaves the voice chat')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  async execute (interaction) {
+    console.log('Leaving voice channel...');
+    await destroyAudio(interaction);
+    return await interaction.reply({ content: 'Leaving voice channel', ephemeral: true });
+  }
 };

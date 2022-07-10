@@ -19,21 +19,26 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { readdirSync, readdir } from 'fs'
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { readdirSync, readdir } from 'fs';
 
 const musicFolder = './music';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('list')
-        .setDescription('Lists the available audio tracks'),
-    async execute(interaction) {
-        //If someone figures out how to either split the list or make pages when the max character reaches, please do so and make a pull request.
+  data: new SlashCommandBuilder()
+    .setName('list')
+    .setDescription('Lists the available audio tracks'),
+  async execute (interaction) {
+    // If someone figures out how to either split the list or make pages when the max character reaches, please do so and make a pull request.
 
-        const beats = readdirSync(musicFolder).join('\n');
-        readdir(musicFolder, async (err, files) => {
-            await interaction.reply(`Listing ${files.length} audio tracks...\n\`\`\`\n${beats}\n\`\`\``);
-        });
-    },
+    const beats = readdirSync(musicFolder).join('\n');
+    readdir(musicFolder, async (err, files) => {
+      await interaction.reply(
+        `Listing ${files.length} audio tracks...\n\`\`\`\n${beats}\n\`\`\``
+      );
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
 };

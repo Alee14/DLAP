@@ -19,38 +19,38 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { isAudioStatePaused, inputAudio, audio, audioState, player, files } from '../AudioBackend.js'
-import { PermissionFlagsBits } from "discord-api-types/v10"
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { isAudioStatePaused, inputAudio, audio, audioState, player, files } from '../AudioBackend.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export let integer;
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('play')
-        .setDescription('Resumes music')
-        .addIntegerOption(option =>
-            option.setName('int')
-                .setDescription('Input a number for the selection for the audio file.'),
-        )
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  data: new SlashCommandBuilder()
+    .setName('play')
+    .setDescription('Resumes music')
+    .addIntegerOption(option =>
+      option.setName('int')
+        .setDescription('Input a number for the selection for the audio file.')
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
-    async execute(interaction, bot) {
-        integer = interaction.options.getInteger('int');
-        if (integer) {
-            if (integer < files.length) {
-                await inputAudio(bot, integer);
-                return await interaction.reply({content:`Now playing: ${audio}`, ephemeral:true});
-            } else {
-                return await interaction.reply({content:'Number is too big, choose a number that\'s less than ' + files.length + '.', ephemeral:true})
-            }
-        }
-        if (isAudioStatePaused === true) {
-            audioState();
-            player.unpause();
-            return await interaction.reply({content:'Resuming music', ephemeral:true});
-        } else {
-            return await interaction.reply({content:"Music is already playing", ephemeral:true})
-        }
-    },
+  async execute (interaction, bot) {
+    integer = interaction.options.getInteger('int');
+    if (integer) {
+      if (integer < files.length) {
+        await inputAudio(bot, integer);
+        return await interaction.reply({ content: `Now playing: ${audio}`, ephemeral: true });
+      } else {
+        return await interaction.reply({ content: 'Number is too big, choose a number that\'s less than ' + files.length + '.', ephemeral: true });
+      }
+    }
+    if (isAudioStatePaused === true) {
+      audioState();
+      player.unpause();
+      return await interaction.reply({ content: 'Resuming music', ephemeral: true });
+    } else {
+      return await interaction.reply({ content: 'Music is already playing', ephemeral: true });
+    }
+  }
 };

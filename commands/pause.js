@@ -19,22 +19,22 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { audioState, isAudioStatePaused, player } from "../AudioBackend.js"
-import { PermissionFlagsBits } from "discord-api-types/v10"
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { audioState, isAudioStatePaused, player } from '../AudioBackend.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('pause')
-        .setDescription('Pauses music')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async execute(interaction) {
-        if (isAudioStatePaused === false) {
-            audioState();
-            player.pause();
-            return await interaction.reply({content:'Pausing music', ephemeral:true});
-        } else {
-            return await interaction.reply({content:"Music is already paused", ephemeral:true})
-        }
-    },
+  data: new SlashCommandBuilder()
+    .setName('pause')
+    .setDescription('Pauses music')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  async execute (interaction) {
+    if (isAudioStatePaused === false) {
+      audioState();
+      player.pause();
+      return await interaction.reply({ content: 'Pausing music', ephemeral: true });
+    } else {
+      return await interaction.reply({ content: 'Music is already paused', ephemeral: true });
+    }
+  }
 };

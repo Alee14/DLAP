@@ -19,18 +19,18 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { audio, player, nextAudio } from "../AudioBackend.js"
-import { PermissionFlagsBits } from "discord-api-types/v10"
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { audio, player, nextAudio } from '../AudioBackend.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('skip')
-        .setDescription('Skips the audio track')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async execute(interaction, bot) {
-        await interaction.reply({content:`Skipping ${audio}`, ephemeral:true});
-        player.stop();
-        return await nextAudio(bot, interaction);
-    },
+  data: new SlashCommandBuilder()
+    .setName('skip')
+    .setDescription('Skips the audio track')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  async execute (interaction, bot) {
+    await interaction.reply({ content: `Skipping ${audio}`, ephemeral: true });
+    player.stop();
+    return await nextAudio(bot, interaction);
+  }
 };

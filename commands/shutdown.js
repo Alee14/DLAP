@@ -19,17 +19,17 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { stopBot } from "../AudioBackend.js"
-import { PermissionFlagsBits } from "discord-api-types/v10"
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { stopBot } from '../AudioBackend.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('shutdown')
-        .setDescription('Powers off the bot')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async execute(interaction, bot) {
-        await interaction.reply({ content: 'Powering off...', ephemeral: true})
-        return await stopBot(bot, interaction);
-    },
+  data: new SlashCommandBuilder()
+    .setName('shutdown')
+    .setDescription('Powers off the bot')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  async execute (interaction, bot) {
+    await interaction.reply({ content: 'Powering off...', ephemeral: true });
+    return await stopBot(bot, interaction);
+  }
 };

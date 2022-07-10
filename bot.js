@@ -1,9 +1,9 @@
 /**************************************************************************
- * 
+ *
  *  DLAP Bot: A Discord bot that plays local audio tracks.
  *  (C) Copyright 2022
- *  Programmed by Andrew Lee 
- *  
+ *  Programmed by Andrew Lee
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -16,17 +16,17 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- * 
+ *
  ***************************************************************************/
-import { Client, MessageEmbed, Collection, version } from 'discord.js'
-import { voiceInit } from './AudioBackend.js'
-import { readdirSync } from 'node:fs'
-import config from './config.json' assert { type: 'json' }
+import { Client, MessageEmbed, Collection, version } from 'discord.js';
+import { voiceInit } from './AudioBackend.js';
+import { readdirSync, readFileSync } from 'node:fs';
+// import config from './config.json' assert { type: 'json' } Not in ECMAScript yet
+const config = JSON.parse(readFileSync('./config.json'));
 
-const bot = new Client({intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES']});
+const bot = new Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'] });
 
 bot.login(config.token);
-
 
 /**
  * Project Ideas:
@@ -47,7 +47,7 @@ for (const file of commandFiles) {
 bot.once('ready', async () => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
-  console.log(`Running on Discord.JS ${version}`)
+  console.log(`Running on Discord.JS ${version}`);
   console.log(`Voice Channel: ${config.voiceChannel}`);
   console.log(`Status Channel: ${config.statusChannel}`);
 
@@ -57,7 +57,7 @@ bot.once('ready', async () => {
       name: 'some beats',
       type: 'LISTENING'
     }],
-    status: 'online',
+    status: 'online'
   });
 
   const activity = bot.presence.activities[0];
@@ -65,16 +65,15 @@ bot.once('ready', async () => {
 
   // Send bots' status to channel
   const readyEmbed = new MessageEmbed()
-      .setAuthor({name: bot.user.username, iconURL: bot.user.avatarURL()})
-      .setDescription('Starting bot...')
-      .setColor('#0066ff')
+    .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL() })
+    .setDescription('Starting bot...')
+    .setColor('#0066ff');
 
-  let statusChannel = bot.channels.cache.get(config.statusChannel);
+  const statusChannel = bot.channels.cache.get(config.statusChannel);
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  await statusChannel.send({embeds: [readyEmbed]});
+  await statusChannel.send({ embeds: [readyEmbed] });
 
   await voiceInit(bot);
-
 });
 
 bot.on('interactionCreate', async interaction => {

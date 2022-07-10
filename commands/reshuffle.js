@@ -19,19 +19,19 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders'
-import { player, shufflePlaylist } from "../AudioBackend.js"
-import { PermissionFlagsBits } from "discord-api-types/v10"
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { player, shufflePlaylist } from '../AudioBackend.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('reshuffle')
-        .setDescription('Reshuffles the playlist')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    async execute(interaction, bot) {
-        // Command not fully functional yet
-        await interaction.reply({content:`Reshuffling the playlist...`, ephemeral:true});
-        player.stop();
-        return await shufflePlaylist(bot);
-    },
+  data: new SlashCommandBuilder()
+    .setName('reshuffle')
+    .setDescription('Reshuffles the playlist')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  async execute (interaction, bot) {
+    // Command not fully functional yet
+    await interaction.reply({ content: 'Reshuffling the playlist...', ephemeral: true });
+    player.stop();
+    return await shufflePlaylist(bot);
+  }
 };
