@@ -95,13 +95,12 @@ export async function nextAudio(bot) {
 
   if (currentTrack >= totalTrack) {
     console.log('All beats in the playlist has finished, reshuffling...');
-    await shufflePlaylist(bot);
+    return await shufflePlaylist(bot);
   } else {
     currentTrack++;
     audio = audioArray[currentTrack];
+    return await playAudio(bot);
   }
-
-  return await playAudio(bot);
 }
 
 export async function inputAudio(bot, integer) {

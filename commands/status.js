@@ -34,6 +34,10 @@ export default {
     let audioName = audioArray[audioID];
     audioName = audioName.split('.').slice(0, -1).join('.');
 
+    if (audioName == null) {
+      audioName = 'Finish';
+    }
+
     const controlEmbed = new MessageEmbed()
       .setAuthor({ name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL() })
       .addField('State', playerState)
