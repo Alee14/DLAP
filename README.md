@@ -11,7 +11,7 @@ Make a new file called `config.json`.
 ```
 {
     "token": "token_here",
-    "txtFile": true/false
+    "txtFile": true/false,
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id"
     "guildID": "guild_id",

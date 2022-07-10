@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
-import { audio, audioArray, currentTrack, playerState } from '../AudioBackend.js';
+import { audio, audioArray, currentTrack, files, playerState } from '../AudioBackend.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -37,6 +37,7 @@ export default {
     const controlEmbed = new MessageEmbed()
       .setAuthor({ name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL() })
       .addField('State', playerState)
+      .addField('Tracks', `${audioID}/${files.length}`)
       .addField('Currently Playing', audio)
       .addField('Up Next', audioName)
       .setColor('#0066ff');

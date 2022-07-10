@@ -33,9 +33,7 @@ export default {
 
     const beats = readdirSync(musicFolder).join('\n');
     readdir(musicFolder, async(err, files) => {
-      await interaction.reply(
-        `Listing ${files.length} audio tracks...\n\`\`\`\n${beats}\n\`\`\``
-      );
+      await interaction.reply(`Listing ${files.length} audio tracks...\n\`\`\`\n${beats}\n\`\`\``);
       if (err) {
         console.error(err);
       }
