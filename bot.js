@@ -21,7 +21,7 @@
 import { Client, MessageEmbed, Collection, version } from 'discord.js';
 import { voiceInit } from './AudioBackend.js';
 import { readdirSync, readFileSync } from 'node:fs';
-// import config from './config.json' assert { type: 'json' } Not in ECMAScript yet
+// import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
 const config = JSON.parse(readFileSync('./config.json'));
 
 const bot = new Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'] });
