@@ -29,7 +29,7 @@ export default {
   data: new SlashCommandBuilder()
     .setName('about')
     .setDescription('Information about the bot'),
-  async execute (interaction, bot) {
+  async execute(interaction, bot) {
     const aboutEmbed = new MessageEmbed()
       .setAuthor({ name: `About ${bot.user.username}`, iconURL: bot.user.avatarURL() })
       .addField('Information', 'A Discord bot that plays local audio tracks.')

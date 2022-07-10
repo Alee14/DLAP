@@ -44,7 +44,7 @@ for (const file of commandFiles) {
   bot.commands.set(command.data.name, command);
 }
 
-bot.once('ready', async () => {
+bot.once('ready', async() => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Running on Discord.JS ${version}`);
@@ -73,7 +73,7 @@ bot.once('ready', async () => {
   if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
   await statusChannel.send({ embeds: [readyEmbed] });
 
-  await voiceInit(bot);
+  return await voiceInit(bot);
 });
 
 bot.on('interactionCreate', async interaction => {

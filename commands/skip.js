@@ -28,7 +28,7 @@ export default {
     .setName('skip')
     .setDescription('Skips the audio track')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute (interaction, bot) {
+  async execute(interaction, bot) {
     await interaction.reply({ content: `Skipping ${audio}`, ephemeral: true });
     player.stop();
     return await nextAudio(bot, interaction);

@@ -41,7 +41,7 @@ export let currentTrack;
 export let playerState;
 export let isAudioStatePaused;
 
-export async function voiceInit (bot) {
+export async function voiceInit(bot) {
   bot.channels.fetch(config.voiceChannel).then(async channel => {
     const connection = joinVoiceChannel({
       channelId: channel.id,
@@ -49,7 +49,7 @@ export async function voiceInit (bot) {
       adapterCreator: channel.guild.voiceAdapterCreator
     });
 
-    connection.on(VoiceConnectionStatus.Ready, async () => {
+    connection.on(VoiceConnectionStatus.Ready, async() => {
       console.log('Ready to blast some beats!');
       await shufflePlaylist(bot);
     });
@@ -72,14 +72,14 @@ export async function voiceInit (bot) {
   }).catch(e => { console.error(e); });
 }
 
-function shuffleArray (array) {
+function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
-export async function shufflePlaylist (bot) {
+export async function shufflePlaylist(bot) {
   console.log('Shuffling beats...');
   currentTrack = 0;
   audioArray = files;
@@ -89,7 +89,7 @@ export async function shufflePlaylist (bot) {
   return await playAudio(bot);
 }
 
-export async function nextAudio (bot) {
+export async function nextAudio(bot) {
   let totalTrack = files.length;
   totalTrack--;
 
@@ -104,13 +104,13 @@ export async function nextAudio (bot) {
   return await playAudio(bot);
 }
 
-export async function inputAudio (bot, integer) {
+export async function inputAudio(bot, integer) {
   const inputFiles = readdirSync('music');
   audio = inputFiles[integer];
   return await playAudio(bot);
 }
 
-export async function playAudio (bot) {
+export async function playAudio(bot) {
   const resource = createAudioResource('music/' + audio);
 
   player.play(resource);
@@ -138,7 +138,7 @@ export async function playAudio (bot) {
   return await statusChannel.send({ embeds: [statusEmbed] });
 }
 
-export async function destroyAudio (interaction) {
+export async function destroyAudio(interaction) {
   if (config.txtFile === true) {
     fileData = 'Now Playing: Nothing';
     writeFile('now-playing.txt', fileData, (err) => {
@@ -157,7 +157,7 @@ export async function destroyAudio (interaction) {
   }
 }
 
-export function audioState () {
+export function audioState() {
   if (isAudioStatePaused === false) {
     isAudioStatePaused = true;
     playerState = 'Paused';
@@ -167,7 +167,7 @@ export function audioState () {
   }
 }
 
-export async function stopBot (bot, interaction) {
+export async function stopBot(bot, interaction) {
   const statusEmbed = new MessageEmbed()
     .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL() })
     .setDescription(`That's all folks! Powering down ${bot.user.username}...`)

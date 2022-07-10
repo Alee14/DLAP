@@ -28,7 +28,7 @@ export default {
     .setName('join')
     .setDescription('Joins voice chat')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute (interaction, bot) {
+  async execute(interaction, bot) {
     await interaction.reply({ content: 'Joining voice channel', ephemeral: true });
     return await voiceInit(bot);
   }

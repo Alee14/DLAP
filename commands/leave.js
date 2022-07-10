@@ -28,7 +28,7 @@ export default {
     .setName('leave')
     .setDescription('Leaves the voice chat')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute (interaction) {
+  async execute(interaction) {
     console.log('Leaving voice channel...');
     await destroyAudio(interaction);
     return await interaction.reply({ content: 'Leaving voice channel', ephemeral: true });

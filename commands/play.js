@@ -35,7 +35,7 @@ export default {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
-  async execute (interaction, bot) {
+  async execute(interaction, bot) {
     integer = interaction.options.getInteger('int');
     if (integer) {
       if (integer < files.length) {

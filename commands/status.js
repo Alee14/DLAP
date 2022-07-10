@@ -27,7 +27,7 @@ export default {
   data: new SlashCommandBuilder()
     .setName('status')
     .setDescription('Checks what audio file is playing currently'),
-  async execute (interaction, bot) {
+  async execute(interaction, bot) {
     let audioID = currentTrack;
     audioID++;
 

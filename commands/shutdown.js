@@ -28,7 +28,7 @@ export default {
     .setName('shutdown')
     .setDescription('Powers off the bot')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute (interaction, bot) {
+  async execute(interaction, bot) {
     await interaction.reply({ content: 'Powering off...', ephemeral: true });
     return await stopBot(bot, interaction);
   }

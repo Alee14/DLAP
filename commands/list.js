@@ -28,11 +28,11 @@ export default {
   data: new SlashCommandBuilder()
     .setName('list')
     .setDescription('Lists the available audio tracks'),
-  async execute (interaction) {
+  async execute(interaction) {
     // If someone figures out how to either split the list or make pages when the max character reaches, please do so and make a pull request.
 
     const beats = readdirSync(musicFolder).join('\n');
-    readdir(musicFolder, async (err, files) => {
+    readdir(musicFolder, async(err, files) => {
       await interaction.reply(
         `Listing ${files.length} audio tracks...\n\`\`\`\n${beats}\n\`\`\``
       );

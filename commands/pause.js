@@ -28,7 +28,7 @@ export default {
     .setName('pause')
     .setDescription('Pauses music')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute (interaction) {
+  async execute(interaction) {
     if (isAudioStatePaused === false) {
       audioState();
       player.pause();
