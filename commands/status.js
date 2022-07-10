@@ -32,10 +32,10 @@ export default {
     audioID++;
 
     let audioName = audioArray[audioID];
-    audioName = audioName.split('.').slice(0, -1).join('.');
-
-    if (audioName == null) {
-      audioName = 'Finish';
+    if (audioName === undefined) {
+      audioName = 'Playlist Finished';
+    } else {
+      audioName = audioName.split('.').slice(0, -1).join('.');
     }
 
     const controlEmbed = new MessageEmbed()
