@@ -6,12 +6,17 @@ A Discord bot that plays local audio tracks. Written in Discord.JS.
 
 If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
+# Recommended Software
+- Latest version of NodeJS (v18.5.0+)
+- Linux (or WSL for Windows users)
+
 # Configuration
 Make a new file called `config.json`.
 ```
 {
     "token": "token_here",
     "txtFile": true/false,
+    "shuffle": true/false,
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id"
     "guildID": "guild_id",

@@ -29,20 +29,19 @@ import {
 import { MessageEmbed } from 'discord.js';
 import { readdirSync, readFileSync, writeFile } from 'node:fs';
 // import config from './config.json' assert {type: 'json'}
-const config = JSON.parse(readFileSync('./config.json'));
+const { voiceChannel, statusChannel, shuffle, txtFile } = JSON.parse(readFileSync('./config.json'));
 
 export const player = createAudioPlayer();
 export let audio;
 export const files = readdirSync('music');
 let fileData;
-export let audioArray;
 export let currentTrack;
 
 export let playerState;
 export let isAudioStatePaused;
 
 export async function voiceInit(bot) {
-  bot.channels.fetch(config.voiceChannel).then(async channel => {
+  bot.channels.fetch(voiceChannel).then(async channel => {
     const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
@@ -51,7 +50,7 @@ export async function voiceInit(bot) {
 
     connection.on(VoiceConnectionStatus.Ready, async() => {
       console.log('Ready to blast some beats!');
-      await shufflePlaylist(bot);
+      return (shuffle === true) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
     });
 
     connection.on(VoiceConnectionStatus.Destroyed, () => {
@@ -79,26 +78,33 @@ function shuffleArray(array) {
   }
 }
 
+export async function orderPlaylist(bot) {
+  console.log('Playing beats by order...');
+  currentTrack = 0;
+  console.log(files);
+  audio = files[currentTrack];
+  return await playAudio(bot);
+}
+
 export async function shufflePlaylist(bot) {
   console.log('Shuffling beats...');
   currentTrack = 0;
-  audioArray = files;
-  shuffleArray(audioArray);
-  console.log(audioArray);
-  audio = audioArray[currentTrack];
+  shuffleArray(files);
+  console.log(files);
+  console.log('Playing beats by shuffle...');
+  audio = files[currentTrack];
   return await playAudio(bot);
 }
 
 export async function nextAudio(bot) {
   let totalTrack = files.length;
   totalTrack--;
-
   if (currentTrack >= totalTrack) {
-    console.log('All beats in the playlist has finished, reshuffling...');
-    return await shufflePlaylist(bot);
+    console.log('All beats in the playlist has finished, repeating beats...');
+    return (shuffle === true) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
   } else {
     currentTrack++;
-    audio = audioArray[currentTrack];
+    audio = files[currentTrack];
     return await playAudio(bot);
   }
 }
@@ -121,7 +127,7 @@ export async function playAudio(bot) {
 
   audio = audio.split('.').slice(0, -1).join('.');
 
-  if (config.txtFile === true) {
+  if (txtFile === true) {
     fileData = 'Now Playing: ' + audio;
     writeFile('./now-playing.txt', fileData, (err) => {
       if (err) { console.log(err); }
@@ -132,13 +138,13 @@ export async function playAudio(bot) {
     .addField('Now Playing', `${audio}`)
     .setColor('#0066ff');
 
-  const statusChannel = bot.channels.cache.get(config.statusChannel);
-  if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  return await statusChannel.send({ embeds: [statusEmbed] });
+  const channel = bot.channels.cache.get(statusChannel);
+  if (!channel) return console.error('The status channel does not exist! Skipping.');
+  return await channel.send({ embeds: [statusEmbed] });
 }
 
 export async function destroyAudio(interaction) {
-  if (config.txtFile === true) {
+  if (txtFile === true) {
     fileData = 'Now Playing: Nothing';
     writeFile('now-playing.txt', fileData, (err) => {
       if (err) { console.log(err); }

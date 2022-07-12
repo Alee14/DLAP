@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { MessageEmbed } from 'discord.js';
-import { audio, audioArray, currentTrack, files, playerState } from '../AudioBackend.js';
+import { audio, currentTrack, files, playerState } from '../AudioBackend.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -31,7 +31,7 @@ export default {
     let audioID = currentTrack;
     audioID++;
 
-    let audioName = audioArray[audioID];
+    let audioName = files[audioID];
     if (audioName === undefined) {
       audioName = 'Playlist Finished';
     } else {

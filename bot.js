@@ -23,11 +23,11 @@ import { voiceInit } from './AudioBackend.js';
 import { readdirSync, readFileSync } from 'node:fs';
 import { webServer } from './WebStream.js';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
-const config = JSON.parse(readFileSync('./config.json'));
+const { token, statusChannel, voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json'));
 
 const bot = new Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'] });
 
-bot.login(config.token);
+bot.login(token);
 
 // webServer();
 
@@ -50,8 +50,9 @@ bot.once('ready', async() => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Running on Discord.JS ${version}`);
-  console.log(`Voice Channel: ${config.voiceChannel}`);
-  console.log(`Status Channel: ${config.statusChannel}`);
+  console.log(`Voice Channel: ${voiceChannel}`);
+  console.log(`Status Channel: ${statusChannel}`);
+  console.log(`Shuffle enabled: ${shuffle}`);
 
   // Set bots' presence
   bot.user.setPresence({
@@ -71,9 +72,9 @@ bot.once('ready', async() => {
     .setDescription('Starting bot...')
     .setColor('#0066ff');
 
-  const statusChannel = bot.channels.cache.get(config.statusChannel);
-  if (!statusChannel) return console.error('The status channel does not exist! Skipping.');
-  await statusChannel.send({ embeds: [readyEmbed] });
+  const channel = bot.channels.cache.get(statusChannel);
+  if (!channel) return console.error('The status channel does not exist! Skipping.');
+  await channel.send({ embeds: [readyEmbed] });
 
   return await voiceInit(bot);
 });

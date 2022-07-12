@@ -22,6 +22,9 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { player, shufflePlaylist } from '../AudioBackend.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { readFileSync } from 'node:fs';
+// import config from './config.json' assert {type: 'json'}
+const { shuffle } = JSON.parse(readFileSync('./config.json'));
 
 export default {
   data: new SlashCommandBuilder()
@@ -29,8 +32,11 @@ export default {
     .setDescription('Reshuffles the playlist')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
-    await interaction.reply({ content: 'Reshuffling the playlist...', ephemeral: true });
-    player.stop();
-    return await shufflePlaylist(bot);
+    async function shuffleDetected(bot) {
+      await interaction.reply({ content: 'Reshuffling the playlist...', ephemeral: true });
+      player.stop();
+      await shufflePlaylist(bot);
+    }
+    return (shuffle === true) ? await shuffleDetected(bot) : await interaction.reply({ content: 'Shuffle mode is disabled, enable it on the configuration to access this command.', ephemeral: true });
   }
 };
