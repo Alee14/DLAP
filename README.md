@@ -18,8 +18,7 @@ Make a new file called `config.json`.
     "txtFile": true/false,
     "shuffle": true/false,
     "statusChannel": "channel_id",
-    "voiceChannel": "voice_channel_id"
-    "guildID": "guild_id",
+    "voiceChannel": "voice_channel_id",
     "clientID": "client_id"
 }
 ```

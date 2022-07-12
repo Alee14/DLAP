@@ -47,7 +47,7 @@ export default {
         new MessageButton()
           .setStyle('LINK')
           .setLabel('Original Source Code')
-          .setURL('https://github.com/Alee14/DLMP3')
+          .setURL('https://github.com/Alee14/DLAP')
       );
 
     return await interaction.reply({ embeds: [aboutEmbed], components: [srcOrig] });

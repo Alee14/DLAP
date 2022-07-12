@@ -63,7 +63,7 @@ export async function voiceInit(bot) {
     });
 
     player.on('idle', () => {
-      console.log('Beat has finished playing, now to the next beat...');
+      console.log('Beat has finished playing, now playing next beat...');
       nextAudio(bot);
     });
 
@@ -88,10 +88,10 @@ export async function orderPlaylist(bot) {
 
 export async function shufflePlaylist(bot) {
   console.log('Shuffling beats...');
-  currentTrack = 0;
   shuffleArray(files);
-  console.log(files);
   console.log('Playing beats by shuffle...');
+  currentTrack = 0;
+  console.log(files);
   audio = files[currentTrack];
   return await playAudio(bot);
 }
