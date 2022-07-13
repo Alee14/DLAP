@@ -34,6 +34,8 @@ bot.login(token);
 /**
  * Project Ideas:
  * Audio streaming
+ * Metadata support
+ * m3u support
  */
 
 // Slash Command Handler

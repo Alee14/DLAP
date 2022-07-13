@@ -15,6 +15,7 @@
     "discord-api-types": "^0.36.1",
     "discord.js": "^13.8.1",
     "ffmpeg-static": "^5.0.0",
+    "music-metadata": "^7.12.4",
     "sodium": "^3.0.2"
   },
   "devDependencies": {
