@@ -26,7 +26,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v10';
 export default {
   data: new SlashCommandBuilder()
     .setName('next')
-    .setDescription('Goes to next track')
+    .setDescription('Goes to next music')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
     await interaction.reply({ content: 'Playing next music', ephemeral: true });

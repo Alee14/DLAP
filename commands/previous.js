@@ -26,7 +26,7 @@ import { PermissionFlagsBits } from 'discord-api-types/v10';
 export default {
   data: new SlashCommandBuilder()
     .setName('previous')
-    .setDescription('Goes to previous track')
+    .setDescription('Goes to previous music')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
     return await previousAudio(bot, interaction);
