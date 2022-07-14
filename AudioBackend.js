@@ -39,6 +39,7 @@ export let currentTrack;
 
 export let playerState;
 export let isAudioStatePaused;
+let totalTrack = files.length;
 
 export async function voiceInit(bot) {
   bot.channels.fetch(voiceChannel).then(async channel => {
@@ -97,13 +98,24 @@ export async function shufflePlaylist(bot) {
 }
 
 export async function nextAudio(bot) {
-  let totalTrack = files.length;
   totalTrack--;
   if (currentTrack >= totalTrack) {
     console.log('All beats in the playlist has finished, repeating beats...');
     return (shuffle === true) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
   } else {
     currentTrack++;
+    audio = files[currentTrack];
+    return await playAudio(bot);
+  }
+}
+
+export async function previousAudio(bot, interaction) {
+  if (currentTrack <= 0) {
+    return await interaction.reply({ content: 'You are at the beginning of the playlist, cannot go further than this', ephemeral: true });
+  } else {
+    await interaction.reply({ content: 'Playing previous music', ephemeral: true });
+    player.stop();
+    currentTrack--;
     audio = files[currentTrack];
     return await playAudio(bot);
   }

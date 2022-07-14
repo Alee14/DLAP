@@ -45,7 +45,7 @@ join - Joins voice chat.
 play - Resumes music.
 play (int) - Input a number for the selection for the audio file.
 pause - Pauses music.
-skip - Skips the audio track.
+next - Goes to next track.
 reshuffle - Reshuffles the playlist
 leave - Leaves voice chat.
 shutdown - Powers off the bot.

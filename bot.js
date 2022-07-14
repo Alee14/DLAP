@@ -36,6 +36,8 @@ bot.login(token);
  * Audio streaming
  * Metadata support
  * m3u support
+ * Custom string support
+ * Non repeat support
  */
 
 // Slash Command Handler

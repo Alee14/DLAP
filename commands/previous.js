@@ -20,23 +20,15 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { player, shufflePlaylist } from '../AudioBackend.js';
+import { previousAudio } from '../AudioBackend.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-import { readFileSync } from 'node:fs';
-// import config from './config.json' assert {type: 'json'}
-const { shuffle } = JSON.parse(readFileSync('./config.json'));
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('reshuffle')
-    .setDescription('Reshuffles the playlist')
+    .setName('previous')
+    .setDescription('Goes to previous track')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
-    async function shuffleDetected(bot) {
-      await interaction.reply({ content: 'Reshuffling the playlist...', ephemeral: true });
-      player.stop();
-      await shufflePlaylist(bot);
-    }
-    return (shuffle === true) ? await shuffleDetected(bot) : await interaction.reply({ content: 'Shuffle mode is disabled, enable it in the configuration file to access this command.', ephemeral: true });
+    return await previousAudio(bot, interaction);
   }
 };

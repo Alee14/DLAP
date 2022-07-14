@@ -25,12 +25,12 @@ import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('skip')
-    .setDescription('Skips the audio track')
+    .setName('next')
+    .setDescription('Goes to next track')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
-    await interaction.reply({ content: `Skipping ${audio}`, ephemeral: true });
+    await interaction.reply({ content: 'Playing next music', ephemeral: true });
     player.stop();
-    return await nextAudio(bot, interaction);
+    return await nextAudio(bot);
   }
 };
