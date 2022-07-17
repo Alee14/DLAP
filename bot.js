@@ -25,7 +25,7 @@ import { webServer } from './WebStream.js';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
 const { token, statusChannel, voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json'));
 
-const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates ]});
+const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
 
 // webServer();

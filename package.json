@@ -5,7 +5,8 @@
   "main": "bot.js",
   "license": "GPL-3.0",
   "scripts": {
-    "dev": "nodemon bot.js"
+    "dev": "nodemon bot.js",
+    "eslint": "eslint ."
   },
   "dependencies": {
     "@discordjs/opus": "^0.8.0",

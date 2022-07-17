@@ -148,7 +148,7 @@ export async function playAudio(bot) {
   }
 
   const statusEmbed = new EmbedBuilder()
-    .addFields({ name: 'Now Playing', value: audio})
+    .addFields({ name: 'Now Playing', value: audio })
     .setColor('#0066ff');
 
   const channel = bot.channels.cache.get(statusChannel);

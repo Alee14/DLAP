@@ -33,7 +33,7 @@ export default {
     const aboutEmbed = new EmbedBuilder()
       .setAuthor({ name: `About ${bot.user.username}`, iconURL: bot.user.avatarURL() })
       .addFields({ name: 'Information', value: 'A Discord bot that plays local audio tracks.' })
-      .addFields({ name: 'Version', value: `DLAP ${npmPackage.version}`})
+      .addFields({ name: 'Version', value: `DLAP ${npmPackage.version}` })
       .addFields({ name: 'Original Creator', value: 'Andrew Lee (Alee#4277)' }) // Do not remove this since I created this :)
     // .addFields({ name: 'Contributors', value: '[your name] (discord#0000)' })
     // .addFields({ name: 'Forked by', value: '[your name] (discord#0000)' })
