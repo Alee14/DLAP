@@ -18,15 +18,14 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
-import { Client, MessageEmbed, Collection, version } from 'discord.js';
+import { Client, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
 import { voiceInit } from './AudioBackend.js';
 import { readdirSync, readFileSync } from 'node:fs';
 import { webServer } from './WebStream.js';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
 const { token, statusChannel, voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json'));
 
-const bot = new Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'] });
-
+const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates ]});
 bot.login(token);
 
 // webServer();
@@ -72,7 +71,7 @@ bot.once('ready', async() => {
   console.log(`Updated bot presence to "${activity.name}"`);
 
   // Send bots' status to channel
-  const readyEmbed = new MessageEmbed()
+  const readyEmbed = new EmbedBuilder()
     .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL() })
     .setDescription('Starting bot...')
     .setColor('#0066ff');
@@ -85,7 +84,7 @@ bot.once('ready', async() => {
 });
 
 bot.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) return;
+  if (!interaction.type === InteractionType.ApplicationCommand) return;
 
   const command = bot.commands.get(interaction.commandName);
 

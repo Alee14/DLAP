@@ -26,7 +26,7 @@ import {
   joinVoiceChannel,
   VoiceConnectionStatus
 } from '@discordjs/voice';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { readdirSync, readFileSync, writeFile } from 'node:fs';
 // import config from './config.json' assert {type: 'json'}
 const { voiceChannel, statusChannel, shuffle, txtFile } = JSON.parse(readFileSync('./config.json'));
@@ -147,8 +147,8 @@ export async function playAudio(bot) {
     });
   }
 
-  const statusEmbed = new MessageEmbed()
-    .addField('Now Playing', `${audio}`)
+  const statusEmbed = new EmbedBuilder()
+    .addFields({ name: 'Now Playing', value: audio})
     .setColor('#0066ff');
 
   const channel = bot.channels.cache.get(statusChannel);
@@ -186,7 +186,7 @@ export function audioState() {
 }
 
 export async function stopBot(bot, interaction) {
-  const statusEmbed = new MessageEmbed()
+  const statusEmbed = new EmbedBuilder()
     .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL() })
     .setDescription(`That's all folks! Powering down ${bot.user.username}...`)
     .setColor('#0066ff');

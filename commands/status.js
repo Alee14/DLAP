@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { audio, currentTrack, files, playerState } from '../AudioBackend.js';
 
 export default {
@@ -38,12 +38,12 @@ export default {
       audioName = audioName.split('.').slice(0, -1).join('.');
     }
 
-    const controlEmbed = new MessageEmbed()
+    const controlEmbed = new EmbedBuilder()
       .setAuthor({ name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL() })
-      .addField('State', playerState)
-      .addField('Tracks', `${audioID}/${files.length}`)
-      .addField('Currently Playing', audio)
-      .addField('Up Next', audioName)
+      .addFields({ name: 'State', value: playerState })
+      .addFields({ name: 'Tracks', value: `${audioID}/${files.length}` })
+      .addFields({ name: 'Currently Playing', value: audio })
+      .addFields({ name: 'Up Next', value: audioName })
       .setColor('#0066ff');
     interaction.reply({ embeds: [controlEmbed], ephemeral: true });
   }

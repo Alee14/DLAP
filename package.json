@@ -8,19 +8,18 @@
     "dev": "nodemon bot.js"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.15.0",
     "@discordjs/opus": "^0.8.0",
-    "@discordjs/rest": "^0.5.0",
-    "@discordjs/voice": "^0.10.0",
-    "discord-api-types": "^0.36.1",
-    "discord.js": "^13.8.1",
+    "@discordjs/rest": "^1.0.0",
+    "@discordjs/voice": "^0.11.0",
+    "discord-api-types": "^0.36.2",
+    "discord.js": "^14.0.1",
     "ffmpeg-static": "^5.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "music-metadata": "^7.12.4",
     "sodium": "^3.0.2"
   },
   "devDependencies": {
-    "eslint": "^8.0.1",
+    "eslint": "^8.20.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",

@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { MessageEmbed, version, MessageActionRow, MessageButton } from 'discord.js';
+import { EmbedBuilder, version, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 // import npmPackage from '../package.json' assert { type:'json' }
 import { readFileSync } from 'node:fs';
 const npmPackage = JSON.parse(readFileSync('./package.json'));
@@ -30,22 +30,22 @@ export default {
     .setName('about')
     .setDescription('Information about the bot'),
   async execute(interaction, bot) {
-    const aboutEmbed = new MessageEmbed()
+    const aboutEmbed = new EmbedBuilder()
       .setAuthor({ name: `About ${bot.user.username}`, iconURL: bot.user.avatarURL() })
-      .addField('Information', 'A Discord bot that plays local audio tracks.')
-      .addField('Version', `DLAP ${npmPackage.version}`)
-      .addField('Original Creator', 'Andrew Lee (Alee#4277)') // Do not remove this since I created this :)
-    // .addField('Contributors', '[your name] (discord#0000)')
-    // .addField('Forked by', '[your name] (discord#0000)')
-      .addField('Frameworks', `Discord.JS ${version} + Voice`)
-      .addField('License', 'GNU General Public License v3.0')
+      .addFields({ name: 'Information', value: 'A Discord bot that plays local audio tracks.' })
+      .addFields({ name: 'Version', value: `DLAP ${npmPackage.version}`})
+      .addFields({ name: 'Original Creator', value: 'Andrew Lee (Alee#4277)' }) // Do not remove this since I created this :)
+    // .addFields({ name: 'Contributors', value: '[your name] (discord#0000)' })
+    // .addFields({ name: 'Forked by', value: '[your name] (discord#0000)' })
+      .addFields({ name: 'Frameworks', value: `Discord.JS ${version} + Voice` })
+      .addFields({ name: 'License', value: 'GNU General Public License v3.0' })
       .setFooter({ text: '© Copyright 2020-2022 Andrew Lee' })
       .setColor('#0066ff');
 
-    const srcOrig = new MessageActionRow()
+    const srcOrig = new ActionRowBuilder()
       .addComponents(
-        new MessageButton()
-          .setStyle('LINK')
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Link)
           .setLabel('Original Source Code')
           .setURL('https://github.com/Alee14/DLAP')
       );

@@ -55,7 +55,7 @@ shutdown - Powers off the bot.
 # Forking
 When forking the project, you can make your own version of DLAP or help contribute to the project (See the "Contributing" section).
 
-You need to edit `/commands/about.js` to uncomment the `.addField('Forked by', '[your name] (discord#0000)')` section.
+You need to edit `/commands/about.js` to uncomment the `.addFields({ name: 'Forked by', value: '[your name] (discord#0000)' })` section.
 
 Be sure to replace that with your name.
 
