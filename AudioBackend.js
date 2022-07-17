@@ -35,11 +35,12 @@ export const player = createAudioPlayer();
 export let audio;
 export const files = readdirSync('music');
 let fileData;
+
+let totalTrack = files.length;
 export let currentTrack;
 
 export let playerState;
 export let isAudioStatePaused;
-let totalTrack = files.length;
 
 export async function voiceInit(bot) {
   bot.channels.fetch(voiceChannel).then(async channel => {

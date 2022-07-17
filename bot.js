@@ -38,6 +38,7 @@ bot.login(token);
  * m3u support
  * Custom string support
  * Non repeat support
+ * Modularizing AudioBackend
  */
 
 // Slash Command Handler
