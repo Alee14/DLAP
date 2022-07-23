@@ -21,23 +21,18 @@
 import { Client, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
 import { voiceInit } from './AudioBackend.js';
 import { readdirSync, readFileSync } from 'node:fs';
-import { webServer } from './WebStream.js';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
 const { token, statusChannel, voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json'));
 
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
 
-// webServer();
-
 /**
- * Project Ideas:
- * Audio streaming
- * Metadata support
- * m3u support
- * Custom string support
- * Non repeat support
- * Modularizing AudioBackend
+ * TODO: - Metadata support
+ *       - m3u support
+ *       - Custom string support (Basically change what the bot is saying)
+ *       - Non repeat support
+ *       - Modularizing AudioBackend
  */
 
 // Slash Command Handler
@@ -84,7 +79,7 @@ bot.once('ready', async() => {
 });
 
 bot.on('interactionCreate', async interaction => {
-  if (!interaction.type === InteractionType.ApplicationCommand) return;
+  if (interaction.type === !InteractionType.ApplicationCommand) return;
 
   const command = bot.commands.get(interaction.commandName);
 
