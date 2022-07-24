@@ -19,8 +19,7 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { EmbedBuilder, version, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { EmbedBuilder, version, ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 // import npmPackage from '../package.json' assert { type:'json' }
 import { readFileSync } from 'node:fs';
 const npmPackage = JSON.parse(readFileSync('./package.json'));

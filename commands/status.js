@@ -19,8 +19,7 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { audio, currentTrack, files, playerState } from '../AudioBackend.js';
 
 export default {
@@ -45,6 +44,6 @@ export default {
       .addFields({ name: 'Currently Playing', value: audio })
       .addFields({ name: 'Up Next', value: audioName })
       .setColor('#0066ff');
-    interaction.reply({ embeds: [controlEmbed], ephemeral: true });
+    interaction.reply({ embeds: [controlEmbed] });
   }
 };

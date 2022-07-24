@@ -19,7 +19,7 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder } from 'discord.js';
 import { player, shufflePlaylist } from '../AudioBackend.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';

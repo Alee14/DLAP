@@ -19,7 +19,7 @@
  *
  ***************************************************************************/
 
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder } from 'discord.js';
 import { readdirSync, readdir } from 'fs';
 
 const musicFolder = './music';
