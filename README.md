@@ -3,6 +3,7 @@
 A Discord bot that plays local audio tracks. Written in Discord.JS.
 
 [Video Tutorial](https://youtu.be/Gvva8LHjOOo)
+[Support Server](https://discord.gg/EFhRDqG)
 
 If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
