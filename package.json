@@ -9,12 +9,12 @@
     "eslint": "eslint ."
   },
   "dependencies": {
-    "@discordjs/opus": "^0.8.0",
-    "@discordjs/rest": "^1.0.0",
-    "@discordjs/voice": "^0.13.0",
-    "discord-api-types": "^0.37.14",
+    "@discordjs/opus": "^0.9.0",
+    "@discordjs/rest": "^1.3.0",
+    "@discordjs/voice": "^0.14.0",
+    "discord-api-types": "^0.37.15",
     "discord.js": "^14.6.0",
-    "ffmpeg-static": "^5.0.0",
+    "ffmpeg-static": "^5.1.0",
     "music-metadata": "^8.1.0",
     "sodium": "^3.0.2"
   },

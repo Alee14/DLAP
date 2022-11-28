@@ -3,3 +3,4 @@ node_modules
 music
 now-playing.txt
 .idea/
+yarn-error.log
