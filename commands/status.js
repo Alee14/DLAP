@@ -21,7 +21,7 @@
 
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { parseFile } from 'music-metadata';
-import { audio, currentTrack, files, playerState, audioTitle, metadataEmpty, formattedDuration } from '../AudioBackend.js';
+import { audio, currentTrack, files, playerState, audioTitle, metadataEmpty, duration } from '../AudioBackend.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -53,7 +53,7 @@ export default {
       .addFields(
         { name: 'State', value: playerState },
         { name: 'Tracks', value: `${audioID}/${files.length}` },
-        { name: 'Duration', value: formattedDuration }
+        { name: 'Duration', value: duration }
         )
       .setColor('#0066ff');
 
