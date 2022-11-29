@@ -147,6 +147,8 @@ export async function playAudio(bot) {
   playerState = 'Playing';
   isAudioStatePaused = false;
 
+  let audioFile = audio;
+
   try {
     const { common, format } = await parseFile('music/' + audio);
     metadataEmpty = false;
@@ -190,12 +192,12 @@ export async function playAudio(bot) {
   } else {
     statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
-      { name: 'Title', value: audioTitle },
-      { name: 'Artist', value: audioArtist },
+      { name: 'Title', value: audioTitle, inline: true },
+      { name: 'Artist', value: audioArtist, inline: true },
       { name: 'Year', value: `${audioYear}` },
       { name: 'Duration', value: duration }
     );
-    statusEmbed.setFooter({ text: `${audioAlbum}` });
+    statusEmbed.setFooter({ text: `Album: ${audioAlbum} | Filename: ${audioFile}` });
     statusEmbed.setColor('#0066ff');
   }
   const channel = bot.channels.cache.get(statusChannel);
