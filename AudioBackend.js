@@ -177,9 +177,9 @@ export async function playAudio(bot) {
   } else {
     statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
-      { name: 'Title:', value: audioTitle },
-      { name: 'Artist:', value: audioArtist },
-      { name: 'Year:', value: `${audioYear}` }
+      { name: 'Title', value: audioTitle },
+      { name: 'Artist', value: audioArtist },
+      { name: 'Year', value: `${audioYear}` }
     );
     statusEmbed.setFooter({ text: `${audioAlbum}` });
     statusEmbed.setColor('#0066ff');
