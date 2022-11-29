@@ -41,6 +41,8 @@ let fileData;
 let totalTrack = files.length;
 export let currentTrack;
 
+export let duration;
+export let formattedDuration;
 export let playerState;
 export let isAudioStatePaused;
 export let metadataEmpty = false;
@@ -147,7 +149,7 @@ export async function playAudio(bot) {
   isAudioStatePaused = false;
 
   try {
-    const { common } = await parseFile('music/' + audio);
+    const { common, format } = await parseFile('music/' + audio);
     metadataEmpty = false;
     if (common.title && common.artist && common.year && common.album) {
       audioTitle = common.title;
@@ -157,6 +159,16 @@ export async function playAudio(bot) {
     } else {
       metadataEmpty = true;
     }
+
+    duration = format.duration;
+    const toHHMMSS = (numSecs) => {
+      const secNum = parseInt(numSecs, 10);
+      const hours = Math.floor(secNum / 3600).toString().padStart(2, '0');
+      const minutes = Math.floor((secNum - (hours * 3600)) / 60).toString().padStart(2, '0'); ;
+      const seconds = secNum - (hours * 3600) - (minutes * 60).toString().padStart(2, '0'); ;
+      return `${hours}:${minutes}:${seconds}`;
+    };
+    formattedDuration = toHHMMSS(duration);
   } catch (error) {
     console.error(error.message);
   }
@@ -173,13 +185,15 @@ export async function playAudio(bot) {
   const statusEmbed = new EmbedBuilder();
   if (metadataEmpty === true) {
     statusEmbed.addFields({ name: 'Now Playing', value: audio });
+    statusEmbed.addFields({ name: 'Duration', value: formattedDuration });
     statusEmbed.setColor('#0066ff');
   } else {
     statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
       { name: 'Title', value: audioTitle },
       { name: 'Artist', value: audioArtist },
-      { name: 'Year', value: `${audioYear}` }
+      { name: 'Year', value: `${audioYear}` },
+      { name: 'Duration', value: formattedDuration }
     );
     statusEmbed.setFooter({ text: `${audioAlbum}` });
     statusEmbed.setColor('#0066ff');
