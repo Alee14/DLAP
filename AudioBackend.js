@@ -28,6 +28,8 @@ import {
 } from '@discordjs/voice';
 import { EmbedBuilder } from 'discord.js';
 import { readdirSync, readFileSync, writeFile } from 'node:fs';
+import { parseFile } from 'music-metadata';
+
 // import config from './config.json' assert {type: 'json'}
 const { voiceChannel, statusChannel, shuffle, txtFile } = JSON.parse(readFileSync('./config.json'));
 
@@ -41,6 +43,12 @@ export let currentTrack;
 
 export let playerState;
 export let isAudioStatePaused;
+export let metadataEmpty = false;
+
+export let audioTitle;
+export let audioArtist;
+export let audioYear;
+export let audioAlbum;
 
 export async function voiceInit(bot) {
   bot.channels.fetch(voiceChannel).then(async channel => {
@@ -138,6 +146,21 @@ export async function playAudio(bot) {
   playerState = 'Playing';
   isAudioStatePaused = false;
 
+  try {
+    const { common } = await parseFile('music/' + audio);
+    metadataEmpty = false;
+    if (common.title && common.artist && common.year && common.album) {
+      audioTitle = common.title;
+      audioArtist = common.artist;
+      audioYear = common.year;
+      audioAlbum = common.album;
+    } else {
+      metadataEmpty = true;
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+
   audio = audio.split('.').slice(0, -1).join('.');
 
   if (txtFile === true) {
@@ -147,10 +170,20 @@ export async function playAudio(bot) {
     });
   }
 
-  const statusEmbed = new EmbedBuilder()
-    .addFields({ name: 'Now Playing', value: audio })
-    .setColor('#0066ff');
-
+  const statusEmbed = new EmbedBuilder();
+  if (metadataEmpty === true) {
+    statusEmbed.addFields({ name: 'Now Playing', value: audio });
+    statusEmbed.setColor('#0066ff');
+  } else {
+    statusEmbed.setTitle('Now Playing');
+    statusEmbed.addFields(
+      { name: 'Title:', value: audioTitle },
+      { name: 'Artist:', value: audioArtist },
+      { name: 'Year:', value: `${audioYear}` }
+    );
+    statusEmbed.setFooter({ text: `${audioAlbum}` });
+    statusEmbed.setColor('#0066ff');
+  }
   const channel = bot.channels.cache.get(statusChannel);
   if (!channel) return console.error('The status channel does not exist! Skipping.');
   return await channel.send({ embeds: [statusEmbed] });

@@ -20,7 +20,8 @@
  ***************************************************************************/
 
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import { audio, currentTrack, files, playerState } from '../AudioBackend.js';
+import { parseFile } from 'music-metadata';
+import { audio, currentTrack, files, playerState, audioTitle, metadataEmpty } from '../AudioBackend.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -31,19 +32,39 @@ export default {
     audioID++;
 
     let audioName = files[audioID];
+
     if (audioName === undefined) {
       audioName = 'Playlist Finished';
     } else {
-      audioName = audioName.split('.').slice(0, -1).join('.');
+      if (metadataEmpty === false) {
+        try {
+          const { common } = await parseFile('music/' + audioName);
+          audioName = common.title;
+        } catch (error) {
+          console.error(error.message);
+        }
+      } else {
+        audioName = audioName.split('.').slice(0, -1).join('.');
+      }
     }
 
     const controlEmbed = new EmbedBuilder()
       .setAuthor({ name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL() })
       .addFields({ name: 'State', value: playerState })
       .addFields({ name: 'Tracks', value: `${audioID}/${files.length}` })
-      .addFields({ name: 'Currently Playing', value: audio })
-      .addFields({ name: 'Up Next', value: audioName })
       .setColor('#0066ff');
+
+    if (metadataEmpty === true) {
+      controlEmbed.addFields(
+        { name: 'Currently Playing', value: audio },
+        { name: 'Up Next', value: audioName }
+      );
+    } else {
+      controlEmbed.addFields(
+        { name: 'Currently Playing', value: audioTitle },
+        { name: 'Up Next', value: audioName }
+      );
+    }
     interaction.reply({ embeds: [controlEmbed] });
   }
 };

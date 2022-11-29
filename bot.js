@@ -28,9 +28,7 @@ const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.G
 bot.login(token);
 
 /**
- * TODO: - Metadata support
- *       - m3u support
- *       - Custom string support (Basically change what the bot is saying)
+ * TODO: - Custom string support (Basically change what the bot is saying)
  *       - Non repeat support
  *       - Modularizing AudioBackend
  */
