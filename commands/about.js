@@ -31,13 +31,15 @@ export default {
   async execute(interaction, bot) {
     const aboutEmbed = new EmbedBuilder()
       .setAuthor({ name: `About ${bot.user.username}`, iconURL: bot.user.avatarURL() })
-      .addFields({ name: 'Information', value: 'A Discord bot that plays local audio tracks.' })
-      .addFields({ name: 'Version', value: `DLAP ${npmPackage.version}` })
-      .addFields({ name: 'Original Creator', value: 'Andrew Lee (Alee#4277)' }) // Do not remove this since I created this :)
-    // .addFields({ name: 'Contributors', value: '[your name] (discord#0000)' })
-    // .addFields({ name: 'Forked by', value: '[your name] (discord#0000)' })
-      .addFields({ name: 'Frameworks', value: `Discord.JS ${version} + Voice` })
-      .addFields({ name: 'License', value: 'GNU General Public License v3.0' })
+      .addFields(
+        { name: 'Information', value: 'A Discord bot that plays local audio tracks.' },
+        { name: 'Version', value: `DLAP ${npmPackage.version}` },
+        { name: 'Original Creator', value: 'Andrew Lee (Alee#4277)' }, // Do not remove this since I created this :)
+        // { name: 'Contributors', value: '[your name] (discord#0000)' },
+        // { name: 'Forked by', value: '[your name] (discord#0000)' },
+        { name: 'Frameworks', value: `Discord.JS ${version} + Voice` },
+        { name: 'License', value: 'GNU General Public License v3.0' }
+        )
       .setFooter({ text: '© Copyright 2020-2022 Andrew Lee' })
       .setColor('#0066ff');
 

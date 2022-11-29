@@ -169,8 +169,8 @@ export async function playAudio(bot) {
       return `${hours}:${minutes}:${seconds}`;
     };
     formattedDuration = toHHMMSS(duration);
-  } catch (error) {
-    console.error(error.message);
+  } catch (e) {
+    console.error(e);
   }
 
   audio = audio.split('.').slice(0, -1).join('.');
@@ -184,11 +184,14 @@ export async function playAudio(bot) {
 
   const statusEmbed = new EmbedBuilder();
   if (metadataEmpty === true) {
-    statusEmbed.addFields({ name: 'Now Playing', value: audio });
-    statusEmbed.addFields({ name: 'Duration', value: formattedDuration });
+    statusEmbed.setTitle({ title: 'Now Playing' })
+    statusEmbed.addFields(
+      { name: 'Title', value: audio },
+      { name: 'Duration', value: formattedDuration }
+      );
     statusEmbed.setColor('#0066ff');
   } else {
-    statusEmbed.setTitle('Now Playing');
+    statusEmbed.setTitle({ title: 'Now Playing' });
     statusEmbed.addFields(
       { name: 'Title', value: audioTitle },
       { name: 'Artist', value: audioArtist },
