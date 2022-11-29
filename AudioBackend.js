@@ -184,14 +184,14 @@ export async function playAudio(bot) {
 
   const statusEmbed = new EmbedBuilder();
   if (metadataEmpty === true) {
-    statusEmbed.setTitle({ title: 'Now Playing' })
+    statusEmbed.setTitle('Now Playing')
     statusEmbed.addFields(
       { name: 'Title', value: audio },
       { name: 'Duration', value: formattedDuration }
       );
     statusEmbed.setColor('#0066ff');
   } else {
-    statusEmbed.setTitle({ title: 'Now Playing' });
+    statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
       { name: 'Title', value: audioTitle },
       { name: 'Artist', value: audioArtist },

@@ -50,9 +50,11 @@ export default {
 
     const controlEmbed = new EmbedBuilder()
       .setAuthor({ name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL() })
-      .addFields({ name: 'State', value: playerState })
-      .addFields({ name: 'Tracks', value: `${audioID}/${files.length}` })
-      .addFields({ name: 'Duration', value: formattedDuration })
+      .addFields(
+        { name: 'State', value: playerState },
+        { name: 'Tracks', value: `${audioID}/${files.length}` },
+        { name: 'Duration', value: formattedDuration }
+        )
       .setColor('#0066ff');
 
     if (metadataEmpty === true) {
