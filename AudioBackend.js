@@ -120,6 +120,7 @@ export async function nextAudio(bot) {
 }
 
 export async function previousAudio(bot, interaction) {
+  totalTrack++
   if (currentTrack <= 0) {
     return await interaction.reply({ content: 'You are at the beginning of the playlist, cannot go further than this', ephemeral: true });
   } else {
