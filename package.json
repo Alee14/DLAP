@@ -1,6 +1,6 @@
 {
   "name": "dlap",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "type": "module",
   "main": "bot.js",
   "license": "GPL-3.0",
