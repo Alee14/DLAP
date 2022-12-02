@@ -19,10 +19,10 @@
  *
  ***************************************************************************/
 import { Client, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
-import { voiceInit } from './AudioBackend.js';
+import { voiceInit } from './backend/VoiceInitialization.js';
 import { readdirSync, readFileSync } from 'node:fs';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
-const { token, statusChannel, voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json'));
+const { token, statusChannel, voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
@@ -31,6 +31,7 @@ bot.login(token);
  * TODO: - Custom string support (Basically change what the bot is saying)
  *       - Non repeat support
  *       - Modularizing AudioBackend
+ *       - Easier to use interface
  */
 
 // Slash Command Handler

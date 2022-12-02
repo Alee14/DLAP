@@ -20,7 +20,8 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { player, nextAudio } from '../AudioBackend.js';
+import { player } from '../backend/VoiceInitialization.js';
+import { nextAudio } from '../backend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {

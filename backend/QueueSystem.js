@@ -18,18 +18,33 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
+import { playAudio, updatePlaylist } from './PlayAudio.js';
+import { files } from './AudioControl.js';
 
-import { SlashCommandBuilder } from 'discord.js';
-import { stopBot } from '../backend/Shutdown.js';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-
-export default {
-  data: new SlashCommandBuilder()
-    .setName('shutdown')
-    .setDescription('Powers off the bot')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute(interaction, bot) {
-    await interaction.reply({ content: 'Powering off...', ephemeral: true });
-    return await stopBot(bot, interaction);
+function shuffleArray(array) {
+  // Durstenfeld Shuffle
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-};
+}
+export async function orderPlaylist(bot) {
+  console.log('Playing beats by order...');
+  updatePlaylist('reset');
+  console.log(files);
+  return await playAudio(bot);
+}
+
+export async function shufflePlaylist(bot) {
+  console.log('Shuffling beats...');
+  shuffleArray(files);
+  console.log('Playing beats by shuffle...');
+  updatePlaylist('reset');
+  console.log(files);
+  return await playAudio(bot);
+}
+
+export async function inputAudio(bot) {
+  updatePlaylist('input');
+  return await playAudio(bot);
+}

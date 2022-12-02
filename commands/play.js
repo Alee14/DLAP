@@ -20,7 +20,9 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { isAudioStatePaused, inputAudio, audio, audioState, player, files } from '../AudioBackend.js';
+import { inputAudio } from '../backend/QueueSystem.js';
+import { files, isAudioStatePaused, toggleAudioState } from '../backend/AudioControl.js';
+import { audio } from '../backend/PlayAudio.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export let integer;
@@ -46,8 +48,7 @@ export default {
       }
     }
     if (isAudioStatePaused === true) {
-      audioState();
-      player.unpause();
+      toggleAudioState();
       return await interaction.reply({ content: 'Resuming music', ephemeral: true });
     } else {
       return await interaction.reply({ content: 'Music is already playing', ephemeral: true });

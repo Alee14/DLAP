@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { previousAudio } from '../AudioBackend.js';
+import { previousAudio } from '../backend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {

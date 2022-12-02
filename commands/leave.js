@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { destroyAudio } from '../AudioBackend.js';
+import { destroyAudio } from '../backend/Shutdown.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {

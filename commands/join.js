@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { voiceInit } from '../AudioBackend.js';
+import { voiceInit } from '../backend/VoiceInitialization.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {

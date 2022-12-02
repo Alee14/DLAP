@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { audioState, isAudioStatePaused, player } from '../AudioBackend.js';
+import { toggleAudioState, isAudioStatePaused } from '../backend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
@@ -30,8 +30,7 @@ export default {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
     if (isAudioStatePaused === false) {
-      audioState();
-      player.pause();
+      toggleAudioState();
       return await interaction.reply({ content: 'Pausing music', ephemeral: true });
     } else {
       return await interaction.reply({ content: 'Music is already paused', ephemeral: true });

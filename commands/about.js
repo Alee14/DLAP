@@ -39,7 +39,7 @@ export default {
         // { name: 'Forked by', value: '[your name] (discord#0000)' },
         { name: 'Frameworks', value: `Discord.JS ${version} + Voice` },
         { name: 'License', value: 'GNU General Public License v3.0' }
-        )
+      )
       .setFooter({ text: '© Copyright 2020-2022 Andrew Lee' })
       .setColor('#0066ff');
 

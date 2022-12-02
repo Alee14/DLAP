@@ -7,8 +7,8 @@ A Discord bot that plays local audio tracks. Written in Discord.JS v14.
 
 If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
-# Recommended Software
-- Latest version of NodeJS (v18.5.0+)
+# Recommended Software Requirements
+- Latest version of NodeJS (v16.9.0+)
 - Linux (or WSL for Windows users)
 
 # Configuration
@@ -56,7 +56,7 @@ shutdown - Powers off the bot.
 # Forking
 When forking the project, you can make your own version of DLAP or help contribute to the project (See the "Contributing" section).
 
-You need to edit `/commands/about.js` to uncomment the `.addFields({ name: 'Forked by', value: '[your name] (discord#0000)' })` section.
+You need to edit `/commands/about.js` to uncomment the `{ name: 'Forked by', value: '[your name] (discord#0000)' }` section.
 
 Be sure to replace that with your name.
 

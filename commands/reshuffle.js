@@ -20,11 +20,12 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { player, shufflePlaylist } from '../AudioBackend.js';
+import { player } from '../backend/VoiceInitialization.js';
+import { shufflePlaylist } from '../backend/QueueSystem.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
 // import config from './config.json' assert {type: 'json'}
-const { shuffle } = JSON.parse(readFileSync('./config.json'));
+const { shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 export default {
   data: new SlashCommandBuilder()
