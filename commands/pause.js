@@ -29,6 +29,7 @@ export default {
     .setDescription('Pauses music')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
     if (isAudioStatePaused === false) {
       toggleAudioState();
       return await interaction.reply({ content: 'Pausing music', ephemeral: true });

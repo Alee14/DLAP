@@ -29,6 +29,7 @@ export default {
     .setDescription('Leaves the voice chat')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
     console.log('Leaving voice channel...');
     await destroyAudio(interaction);
     return await interaction.reply({ content: 'Leaving voice channel', ephemeral: true });

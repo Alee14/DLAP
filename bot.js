@@ -30,7 +30,6 @@ bot.login(token);
 /**
  * TODO: - Custom string support (Basically change what the bot is saying)
  *       - Non repeat support
- *       - Modularizing AudioBackend
  *       - Easier to use interface
  */
 

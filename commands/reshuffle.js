@@ -20,10 +20,10 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { player } from '../backend/VoiceInitialization.js';
 import { shufflePlaylist } from '../backend/QueueSystem.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
+import { audioState } from '../backend/AudioControl.js';
 // import config from './config.json' assert {type: 'json'}
 const { shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
@@ -33,9 +33,10 @@ export default {
     .setDescription('Reshuffles the playlist')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
     async function shuffleDetected(bot) {
       await interaction.reply({ content: 'Reshuffling the playlist...', ephemeral: true });
-      player.stop();
+      await audioState(2);
       await shufflePlaylist(bot);
     }
     return (shuffle === true) ? await shuffleDetected(bot) : await interaction.reply({ content: 'Shuffle mode is disabled, enable it in the configuration file to access this command.', ephemeral: true });

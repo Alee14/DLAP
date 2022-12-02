@@ -59,14 +59,7 @@ export async function playAudio(bot) {
     } else {
       metadataEmpty = true;
     }
-    const toHHMMSS = (numSecs) => {
-      const secNum = parseInt(numSecs, 10);
-      const hours = Math.floor(secNum / 3600).toString().padStart(2, '0');
-      const minutes = Math.floor((secNum - (hours * 3600)) / 60).toString().padStart(2, '0');
-      const seconds = secNum - (hours * 3600) - (minutes * 60).toString().padStart(2, '0');
-      return `${hours}:${minutes}:${seconds}`;
-    };
-    duration = toHHMMSS(format.duration);
+    duration = new Date(format.duration * 1000).toISOString().substr(11, 8);
   } catch (e) {
     console.error(e);
   }
@@ -104,8 +97,8 @@ export async function playAudio(bot) {
   return await channel.send({ embeds: [statusEmbed] });
 }
 
-export function updatePlaylist(i) {
-  switch (i) {
+export function updatePlaylist(option) {
+  switch (option) {
     case 'next':
       currentTrack++;
       audio = files[currentTrack];

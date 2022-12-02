@@ -29,6 +29,7 @@ export default {
     .setName('status')
     .setDescription('Checks what audio file is playing currently'),
   async execute(interaction, bot) {
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
     let audioID = currentTrack;
     audioID++;
 

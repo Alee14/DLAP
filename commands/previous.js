@@ -29,6 +29,7 @@ export default {
     .setDescription('Goes to previous music')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
     return await previousAudio(bot, interaction);
   }
 };

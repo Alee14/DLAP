@@ -76,7 +76,9 @@ export function audioState(state) {
       break;
     case 2:
       playerState = 'Stopped';
+      totalTrack = files.length;
       isAudioStatePaused = true;
+      player.stop();
       break;
   }
 }
