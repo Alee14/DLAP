@@ -33,6 +33,10 @@ export async function voiceInit(bot) {
       adapterCreator: channel.guild.voiceAdapterCreator
     });
 
+    connection.on(VoiceConnectionStatus.Connecting, () => {
+      console.log(`Connecting to ${channel.name}...`);
+    });
+
     connection.on(VoiceConnectionStatus.Ready, async() => {
       console.log('Ready to blast some beats!');
       return (shuffle === true) ? await shufflePlaylist(bot) : await orderPlaylist(bot);

@@ -48,7 +48,7 @@ export default {
         return await interaction.reply({ content: 'Number is too big, choose a number that\'s less than ' + files.length + '.', ephemeral: true });
       }
     }
-    if (isAudioStatePaused === true) {
+    if (isAudioStatePaused) {
       toggleAudioState();
       return await interaction.reply({ content: 'Resuming music', ephemeral: true });
     } else {

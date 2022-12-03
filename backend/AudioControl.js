@@ -55,7 +55,7 @@ export async function previousAudio(bot, interaction) {
 }
 
 export function toggleAudioState() {
-  if (isAudioStatePaused === true) {
+  if (isAudioStatePaused) {
     audioState(0);
   } else {
     audioState(1);

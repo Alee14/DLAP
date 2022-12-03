@@ -22,8 +22,7 @@ import { Client, GatewayIntentBits, EmbedBuilder, Collection, version, Interacti
 import { voiceInit } from './backend/VoiceInitialization.js';
 import { readdirSync, readFileSync } from 'node:fs';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
-const { token, statusChannel, voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
-
+const { token, statusChannel, voiceChannel, shuffle, presenceActivity } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
 
@@ -49,12 +48,12 @@ bot.once('ready', async() => {
   console.log(`Running on Discord.JS ${version}`);
   console.log(`Voice Channel: ${voiceChannel}`);
   console.log(`Status Channel: ${statusChannel}`);
-  console.log(`Shuffle enabled: ${shuffle}`);
+  console.log(`Shuffle Enabled: ${shuffle}`);
 
   // Set bots' presence
   bot.user.setPresence({
     activities: [{
-      name: 'some beats',
+      name: presenceActivity,
       type: 'LISTENING'
     }],
     status: 'online'

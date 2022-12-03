@@ -28,14 +28,17 @@ import { integer } from '../commands/play.js';
 const { statusChannel, txtFile } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 let fileData;
+
 export let audio;
-export let duration;
-export let metadataEmpty = false;
+export let currentTrack;
+
+export let metadataEmpty;
+
 export let audioTitle;
 export let audioArtist;
 export let audioYear;
 export let audioAlbum;
-export let currentTrack;
+export let duration;
 
 const inputFiles = readdirSync('music');
 export async function playAudio(bot) {
@@ -66,7 +69,7 @@ export async function playAudio(bot) {
 
   audio = audio.split('.').slice(0, -1).join('.');
 
-  if (txtFile === true) {
+  if (txtFile) {
     fileData = 'Now Playing: ' + audio;
     writeFile('./now-playing.txt', fileData, (err) => {
       if (err) { console.log(err); }

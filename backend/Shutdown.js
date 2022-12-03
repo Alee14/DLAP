@@ -28,7 +28,7 @@ const { statusChannel, txtFile } = JSON.parse(readFileSync('./config.json', 'utf
 let fileData;
 
 export async function destroyAudio(interaction) {
-  if (txtFile === true) {
+  if (txtFile) {
     fileData = 'Now Playing: Nothing';
     writeFile('now-playing.txt', fileData, (err) => {
       if (err) { console.log(err); }

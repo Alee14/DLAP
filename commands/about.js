@@ -22,7 +22,7 @@
 import { EmbedBuilder, version, ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 // import npmPackage from '../package.json' assert { type:'json' }
 import { readFileSync } from 'node:fs';
-const npmPackage = JSON.parse(readFileSync('./package.json'));
+const npmPackage = JSON.parse(readFileSync('./package.json', 'utf-8'));
 
 export default {
   data: new SlashCommandBuilder()
