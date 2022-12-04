@@ -20,7 +20,7 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { previousAudio } from '../backend/AudioControl.js';
+import { playerState, previousAudio } from '../backend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
@@ -30,6 +30,10 @@ export default {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    return await previousAudio(bot, interaction);
+    if (playerState === 'Playing' || playerState === 'Paused') {
+      return await previousAudio(bot, interaction);
+    } else if (playerState === 'Stopped') {
+      return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
+    }
   }
 };

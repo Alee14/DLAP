@@ -22,7 +22,7 @@ import { Client, GatewayIntentBits, EmbedBuilder, Collection, version, Interacti
 import { voiceInit } from './backend/VoiceInitialization.js';
 import { readdirSync, readFileSync } from 'node:fs';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
-const { token, statusChannel, voiceChannel, shuffle, presenceActivity } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const { token, statusChannel, voiceChannel, shuffle, repeat, presenceActivity } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
 
@@ -49,6 +49,7 @@ bot.once('ready', async() => {
   console.log(`Voice Channel: ${voiceChannel}`);
   console.log(`Status Channel: ${statusChannel}`);
   console.log(`Shuffle Enabled: ${shuffle}`);
+  console.log(`Repeat Enabled: ${repeat}`);
 
   // Set bots' presence
   bot.user.setPresence({
@@ -86,10 +87,6 @@ bot.on('interactionCreate', async interaction => {
     await command.execute(interaction, bot);
   } catch (e) {
     console.error(e);
-    if (e == null) {
-      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-    } else {
-      await interaction.reply({ content: `There was an error while executing this command!\nShare this to the bot owner!\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
-    }
+    await interaction.reply({ content: `There was an error while executing this command!\nShare this to the bot owner!\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
   }
 });

@@ -38,7 +38,7 @@ export default {
     if (audioName === undefined) {
       audioName = 'Playlist Finished';
     } else {
-      if (metadataEmpty === false) {
+      if (!metadataEmpty) {
         try {
           const { common } = await parseFile('music/' + audioName);
           audioName = common.title;
@@ -59,7 +59,7 @@ export default {
       )
       .setColor('#0066ff');
 
-    if (metadataEmpty === true) {
+    if (metadataEmpty) {
       controlEmbed.addFields(
         { name: 'Currently Playing', value: audio },
         { name: 'Up Next', value: audioName }

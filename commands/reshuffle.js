@@ -39,6 +39,6 @@ export default {
       await audioState(2);
       await shufflePlaylist(bot);
     }
-    return (shuffle === true) ? await shuffleDetected(bot) : await interaction.reply({ content: 'Shuffle mode is disabled, enable it in the configuration file to access this command.', ephemeral: true });
+    return (shuffle) ? await shuffleDetected(bot) : await interaction.reply({ content: 'Shuffle mode is disabled, enable it in the configuration file to access this command.', ephemeral: true });
   }
 };

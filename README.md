@@ -18,8 +18,10 @@ Make a new file called `config.json`.
     "token": "token_here",
     "txtFile": true/false,
     "shuffle": true/false,
+    "repeat": true/false,
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id",
+    "presenceActivity": "activity_here",
     "clientID": "client_id"
 }
 ```

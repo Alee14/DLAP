@@ -22,20 +22,31 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { shufflePlaylist, orderPlaylist } from './QueueSystem.js';
 import { playAudio, currentTrack, updatePlaylist } from './PlayAudio.js';
 import { player } from './VoiceInitialization.js';
+import { destroyAudio } from './Shutdown.js';
 
-const { shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const { shuffle, repeat } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export const files = readdirSync('music');
 export let playerState;
 export let isAudioStatePaused;
 
 let totalTrack = files.length;
 
+async function repeatCheck(bot) {
+  if (repeat) {
+    console.log('All beats in the playlist has finished, repeating beats...');
+    totalTrack = files.length;
+    return (shuffle) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
+  } else {
+    console.log('All beats in the playlist has finished.');
+    updatePlaylist('stop');
+    audioState(2);
+  }
+}
+
 export async function nextAudio(bot) {
   totalTrack--;
   if (currentTrack >= totalTrack) {
-    console.log('All beats in the playlist has finished, repeating beats...');
-    totalTrack = files.length;
-    return (shuffle === true) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
+    await repeatCheck(bot);
   } else {
     updatePlaylist('next');
     return await playAudio(bot);

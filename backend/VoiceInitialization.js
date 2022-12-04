@@ -39,7 +39,7 @@ export async function voiceInit(bot) {
 
     connection.on(VoiceConnectionStatus.Ready, async() => {
       console.log('Ready to blast some beats!');
-      return (shuffle === true) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
+      return (shuffle) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
     });
 
     connection.on(VoiceConnectionStatus.Destroyed, () => {

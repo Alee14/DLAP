@@ -77,7 +77,7 @@ export async function playAudio(bot) {
   }
 
   const statusEmbed = new EmbedBuilder();
-  if (metadataEmpty === true) {
+  if (metadataEmpty) {
     statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
       { name: 'Title', value: audio },
