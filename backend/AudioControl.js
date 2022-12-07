@@ -22,7 +22,6 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { shufflePlaylist, orderPlaylist } from './QueueSystem.js';
 import { playAudio, currentTrack, updatePlaylist } from './PlayAudio.js';
 import { player } from './VoiceInitialization.js';
-import { destroyAudio } from './Shutdown.js';
 
 const { shuffle, repeat } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export const files = readdirSync('music');
@@ -44,8 +43,7 @@ async function repeatCheck(bot) {
 }
 
 export async function nextAudio(bot) {
-  totalTrack--;
-  if (currentTrack >= totalTrack) {
+  if (currentTrack >= totalTrack - 1) {
     await repeatCheck(bot);
   } else {
     updatePlaylist('next');
@@ -54,7 +52,6 @@ export async function nextAudio(bot) {
 }
 
 export async function previousAudio(bot, interaction) {
-  totalTrack++;
   if (currentTrack <= 0) {
     return await interaction.reply({ content: 'You are at the beginning of the playlist, cannot go further than this', ephemeral: true });
   } else {

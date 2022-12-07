@@ -62,7 +62,7 @@ export async function playAudio(bot) {
     } else {
       metadataEmpty = true;
     }
-    duration = new Date(format.duration * 1000).toISOString().substr(11, 8);
+    duration = new Date(format.duration * 1000).toISOString().slice(11, 19);
   } catch (e) {
     console.error(e);
   }

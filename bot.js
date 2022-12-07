@@ -28,7 +28,6 @@ bot.login(token);
 
 /**
  * TODO: - Custom string support (Basically change what the bot is saying)
- *       - Non repeat support
  *       - Easier to use interface
  */
 

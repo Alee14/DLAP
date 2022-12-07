@@ -55,6 +55,6 @@ export async function stopBot(bot, interaction) {
 
   console.log(`Powering off ${bot.user.username}...`);
   await destroyAudio(interaction);
-  bot.destroy();
+  await bot.destroy();
   return process.exit(0);
 }

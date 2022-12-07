@@ -1,6 +1,6 @@
 # DLAP Bot (Discord.JS Local Audio Player)
 
-A Discord bot that plays local audio tracks. Written in Discord.JS v14.
+DLAP is a Discord bot that lets you play local audio tracks in your server. With DLAP, you can access your music files, and share your tunes with your friends and community. DLAP offers seamless integration with Discord, so you can enjoy your music without missing a beat.
 
 [Video Tutorial](https://youtu.be/Gvva8LHjOOo) | 
 [Support Server](https://discord.gg/EFhRDqG)
