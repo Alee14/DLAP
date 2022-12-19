@@ -21,8 +21,8 @@
 
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { parseFile } from 'music-metadata';
-import { audio, metadataEmpty, duration, audioTitle, currentTrack } from '../backend/PlayAudio.js';
-import { files, playerState } from '../backend/AudioControl.js';
+import { audio, metadataEmpty, duration, audioTitle, currentTrack } from '../AudioBackend/PlayAudio.js';
+import { files, playerState } from '../AudioBackend/AudioControl.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -56,6 +56,7 @@ export default {
         { name: 'State', value: playerState },
         { name: 'Tracks', value: `${audioID}/${files.length}` },
         { name: 'Duration', value: duration }
+        //    { name: 'Session Uptime', value: `` }
       )
       .setColor('#0066ff');
 

@@ -20,10 +20,10 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { shufflePlaylist } from '../backend/QueueSystem.js';
+import { shufflePlaylist } from '../AudioBackend/QueueSystem.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
-import { audioState } from '../backend/AudioControl.js';
+import { audioState } from '../AudioBackend/AudioControl.js';
 // import config from './config.json' assert {type: 'json'}
 const { shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 

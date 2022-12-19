@@ -20,16 +20,18 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { stopBot } from '../backend/Shutdown.js';
+import { destroyAudio } from '../AudioBackend/Shutdown.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('shutdown')
-    .setDescription('Powers off the bot')
+    .setName('leave')
+    .setDescription('Leaves the voice chat')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute(interaction, bot) {
-    await interaction.reply({ content: 'Powering off...', ephemeral: true });
-    return await stopBot(bot, interaction);
+  async execute(interaction) {
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
+    console.log('Leaving voice channel...');
+    await destroyAudio(interaction);
+    return await interaction.reply({ content: 'Leaving voice channel', ephemeral: true });
   }
 };

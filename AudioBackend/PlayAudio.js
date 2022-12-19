@@ -24,7 +24,7 @@ import { readdirSync, readFileSync, writeFile } from 'node:fs';
 import { EmbedBuilder } from 'discord.js';
 import { player } from './VoiceInitialization.js';
 import { audioState, files } from './AudioControl.js';
-import { integer } from '../commands/play.js';
+import { integer } from '../Commands/play.js';
 const { statusChannel, txtFile } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 let fileData;

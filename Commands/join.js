@@ -20,18 +20,17 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { destroyAudio } from '../backend/Shutdown.js';
+import { voiceInit } from '../AudioBackend/VoiceInitialization.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('leave')
-    .setDescription('Leaves the voice chat')
+    .setName('join')
+    .setDescription('Joins voice chat')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute(interaction) {
+  async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    console.log('Leaving voice channel...');
-    await destroyAudio(interaction);
-    return await interaction.reply({ content: 'Leaving voice channel', ephemeral: true });
+    await interaction.reply({ content: 'Joining voice channel', ephemeral: true });
+    return await voiceInit(bot);
   }
 };

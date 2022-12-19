@@ -20,17 +20,21 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { voiceInit } from '../backend/VoiceInitialization.js';
+import { toggleAudioState, isAudioStatePaused } from '../AudioBackend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('join')
-    .setDescription('Joins voice chat')
+    .setName('pause')
+    .setDescription('Pauses music')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute(interaction, bot) {
+  async execute(interaction) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    await interaction.reply({ content: 'Joining voice channel', ephemeral: true });
-    return await voiceInit(bot);
+    if (!isAudioStatePaused) {
+      toggleAudioState();
+      return await interaction.reply({ content: 'Pausing music', ephemeral: true });
+    } else {
+      return await interaction.reply({ content: 'Music is already paused', ephemeral: true });
+    }
   }
 };

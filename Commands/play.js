@@ -20,9 +20,9 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { inputAudio } from '../backend/QueueSystem.js';
-import { files, isAudioStatePaused, toggleAudioState } from '../backend/AudioControl.js';
-import { audio } from '../backend/PlayAudio.js';
+import { inputAudio } from '../AudioBackend/QueueSystem.js';
+import { files, isAudioStatePaused, toggleAudioState } from '../AudioBackend/AudioControl.js';
+import { audio } from '../AudioBackend/PlayAudio.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export let integer;

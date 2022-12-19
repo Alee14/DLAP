@@ -20,21 +20,23 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { toggleAudioState, isAudioStatePaused } from '../backend/AudioControl.js';
+import { player } from '../AudioBackend/VoiceInitialization.js';
+import { nextAudio, playerState } from '../AudioBackend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('pause')
-    .setDescription('Pauses music')
+    .setName('next')
+    .setDescription('Goes to next music')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute(interaction) {
+  async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    if (!isAudioStatePaused) {
-      toggleAudioState();
-      return await interaction.reply({ content: 'Pausing music', ephemeral: true });
-    } else {
-      return await interaction.reply({ content: 'Music is already paused', ephemeral: true });
+    if (playerState === 'Playing' || playerState === 'Paused') {
+      await interaction.reply({ content: 'Playing next music', ephemeral: true });
+      player.stop();
+      return await nextAudio(bot);
+    } else if (playerState === 'Stopped') {
+      return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
     }
   }
 };

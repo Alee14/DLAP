@@ -19,10 +19,10 @@
  *
  ***************************************************************************/
 import { Client, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
-import { voiceInit } from './backend/VoiceInitialization.js';
+import { voiceInit } from './AudioBackend/VoiceInitialization.js';
 import { readdirSync, readFileSync } from 'node:fs';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
-const { token, statusChannel, voiceChannel, shuffle, repeat, presenceActivity } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const { token, statusChannel, voiceChannel, shuffle, repeat, presenceActivity, activityType } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
 
@@ -34,10 +34,10 @@ bot.login(token);
 // Slash Command Handler
 
 bot.commands = new Collection();
-const commandFiles = readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = readdirSync('./Commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-  const { default: command } = await import(`./commands/${file}`);
+  const { default: command } = await import(`./Commands/${file}`);
   bot.commands.set(command.data.name, command);
 }
 
@@ -54,7 +54,7 @@ bot.once('ready', async() => {
   bot.user.setPresence({
     activities: [{
       name: presenceActivity,
-      type: 'LISTENING'
+      type: activityType
     }],
     status: 'online'
   });

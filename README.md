@@ -22,6 +22,7 @@ Make a new file called `config.json`.
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id",
     "presenceActivity": "activity_here",
+    "activityType": [0 (Playing)/1 (Streaming)/2 (Listening)/3 (Watching)/4 (Custom)/5 (Competing)],
     "clientID": "client_id"
 }
 ```
@@ -41,6 +42,8 @@ Public Only
 ping - Pong!
 status - Checks what audio file is playing currently.
 about - Information about the bot.
+list - Lists the available audio tracks.
+list (page) - Input a number to change the page of the list.
 
 Bot Owner Only
 --------------
@@ -50,7 +53,7 @@ play (int) - Input a number for the selection for the audio file.
 pause - Pauses music.
 next - Goes to next music.
 previous - Goes to previous music.
-reshuffle - Reshuffles the playlist
+reshuffle - Reshuffles the playlist.
 leave - Leaves voice chat.
 shutdown - Powers off the bot.
 ```

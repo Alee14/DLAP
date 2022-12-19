@@ -20,23 +20,16 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { player } from '../backend/VoiceInitialization.js';
-import { nextAudio, playerState } from '../backend/AudioControl.js';
+import { stopBot } from '../AudioBackend/Shutdown.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('next')
-    .setDescription('Goes to next music')
+    .setName('shutdown')
+    .setDescription('Powers off the bot')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction, bot) {
-    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    if (playerState === 'Playing' || playerState === 'Paused') {
-      await interaction.reply({ content: 'Playing next music', ephemeral: true });
-      player.stop();
-      return await nextAudio(bot);
-    } else if (playerState === 'Stopped') {
-      return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
-    }
+    await interaction.reply({ content: 'Powering off...', ephemeral: true });
+    return await stopBot(bot, interaction);
   }
 };

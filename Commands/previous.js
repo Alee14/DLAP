@@ -20,23 +20,20 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { readdirSync, readdir } from 'node:fs';
-
-const musicFolder = './music';
+import { playerState, previousAudio } from '../AudioBackend/AudioControl.js';
+import { PermissionFlagsBits } from 'discord-api-types/v10';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('list')
-    .setDescription('Lists the available audio tracks'),
-  async execute(interaction) {
-    // If someone figures out how to either split the list or make pages when the max character reaches, please do so and make a pull request.
-
-    const beats = readdirSync(musicFolder).join('\n');
-    readdir(musicFolder, async(err, files) => {
-      await interaction.reply(`Listing ${files.length} audio tracks...\n\`\`\`\n${beats}\n\`\`\``);
-      if (err) {
-        console.error(err);
-      }
-    });
+    .setName('previous')
+    .setDescription('Goes to previous music')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  async execute(interaction, bot) {
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
+    if (playerState === 'Playing' || playerState === 'Paused') {
+      return await previousAudio(bot, interaction);
+    } else if (playerState === 'Stopped') {
+      return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
+    }
   }
 };

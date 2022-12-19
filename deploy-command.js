@@ -5,10 +5,10 @@ import { Routes } from 'discord-api-types/v10';
 const { clientID, token } = JSON.parse(readFileSync('./config.json'));
 
 const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./Commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-  const { default: command } = await import(`./commands/${file}`);
+  const { default: command } = await import(`./Commands/${file}`);
   commands.push(command.data.toJSON());
 }
 
