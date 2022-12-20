@@ -8,9 +8,11 @@ DLAP is a Discord bot that lets you play local audio tracks in your server. With
 If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
 ## Looking for Maintainers
-As you know, I may not keep up the project at times. I will need to form a team in order to implement new features and make this project better. 
+As you know, I may not keep up the project at times, or I could possibly introduce more bugs in this project. 
+As well as making the code more messy. I will need to form a team in order to implement new features and make this project better. 
 
-If you want to become a maintainer, you must at least know this source code, JavaScript and NodeJS. Also you must join my discord server (Support Server) to communicate with me.
+If you want to become a maintainer, you must at least know this source code, JavaScript and NodeJS. 
+Also you must join my discord server (Support Server) to communicate with me.
 
 # Recommended Software Requirements
 - Latest version of NodeJS (v16.9.0+)
@@ -76,6 +78,11 @@ Be sure to replace that with your name.
 
 # Contributing
 When contributing, be sure to add yourself to the contributors list in `/commands/about.js`.
+
+# Future Features
+* Custom string support (Basically change what the bot is saying)
+* Convert codebase to TypeScript
+* Easier to use interface
 
 # Credits
 ChatGPT: Some code in this codebase used ChatGPT

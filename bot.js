@@ -26,11 +26,6 @@ const { token, statusChannel, voiceChannel, djRole, ownerID, shuffle, repeat, pr
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
 
-/**
- * TODO: - Custom string support (Basically change what the bot is saying)
- *       - Easier to use interface
- */
-
 // Slash Command Handler
 
 bot.commands = new Collection();
