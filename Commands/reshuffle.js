@@ -25,15 +25,16 @@ import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
 import { audioState } from '../AudioBackend/AudioControl.js';
 // import config from './config.json' assert {type: 'json'}
-const { shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const { shuffle, djRole, ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 export default {
   data: new SlashCommandBuilder()
     .setName('reshuffle')
-    .setDescription('Reshuffles the playlist')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDescription('Reshuffles the playlist'),
   async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
+    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.member.permission.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: 'You need a specific role to execute this command', ephemeral: true });
+
     async function shuffleDetected(bot) {
       await interaction.reply({ content: 'Reshuffling the playlist...', ephemeral: true });
       await audioState(2);

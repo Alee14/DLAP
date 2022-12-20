@@ -20,23 +20,21 @@
  ***************************************************************************/
 
 import { SlashCommandBuilder } from 'discord.js';
-import { player } from '../AudioBackend/VoiceInitialization.js';
-import { nextAudio, playerState } from '../AudioBackend/AudioControl.js';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
+import { voteSkip } from '../Utilities/Voting.js';
 
 export default {
   data: new SlashCommandBuilder()
     .setName('next')
     .setDescription('Goes to next music')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .addSubcommand(subcommand =>
+      subcommand.setName('vote')
+        .setDescription('Voting to skip this audio track'))
+    .addSubcommand(subcommand =>
+      subcommand.setName('force')
+        .setDescription('Forces skip this audio track')),
+
   async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    if (playerState === 'Playing' || playerState === 'Paused') {
-      await interaction.reply({ content: 'Playing next music', ephemeral: true });
-      player.stop();
-      return await nextAudio(bot);
-    } else if (playerState === 'Stopped') {
-      return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
-    }
+    await voteSkip(interaction, bot);
   }
 };

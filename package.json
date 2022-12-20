@@ -16,6 +16,7 @@
     "discord.js": "^14.6.0",
     "ffmpeg-static": "^5.1.0",
     "i18next": "^22.4.5",
+    "i18next-fs-backend": "^2.1.0",
     "music-metadata": "^8.1.0",
     "sodium": "^3.0.2"
   },

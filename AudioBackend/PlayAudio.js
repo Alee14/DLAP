@@ -45,7 +45,7 @@ export async function playAudio(bot) {
   const resource = createAudioResource('music/' + audio);
   player.play(resource);
 
-  console.log('Now playing: ' + audio);
+  console.log(`Now playing: ${audio}`);
 
   audioState(0);
 
@@ -70,7 +70,7 @@ export async function playAudio(bot) {
   audio = audio.split('.').slice(0, -1).join('.');
 
   if (txtFile) {
-    fileData = 'Now Playing: ' + audio;
+    fileData = `Now Playing: ${audio}`;
     writeFile('./now-playing.txt', fileData, (err) => {
       if (err) { console.log(err); }
     });
@@ -80,17 +80,17 @@ export async function playAudio(bot) {
   if (metadataEmpty) {
     statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
-      { name: 'Title', value: audio },
-      { name: 'Duration', value: duration }
+      { name: 'Title', value: `${audio}` },
+      { name: 'Duration', value: `${duration}` }
     );
     statusEmbed.setColor('#0066ff');
   } else {
     statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
-      { name: 'Title', value: audioTitle, inline: true },
-      { name: 'Artist', value: audioArtist, inline: true },
+      { name: 'Title', value: `${audioTitle}`, inline: true },
+      { name: 'Artist', value: `${audioArtist}`, inline: true },
       { name: 'Year', value: `${audioYear}` },
-      { name: 'Duration', value: duration }
+      { name: 'Duration', value: `${duration}` }
     );
     statusEmbed.setFooter({ text: `Album: ${audioAlbum}\nFilename: ${audioFile}` });
     statusEmbed.setColor('#0066ff');

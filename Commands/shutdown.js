@@ -21,14 +21,14 @@
 
 import { SlashCommandBuilder } from 'discord.js';
 import { stopBot } from '../AudioBackend/Shutdown.js';
-import { PermissionFlagsBits } from 'discord-api-types/v10';
-
+import { readFileSync } from 'node:fs';
+const { ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export default {
   data: new SlashCommandBuilder()
     .setName('shutdown')
-    .setDescription('Powers off the bot')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDescription('Powers off the bot'),
   async execute(interaction, bot) {
+    if (interaction.user.id !== ownerID) return interaction.reply({ content: 'You need to be the creator of this bot to execute this command', ephemeral: true });
     await interaction.reply({ content: 'Powering off...', ephemeral: true });
     return await stopBot(bot, interaction);
   }

@@ -22,14 +22,16 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { toggleAudioState, isAudioStatePaused } from '../AudioBackend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
-
+import { readFileSync } from 'node:fs';
+const { djRole } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export default {
   data: new SlashCommandBuilder()
     .setName('pause')
-    .setDescription('Pauses music')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  async execute(interaction) {
+    .setDescription('Pauses music'),
+  async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
+    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.member.permission.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: 'You need a specific role to execute this command', ephemeral: true });
+
     if (!isAudioStatePaused) {
       toggleAudioState();
       return await interaction.reply({ content: 'Pausing music', ephemeral: true });

@@ -7,6 +7,11 @@ DLAP is a Discord bot that lets you play local audio tracks in your server. With
 
 If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
+## Looking for Maintainers
+As you know, I may not keep up the project at times. I will need to form a team in order to implement new features and make this project better. 
+
+If you want to become a maintainer, you must at least know this source code, JavaScript and NodeJS. Also you must join my discord server (Support Server) to communicate with me.
+
 # Recommended Software Requirements
 - Latest version of NodeJS (v16.9.0+)
 - Linux (or WSL for Windows users)
@@ -21,9 +26,11 @@ Make a new file called `config.json`.
     "repeat": true/false,
     "statusChannel": "channel_id",
     "voiceChannel": "voice_channel_id",
+    "clientID": "client_id",
+    "ownerID": "your_user_id",
+    "djRole": "role_id",
     "presenceActivity": "activity_here",
-    "activityType": [0 (Playing)/1 (Streaming)/2 (Listening)/3 (Watching)/4 (Custom)/5 (Competing)],
-    "clientID": "client_id"
+    "activityType": [0 (Playing)/1 (Streaming)/2 (Listening)/3 (Watching)/4 (Custom)/5 (Competing)]
 }
 ```
 
@@ -44,15 +51,17 @@ status - Checks what audio file is playing currently.
 about - Information about the bot.
 list - Lists the available audio tracks.
 list (page) - Input a number to change the page of the list.
+next vote - Goes to next music by vote.
+previous vote - Goes to previous music by vote.
 
-Bot Owner Only
+Special Permissions Only
 --------------
 join - Joins voice chat.
 play - Resumes music.
 play (int) - Input a number for the selection for the audio file.
 pause - Pauses music.
-next - Goes to next music.
-previous - Goes to previous music.
+next force - Goes to next music by force.
+previous force - Goes to previous music by force.
 reshuffle - Reshuffles the playlist.
 leave - Leaves voice chat.
 shutdown - Powers off the bot.
@@ -67,3 +76,6 @@ Be sure to replace that with your name.
 
 # Contributing
 When contributing, be sure to add yourself to the contributors list in `/commands/about.js`.
+
+# Credits
+ChatGPT: Some code in this codebase used ChatGPT

@@ -55,7 +55,7 @@ export async function previousAudio(bot, interaction) {
   if (currentTrack <= 0) {
     return await interaction.reply({ content: 'You are at the beginning of the playlist, cannot go further than this', ephemeral: true });
   } else {
-    await interaction.reply({ content: 'Playing previous music', ephemeral: true });
+    await interaction.reply({ content: 'Playing previous music' });
     player.stop();
     updatePlaylist('back');
     return await playAudio(bot);

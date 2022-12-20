@@ -23,6 +23,7 @@ import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { parseFile } from 'music-metadata';
 import { audio, metadataEmpty, duration, audioTitle, currentTrack } from '../AudioBackend/PlayAudio.js';
 import { files, playerState } from '../AudioBackend/AudioControl.js';
+import { votes } from '../Utilities/Voting.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -33,11 +34,19 @@ export default {
     let audioID = currentTrack;
     audioID++;
 
-    let audioName = files[audioID];
+    let audioName;
 
-    if (audioName === undefined) {
+    // Get the members of the voice channel who have not voted yet
+    const voiceChannel = interaction.member.voice.channel;
+    const members = voiceChannel.members.filter(m => !votes.has(m.id));
+
+    // Calculate the number of votes required to skip the audio track
+    const votesRequired = Math.ceil(members.size / 2);
+
+    if (audioID >= files.length) {
       audioName = 'Playlist Finished';
     } else {
+      audioName = files[audioID];
       if (!metadataEmpty) {
         try {
           const { common } = await parseFile('music/' + audioName);
@@ -53,22 +62,22 @@ export default {
     const controlEmbed = new EmbedBuilder()
       .setAuthor({ name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL() })
       .addFields(
-        { name: 'State', value: playerState },
+        { name: 'State', value: `${playerState}` },
         { name: 'Tracks', value: `${audioID}/${files.length}` },
-        { name: 'Duration', value: duration }
-        //    { name: 'Session Uptime', value: `` }
+        { name: 'Duration', value: `${duration}` },
+        { name: 'Votes Needed', value: `${votesRequired}` }
       )
       .setColor('#0066ff');
 
     if (metadataEmpty) {
       controlEmbed.addFields(
-        { name: 'Currently Playing', value: audio },
-        { name: 'Up Next', value: audioName }
+        { name: 'Currently Playing', value: `${audio}` },
+        { name: 'Up Next', value: `${audioName}` }
       );
     } else {
       controlEmbed.addFields(
-        { name: 'Currently Playing', value: audioTitle },
-        { name: 'Up Next', value: audioName }
+        { name: 'Currently Playing', value: `${audioTitle}` },
+        { name: 'Up Next', value: `${audioName}` }
       );
     }
     interaction.reply({ embeds: [controlEmbed] });

@@ -18,11 +18,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
-import { Client, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
+import { Client, Events, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
 import { voiceInit } from './AudioBackend/VoiceInitialization.js';
 import { readdirSync, readFileSync } from 'node:fs';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
-const { token, statusChannel, voiceChannel, shuffle, repeat, presenceActivity, activityType } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const { token, statusChannel, voiceChannel, djRole, ownerID, shuffle, repeat, presenceActivity, activityType } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
 bot.login(token);
 
@@ -41,12 +41,14 @@ for (const file of commandFiles) {
   bot.commands.set(command.data.name, command);
 }
 
-bot.once('ready', async() => {
+bot.once(Events.ClientReady, async() => {
   console.log('Bot is ready!');
   console.log(`Logged in as ${bot.user.tag}!`);
   console.log(`Running on Discord.JS ${version}`);
   console.log(`Voice Channel: ${voiceChannel}`);
   console.log(`Status Channel: ${statusChannel}`);
+  console.log(`DJ Role: ${djRole}`);
+  console.log(`Owner ID: ${ownerID}`);
   console.log(`Shuffle Enabled: ${shuffle}`);
   console.log(`Repeat Enabled: ${repeat}`);
 
@@ -75,9 +77,9 @@ bot.once('ready', async() => {
   return await voiceInit(bot);
 });
 
-bot.on('interactionCreate', async interaction => {
+bot.on(Events.InteractionCreate, async interaction => {
   if (interaction.type === !InteractionType.ApplicationCommand) return;
-
+  if (!interaction.isChatInputCommand()) return;
   const command = bot.commands.get(interaction.commandName);
 
   if (!command) return;
@@ -86,6 +88,6 @@ bot.on('interactionCreate', async interaction => {
     await command.execute(interaction, bot);
   } catch (e) {
     console.error(e);
-    await interaction.reply({ content: `There was an error while executing this command!\nShare this to the bot owner!\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
+    await interaction.reply({ content: `There was an error while executing this command...\nShare this to the bot owner or report it to the git repository in \`/about\`\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
   }
 });

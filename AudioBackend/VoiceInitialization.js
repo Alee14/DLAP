@@ -22,6 +22,7 @@ import { readFileSync } from 'node:fs';
 import { createAudioPlayer, joinVoiceChannel, VoiceConnectionStatus } from '@discordjs/voice';
 import { nextAudio } from './AudioControl.js';
 import { shufflePlaylist, orderPlaylist } from './QueueSystem.js';
+import { votes } from '../Utilities/Voting.js';
 
 const { voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export const player = createAudioPlayer();
@@ -53,6 +54,7 @@ export async function voiceInit(bot) {
 
     player.on('idle', () => {
       console.log('Beat has finished playing, now playing next beat...');
+      votes.clear();
       nextAudio(bot);
     });
 

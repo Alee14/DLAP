@@ -18,6 +18,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
+
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { readdir } from 'node:fs';
 
@@ -38,7 +39,7 @@ export default {
         console.error(err);
       } else {
         const trackList = files.map((file, i) => `${i}: ${file}`); // Create an array of track names
-        const pageSize = 10; // Number of tracks per page
+        const pageSize = 20; // Number of tracks per page
         const numPages = Math.ceil(trackList.length / pageSize); // Total number of pages
         if (page < 1 || page > numPages) { // Check if the page number is valid
           return await interaction.reply({ content: `Invalid page number. Please specify a number between 1 and ${numPages}.`, ephemeral: true });

@@ -18,22 +18,21 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
+import i18next from 'i18next';
+import fsBackend from 'i18next-fs-backend';
 
-import { SlashCommandBuilder } from 'discord.js';
-import { voteSkip } from '../Utilities/Voting.js';
+i18next.use(fsBackend).init({
+  lng: 'en', // if you're using a language detector, do not define the lng option
+  debug: true,
+  fallbackLng: 'en',
+  backend: {
+    loadPath: './Locales/{{lng}}/{{ns}}.json'
+  }
+});
 
 export default {
-  data: new SlashCommandBuilder()
-    .setName('previous')
-    .setDescription('Goes to previous music')
-    .addSubcommand(subcommand =>
-      subcommand.setName('vote')
-        .setDescription('Voting to skip this audio track'))
-    .addSubcommand(subcommand =>
-      subcommand.setName('force')
-        .setDescription('Forces skip this audio track')),
-  async execute(interaction, bot) {
-    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    await voteSkip(interaction, bot);
+  i18next,
+  t(key) {
+    return i18next.t(key);
   }
 };
