@@ -41,14 +41,12 @@ export async function voteSkip(interaction, bot) {
   if (interaction.commandName === 'next') {
     if (nextCheck !== true) {
       // Reset the votes if the current value of nextCheck is different from the command being executed
-      console.log('Vote has reset due to previous command being executed');
       votes.clear();
     }
     nextCheck = true;
   } else if (interaction.commandName === 'previous') {
     if (nextCheck !== false) {
       // Reset the votes if the current value of nextCheck is different from the command being executed
-      console.log('Vote has reset due to next command being executed');
       votes.clear();
     }
     nextCheck = false;
@@ -64,13 +62,12 @@ export async function voteSkip(interaction, bot) {
 
     // Check if the message author has already voted
     if (votes.has(interaction.user.id)) {
-      return interaction.reply({ content: `You have already voted, wait ${votesRequired - votes.size} more vote(s) to skip the audio track`, ephemeral: true });
+      return interaction.reply({ content: `You have already voted, wait ${votesRequired} more vote(s) to skip the audio track`, ephemeral: true });
     }
 
-    // Add the message author to the set of members who have voted
-    votes.add(interaction.user.id);
-
     if (playerState === 'Playing' || playerState === 'Paused') {
+      // Add the message author to the set of members who have voted
+      votes.add(interaction.user.id);
       if (votes.size >= votesRequired) {
         console.log('Enough votes has passed, skipping audio file...');
         // Reset the number of votes
@@ -79,8 +76,8 @@ export async function voteSkip(interaction, bot) {
         await commandCheck(interaction, bot);
       } else {
         // Send a message with the number of votes needed to skip the audio track
-        console.log(`${votesRequired - votes.size} more vote(s) needed to skip the audio track.`);
-        await interaction.reply({ content: `${votesRequired - votes.size} more vote(s) needed to skip the audio track.` });
+        console.log(`${votesRequired - 1} more vote(s) needed to skip the audio track.`);
+        await interaction.reply({ content: `${votesRequired - 1} more vote(s) needed to skip the audio track.` });
       }
     } else if (playerState === 'Stopped') {
       return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });

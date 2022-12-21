@@ -41,7 +41,7 @@ export default {
     const members = voiceChannel.members.filter(m => !votes.has(m.id));
 
     // Calculate the number of votes required to skip the audio track
-    const votesRequired = Math.ceil(members.size / 2);
+    const votesRequired = Math.ceil((members.size - votes.size) / 2);
 
     if (audioID >= files.length) {
       audioName = 'Playlist Finished';
@@ -65,7 +65,7 @@ export default {
         { name: 'State', value: `${playerState}` },
         { name: 'Tracks', value: `${audioID}/${files.length}` },
         { name: 'Duration', value: `${duration}` },
-        { name: 'Votes Needed', value: `${votesRequired - votes.size}` }
+        { name: 'Votes Needed', value: `${votesRequired}` }
       )
       .setColor('#0066ff');
 
