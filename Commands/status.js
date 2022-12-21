@@ -65,7 +65,7 @@ export default {
         { name: 'State', value: `${playerState}` },
         { name: 'Tracks', value: `${audioID}/${files.length}` },
         { name: 'Duration', value: `${duration}` },
-        { name: 'Votes Needed', value: `${votesRequired}` }
+        { name: 'Votes Needed', value: `${votesRequired - votes.size}` }
       )
       .setColor('#0066ff');
 
