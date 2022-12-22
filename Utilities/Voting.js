@@ -37,7 +37,7 @@ async function commandCheck(interaction, bot) {
   }
 }
 
-export async function voteSkip(interaction, bot) {
+export async function voteSkip(interaction, bot) { /*
   if (interaction.commandName === 'next') {
     if (nextCheck !== true) {
       // Reset the votes if the current value of nextCheck is different from the command being executed
@@ -83,7 +83,7 @@ export async function voteSkip(interaction, bot) {
       return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
     }
   }
-
+*/
   if (interaction.options.getSubcommand() === 'force') {
     if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.member.permission.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: 'You need a specific role to execute this command', ephemeral: true });
     console.log('Force skipping this audio track...');

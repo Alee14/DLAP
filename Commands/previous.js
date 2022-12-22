@@ -26,9 +26,9 @@ export default {
   data: new SlashCommandBuilder()
     .setName('previous')
     .setDescription('Goes to previous music')
-    .addSubcommand(subcommand =>
+  /* .addSubcommand(subcommand =>
       subcommand.setName('vote')
-        .setDescription('Voting to skip this audio track'))
+        .setDescription('Voting to skip this audio track')) */
     .addSubcommand(subcommand =>
       subcommand.setName('force')
         .setDescription('Forces skip this audio track')),
