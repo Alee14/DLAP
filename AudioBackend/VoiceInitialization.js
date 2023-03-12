@@ -37,14 +37,6 @@ export async function voiceInit(bot) {
     connection.on(VoiceConnectionStatus.Connecting, () => {
       console.log(`Connecting to ${channel.name}...`);
     });
-    const networkStateChangeHandler = (oldNetworkState, newNetworkState) => {
-      const newUdp = Reflect.get(newNetworkState, 'udp');
-      clearInterval(newUdp?.keepAliveInterval);
-    };
-    connection.on('stateChange', (oldState, newState) => {
-      Reflect.get(oldState, 'networking')?.off('stateChange', networkStateChangeHandler);
-      Reflect.get(newState, 'networking')?.on('stateChange', networkStateChangeHandler);
-    });
 
     connection.on(VoiceConnectionStatus.Ready, async() => {
       console.log('Ready to blast some beats!');
