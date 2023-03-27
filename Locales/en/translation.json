@@ -1,3 +1,4 @@
 {
-  "botReady": "Bot is ready!"
+  "botReady": "Bot is ready!",
+  "loggedIn": "Logged in as {{bot}}!"
 }

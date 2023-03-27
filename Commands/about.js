@@ -40,7 +40,7 @@ export default {
         { name: 'Frameworks', value: `Discord.JS ${version} + Voice` },
         { name: 'License', value: 'GNU General Public License v3.0' }
       )
-      .setFooter({ text: '© Copyright 2020-2022 Andrew Lee' })
+      .setFooter({ text: '© Copyright 2020-2023 Andrew Lee' })
       .setColor('#0066ff');
 
     const srcOrig = new ActionRowBuilder()

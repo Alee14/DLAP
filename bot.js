@@ -21,9 +21,11 @@
 import { Client, Events, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
 import { voiceInit } from './AudioBackend/VoiceInitialization.js';
 import { readdirSync, readFileSync } from 'node:fs';
+import i18next from './Utilities/i18n.js';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
 const { token, statusChannel, voiceChannel, djRole, ownerID, shuffle, repeat, presenceActivity, activityType } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
+const t = i18next.t;
 bot.login(token);
 
 // Slash Command Handler
@@ -37,8 +39,8 @@ for (const file of commandFiles) {
 }
 
 bot.once(Events.ClientReady, async() => {
-  console.log('Bot is ready!');
-  console.log(`Logged in as ${bot.user.tag}!`);
+  console.log(t('botReady'));
+  console.log(t('loggedIn', { bot: bot.user.tag }));
   console.log(`Running on Discord.JS ${version}`);
   console.log(`Voice Channel: ${voiceChannel}`);
   console.log(`Status Channel: ${statusChannel}`);
