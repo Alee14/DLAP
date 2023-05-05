@@ -38,10 +38,11 @@ Make a new file called `config.json` inside the root of your project.
 }
 ```
 
-## json Settings
+## Setting Up Bot
+Credit: VicktorMS
 
 First you need to create a discord application ([Discord for Developers](https://discord.com/developers/applications)) to get all the tokens you need.
-This application will in fact be your BOT.
+This application will in fact be your bot.
 
 
 *IDs available on discord for developers:*
@@ -56,9 +57,9 @@ First you need [activate Developer Mode](https://linuxhint.com/enable-or-disable
 - `"ownerID"`: Right Click on top of yourself on a discord server > "Copy User ID" (Your User ID is not "YouName#3217")
 
 *Bool settings (set to true or false)*
--`"txtFile"`: true/false (Generates a text file)
--`"shuffle"`: true/false (Shuffle songs)
--`"repeat"`: true/false (Repeat all musics)
+- `"txtFile"`: true/false (Generates a text file)
+- `"shuffle"`: true/false (Shuffle songs)
+- `"repeat"`: true/false (Repeat all musics)
 
 *Bot Activity*
 - `"presenceActivity"`: Write any message here, it will be displayed in Bot's activity.
@@ -73,7 +74,7 @@ First you need [activate Developer Mode](https://linuxhint.com/enable-or-disable
 - `4`: Custom
 - `5`: Competing
 
-## Adding Songs
+## Adding Music
 
 Create the `music` folder on root of your project.
 
