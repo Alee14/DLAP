@@ -17,9 +17,11 @@ Also you must join my discord server (Support Server) to communicate with me.
 # Recommended Software Requirements
 - Latest version of NodeJS (v16.9.0+)
 - Linux (or WSL for Windows users)
+- Yarn Package Manager
+- NodeJS v18.5.0+
 
 # Configuration
-Make a new file called `config.json`.
+Make a new file called `config.json` inside the root of your project.
 ```
 {
     "token": "token_here",
@@ -36,7 +38,44 @@ Make a new file called `config.json`.
 }
 ```
 
-Create the `music` folder.
+## json Settings
+
+First you need to create a discord application ([Discord for Developers](https://discord.com/developers/applications)) to get all the tokens you need.
+This application will in fact be your BOT.
+
+
+*IDs available on discord for developers:*
+- `"clientID"`: Select your app > Settings > General Information > "Application ID"
+- `"token"`: Select your app > Settings > Bot > "Reset Token" Button
+
+*IDs available on your discord server:*
+First you need [activate Developer Mode](https://linuxhint.com/enable-or-disable-developer-mode-discord/#:~:text=To%20enable%20or%20disable%20developer%20mode%20on%20Discord%2C%20first%20launch,the%20%E2%80%9CDeveloper%20Mode%E2%80%9D%20toggle.) on Discord in order to get the IDS
+- `"statusChannel"`: Create a channel in your server > Right Click on top > "Copy channel ID"
+- `"voiceChannel"`: Create a channel in your server > Right Click on top > "Copy channel ID"
+- `"djRole"`: Create a role in your server > Right Click on top > "Copy role ID"
+- `"ownerID"`: Right Click on top of yourself on a discord server > "Copy User ID" (Your User ID is not "YouName#3217")
+
+*Bool settings (set to true or false)*
+-`"txtFile"`: true/false (Generates a text file)
+-`"shuffle"`: true/false (Shuffle songs)
+-`"repeat"`: true/false (Repeat all musics)
+
+*Bot Activity*
+- `"presenceActivity"`: Write any message here, it will be displayed in Bot's activity.
+- `"activityType"`: Put any number between 0 and 5. That will be the Bot Activity type.
+
+*Activity Types*
+
+- `0`: Playing
+- `1`: Streaming
+- `2`: Listening
+- `3`: Watching
+- `4`: Custom
+- `5`: Competing
+
+## Adding Songs
+
+Create the `music` folder on root of your project.
 
 Add your own audio files to the `music` folder.
 
