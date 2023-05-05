@@ -35,6 +35,8 @@ export default {
         { name: 'Information', value: 'A Discord bot that plays local audio tracks.' },
         { name: 'Version', value: `DLAP ${npmPackage.version}` },
         { name: 'Original Creator', value: 'Andrew Lee (Alee#4277)' }, // Do not remove this since I created this :)
+        { name: 'Contributors', value: 'Victor Moraes (Vicktor#7232)' },
+        { name: 'Forked by', value: 'Victor Moraes (Vicktor#7232)' },
         // { name: 'Contributors', value: '[your name] (discord#0000)' },
         // { name: 'Forked by', value: '[your name] (discord#0000)' },
         { name: 'Frameworks', value: `Discord.JS ${version} + Voice` },
