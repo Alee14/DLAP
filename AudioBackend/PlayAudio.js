@@ -21,7 +21,7 @@
 import { createAudioResource } from '@discordjs/voice';
 import { parseFile } from 'music-metadata';
 import { readdirSync, readFileSync, writeFile } from 'node:fs';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
 import { player } from './VoiceInitialization.js';
 import { audioState, files } from './AudioControl.js';
 import { integer } from '../Commands/play.js';
@@ -38,6 +38,7 @@ export let audioTitle;
 export let audioArtist;
 export let audioYear;
 export let audioAlbum;
+export let audioPicture;
 export let duration;
 
 const inputFiles = readdirSync('music');
@@ -59,6 +60,7 @@ export async function playAudio(bot) {
       audioArtist = common.artist;
       audioYear = common.year;
       audioAlbum = common.album;
+      if (common.picture) audioPicture = new AttachmentBuilder(common.picture[0].data, { name: 'albumArt.png', description: 'Album Art' });
     } else {
       metadataEmpty = true;
     }
@@ -77,6 +79,7 @@ export async function playAudio(bot) {
   }
 
   const statusEmbed = new EmbedBuilder();
+
   if (metadataEmpty) {
     statusEmbed.setTitle('Now Playing');
     statusEmbed.addFields(
@@ -92,12 +95,17 @@ export async function playAudio(bot) {
       { name: 'Year', value: `${audioYear}` },
       { name: 'Duration', value: `${duration}` }
     );
+
+    // console.log(audioPicture);
+    if (audioPicture) {
+      // statusEmbed.setThumbnail({ url: 'attachment://albumArt.png' });
+    }
     statusEmbed.setFooter({ text: `Album: ${audioAlbum}\nFilename: ${audioFile}` });
     statusEmbed.setColor('#0066ff');
   }
   const channel = bot.channels.cache.get(statusChannel);
   if (!channel) return console.error('The status channel does not exist! Skipping.');
-  return await channel.send({ embeds: [statusEmbed] });
+  return await channel.send({ embeds: [statusEmbed], files: [audioPicture] });
 }
 
 export function updatePlaylist(option) {
