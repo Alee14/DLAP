@@ -18,18 +18,20 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
-import { nextAudio, playerState, previousAudio } from '../AudioBackend/AudioControl.js';
+import { nextAudio, playerStatus, previousAudio } from '../AudioBackend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
 import { player } from '../AudioBackend/VoiceInitialization.js';
-const { djRole, ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+import i18next from '../Utilities/i18n.js';
 
+const { djRole, ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const t = i18next.t;
 export const votes = new Set();
 let nextCheck;
 
 async function commandCheck(interaction, bot) {
   if (nextCheck) {
-    await interaction.reply({ content: 'Playing next music' });
+    await interaction.reply({ content: t('musicNext') });
     player.stop();
     return await nextAudio(bot);
   } else {
@@ -62,37 +64,37 @@ export async function voteSkip(interaction, bot) {
 
     // Check if the message author has already voted
     if (votes.has(interaction.user.id)) {
-      return interaction.reply({ content: `You have already voted, wait ${votesRequired} more vote(s) to skip the audio track`, ephemeral: true });
+      return interaction.reply({ content: t('alreadyVoted', votesRequired), ephemeral: true });
     }
 
-    if (playerState === 'Playing' || playerState === 'Paused') {
+    if (playerStatus === 0 || playerStatus === 1) {
       // Add the message author to the set of members who have voted
       votes.add(interaction.user.id);
       if (votes.size >= votesRequired) {
-        console.log('Enough votes has passed, skipping audio file...');
+        console.log(t('enoughVotes'));
         // Reset the number of votes
         votes.clear();
         // Do something to skip the audio track here (e.g. player.stop())
         await commandCheck(interaction, bot);
       } else {
         // Send a message with the number of votes needed to skip the audio track
-        console.log(`${votesRequired - 1} more vote(s) needed to skip the audio track.`);
-        await interaction.reply({ content: `${votesRequired - 1} more vote(s) needed to skip the audio track.` });
+        console.log(t('votesNeeded', { votesRequired: votesRequired - 1 }));
+        await interaction.reply({ content: t('votesNeeded', { votesRequired: votesRequired - 1 }) });
       }
-    } else if (playerState === 'Stopped') {
-      return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
+    } else if (playerStatus === 2) {
+      return await interaction.reply({ content: t('cannotPlay'), ephemeral: true });
     }
   }
 
   if (interaction.options.getSubcommand() === 'force') {
-    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: 'You need a specific role to execute this command', ephemeral: true });
-    console.log('Force skipping this audio track...');
-    if (playerState === 'Playing' || playerState === 'Paused') {
+    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: t('rolePermission'), ephemeral: true });
+    console.log(t('forceSkip'));
+    if (playerStatus === 0 || playerStatus === 1) {
       votes.clear();
       // Do something to skip the audio track here (e.g. player.stop())
       await commandCheck(interaction, bot);
-    } else if (playerState === 'Stopped') {
-      return await interaction.reply({ content: 'Cannot play next music. Player is currently stopped...', ephemeral: true });
+    } else if (playerStatus === 2) {
+      return await interaction.reply({ content: t('cannotPlay'), ephemeral: true });
     }
   }
 }

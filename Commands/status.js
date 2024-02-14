@@ -22,9 +22,11 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { parseFile } from 'music-metadata';
 import { audio, metadataEmpty, duration, audioTitle, currentTrack } from '../AudioBackend/PlayAudio.js';
-import { files, playerState } from '../AudioBackend/AudioControl.js';
+import { files, playerState, playerStatus } from '../AudioBackend/AudioControl.js';
 import { votes } from '../Utilities/Voting.js';
+import i18next from '../Utilities/i18n.js';
 
+const t = i18next.t;
 export default {
   data: new SlashCommandBuilder()
     .setName('status')
@@ -44,7 +46,7 @@ export default {
     const votesRequired = Math.ceil((members.size - votes.size) / 2);
 
     if (audioID >= files.length) {
-      audioName = 'Playlist Finished';
+      audioName = t('playlistDone');
     } else {
       audioName = files[audioID];
       if (!metadataEmpty) {
@@ -60,25 +62,27 @@ export default {
     }
 
     const controlEmbed = new EmbedBuilder()
-      .setAuthor({ name: `${bot.user.username} Status`, iconURL: bot.user.avatarURL() })
+      .setAuthor({ name: t('statusTitle', { bot: bot.user.username }), iconURL: bot.user.avatarURL() })
       .addFields(
-        { name: 'State', value: `${playerState}` },
-        { name: 'Tracks', value: `${audioID}/${files.length}` },
-        { name: 'Duration', value: `${duration}` },
-        { name: 'Votes Needed', value: `${votesRequired}` }
+        { name: t('statusState'), value: `${playerState}` },
+        { name: t('statusTracks'), value: `${audioID}/${files.length}` },
+        { name: t('musicDuration'), value: `${duration}` },
+        { name: t('statusVotesNeeded'), value: `${votesRequired}` }
       )
       .setColor('#0066ff');
 
-    if (metadataEmpty) {
-      controlEmbed.addFields(
-        { name: 'Currently Playing', value: `${audio}` },
-        { name: 'Up Next', value: `${audioName}` }
-      );
-    } else {
-      controlEmbed.addFields(
-        { name: 'Currently Playing', value: `${audioTitle}` },
-        { name: 'Up Next', value: `${audioName}` }
-      );
+    if (playerStatus === 0 || playerStatus === 1) {
+      if (metadataEmpty) {
+        controlEmbed.addFields(
+          { name: t('currentlyPlaying'), value: `${audio}` },
+          { name: t('upNext'), value: `${audioName}` }
+        );
+      } else {
+        controlEmbed.addFields(
+          { name: t('currentlyPlaying'), value: `${audioTitle}` },
+          { name: t('upNext'), value: `${audioName}` }
+        );
+      }
     }
     interaction.reply({ embeds: [controlEmbed] });
   }

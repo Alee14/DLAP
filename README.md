@@ -1,6 +1,6 @@
 # DLAP Bot (Discord.JS Local Audio Player)
 
-DLAP is a Discord bot that lets you play local audio tracks in your server. With DLAP, you can access your music files, and share your tunes with your friends and community. DLAP offers seamless integration with Discord, so you can enjoy your music without missing a beat.
+DLAP is a Discord bot that lets you play local audio tracks in your server. With DLAP, you can access your music files, and share your tunes with your friends and community. DLAP offers seamless integration with Discord, so you can enjoy your music without missing a music.
 
 [Video Tutorial](https://youtu.be/Gvva8LHjOOo) | 
 [Support Server](https://discord.gg/EFhRDqG)
@@ -20,6 +20,34 @@ Also you must join my discord server (Support Server) to communicate with me.
 - Yarn Package Manager
 - NodeJS v18.5.0+
 
+# Docker
+First install Docker then using CMD or a terminal change directory to DLAP root folder and type the following:
+```
+docker build -t dlap .
+```
+
+- the -t flag specifies a tag that will be assigned to the image. With it, we can easily run the image that the tag was assigned to.
+- the dot at the end is basically the path to search for Dockerfile. The dot means current directory (./)
+- Run the container
+
+Follow the guide below and when ready type the following
+```
+docker run -d --name dlap dlap:latest
+```
+
+- -d flag tells Docker to run the container in detached mode, meaning it will run the container in the background of your terminal and not give us any output from it. If we don't provide it, the run will be giving us the output until the application exits. Discord bots aren't supposed to exit after certain time, so we do need this flag
+- --name assigns a name to the container. By default, container is identified by id that is not human-readable. To conveniently refer to container when needed, we can assign it a name
+- dlap:latest means "latest version of dlap image"
+
+View logs (optional)
+```
+docker logs -f mybot
+```
+
+- -f flag tells the docker to keep reading logs as they appear in container and is called "follow mode". To exit press CTRL + C.
+
+*Docker guide partially taken from [PythonDiscord](https://www.pythondiscord.com/pages/guides/python-guides/docker-hosting-guide/#creating-dockerfile)*
+
 # Configuration
 Make a new file called `config.json` inside the root of your project.
 ```
@@ -33,8 +61,9 @@ Make a new file called `config.json` inside the root of your project.
     "clientID": "client_id",
     "ownerID": "your_user_id",
     "djRole": "role_id",
+    "locale": "en",
     "presenceActivity": "activity_here",
-    "activityType": [0 (Playing)/1 (Streaming)/2 (Listening)/3 (Watching)/4 (Custom)/5 (Competing)]
+    "activityType": [0 (Playing)/1 (Streaming)/2 (Listening)/3 (Watching)/4 (Custom)/5 (Competing)],
 }
 ```
 

@@ -23,20 +23,22 @@ import { SlashCommandBuilder } from 'discord.js';
 import { toggleAudioState, isAudioStatePaused } from '../AudioBackend/AudioControl.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
+import i18next from '../Utilities/i18n.js';
+const t = i18next.t;
 const { djRole, ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export default {
   data: new SlashCommandBuilder()
     .setName('pause')
     .setDescription('Pauses music'),
   async execute(interaction, bot) {
-    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: 'You need a specific role to execute this command', ephemeral: true });
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: t('voicePermission'), ephemeral: true });
+    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: t('rolePermission'), ephemeral: true });
 
     if (!isAudioStatePaused) {
       toggleAudioState();
-      return await interaction.reply({ content: 'Pausing music', ephemeral: true });
+      return await interaction.reply({ content: t('pausingMusic'), ephemeral: true });
     } else {
-      return await interaction.reply({ content: 'Music is already paused', ephemeral: true });
+      return await interaction.reply({ content: t('pausedAlready'), ephemeral: true });
     }
   }
 };

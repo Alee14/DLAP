@@ -21,7 +21,8 @@
 
 import { SlashCommandBuilder } from 'discord.js';
 import { voteSkip } from '../Utilities/Voting.js';
-
+import i18next from '../Utilities/i18n.js';
+const t = i18next.t;
 export default {
   data: new SlashCommandBuilder()
     .setName('next')
@@ -34,7 +35,7 @@ export default {
         .setDescription('Forces skip this audio track')),
 
   async execute(interaction, bot) {
-    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: t('voicePermission'), ephemeral: true });
     await voteSkip(interaction, bot);
   }
 };

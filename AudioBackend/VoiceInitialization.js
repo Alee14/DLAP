@@ -19,13 +19,15 @@
  *
  ***************************************************************************/
 import { readFileSync } from 'node:fs';
-import { createAudioPlayer, joinVoiceChannel, VoiceConnectionStatus } from '@discordjs/voice';
+import { createAudioPlayer, joinVoiceChannel, VoiceConnectionStatus, AudioPlayerStatus } from '@discordjs/voice';
 import { nextAudio } from './AudioControl.js';
 import { shufflePlaylist, orderPlaylist } from './QueueSystem.js';
 import { votes } from '../Utilities/Voting.js';
+import i18next from '../Utilities/i18n.js';
 
 const { voiceChannel, shuffle } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export const player = createAudioPlayer();
+const t = i18next.t;
 export async function voiceInit(bot) {
   bot.channels.fetch(voiceChannel).then(async channel => {
     const connection = joinVoiceChannel({
@@ -35,16 +37,16 @@ export async function voiceInit(bot) {
     });
 
     connection.on(VoiceConnectionStatus.Connecting, () => {
-      console.log(`Connecting to ${channel.name}...`);
+      console.log(t('voiceConnecting', { channel: channel.name }));
     });
 
     connection.on(VoiceConnectionStatus.Ready, async() => {
-      console.log('Ready to blast some beats!');
+      console.log(t('voiceReady'));
       return (shuffle) ? await shufflePlaylist(bot) : await orderPlaylist(bot);
     });
 
     connection.on(VoiceConnectionStatus.Destroyed, () => {
-      console.log('Destroyed the beats...');
+      console.log(t('voiceDestroyed'));
     });
 
     player.on('error', error => {
@@ -52,8 +54,8 @@ export async function voiceInit(bot) {
       nextAudio(bot);
     });
 
-    player.on('idle', () => {
-      console.log('Beat has finished playing, now playing next beat...');
+    player.on(AudioPlayerStatus.Idle, () => {
+      console.log(t('musicsFinished'));
       votes.clear();
       nextAudio(bot);
     });

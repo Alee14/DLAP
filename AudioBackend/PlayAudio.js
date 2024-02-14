@@ -25,7 +25,10 @@ import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
 import { player } from './VoiceInitialization.js';
 import { audioState, files } from './AudioControl.js';
 import { integer } from '../Commands/play.js';
+import i18next from '../Utilities/i18n.js';
+
 const { statusChannel, txtFile } = JSON.parse(readFileSync('./config.json', 'utf-8'));
+const t = i18next.t;
 
 let fileData;
 
@@ -46,7 +49,7 @@ export async function playAudio(bot) {
   const resource = createAudioResource('music/' + audio);
   player.play(resource);
 
-  console.log(`Now playing: ${audio}`);
+  console.log(t('nowPlayingFile', { audio }));
 
   audioState(0);
 
@@ -60,7 +63,13 @@ export async function playAudio(bot) {
       audioArtist = common.artist;
       audioYear = common.year;
       audioAlbum = common.album;
-      if (common.picture) audioPicture = new AttachmentBuilder(common.picture[0].data, { name: 'albumArt.png', description: 'Album Art' });
+      if (common.picture) {
+        // Convert base64 image to a buffer
+        const imageBuffer = Buffer.from(common.picture[0].data, 'base64');
+
+        // Create a new attachment using the buffer
+        audioPicture = new AttachmentBuilder(imageBuffer, 'albumArt.png');
+      }
     } else {
       metadataEmpty = true;
     }
@@ -72,7 +81,7 @@ export async function playAudio(bot) {
   audio = audio.split('.').slice(0, -1).join('.');
 
   if (txtFile) {
-    fileData = `Now Playing: ${audio}`;
+    fileData = t('nowPlayingFile', { audio });
     writeFile('./now-playing.txt', fileData, (err) => {
       if (err) { console.log(err); }
     });
@@ -81,31 +90,30 @@ export async function playAudio(bot) {
   const statusEmbed = new EmbedBuilder();
 
   if (metadataEmpty) {
-    statusEmbed.setTitle('Now Playing');
+    statusEmbed.setTitle(t('nowPlaying'));
     statusEmbed.addFields(
-      { name: 'Title', value: `${audio}` },
-      { name: 'Duration', value: `${duration}` }
+      { name: t('musicTitle'), value: `${audio}` },
+      { name: t('musicDuration'), value: `${duration}` }
     );
     statusEmbed.setColor('#0066ff');
   } else {
-    statusEmbed.setTitle('Now Playing');
+    statusEmbed.setTitle(t('nowPlaying'));
     statusEmbed.addFields(
-      { name: 'Title', value: `${audioTitle}`, inline: true },
-      { name: 'Artist', value: `${audioArtist}`, inline: true },
-      { name: 'Year', value: `${audioYear}` },
-      { name: 'Duration', value: `${duration}` }
+      { name: t('musicTitle'), value: `${audioTitle}`, inline: true },
+      { name: t('musicArtist'), value: `${audioArtist}`, inline: true },
+      { name: t('musicYear'), value: `${audioYear}` },
+      { name: t('musicDuration'), value: `${duration}` }
     );
 
-    // console.log(audioPicture);
-    if (audioPicture) {
-      // statusEmbed.setThumbnail({ url: 'attachment://albumArt.png' });
-    }
-    statusEmbed.setFooter({ text: `Album: ${audioAlbum}\nFilename: ${audioFile}` });
+    // if (audioPicture) {
+    //   statusEmbed.setThumbnail('attachment://albumArt.png');
+    // }
+    statusEmbed.setFooter({ text: t('playerFooter', { audioAlbum, audioFile }) });
     statusEmbed.setColor('#0066ff');
   }
   const channel = bot.channels.cache.get(statusChannel);
-  if (!channel) return console.error('The status channel does not exist! Skipping.');
-  return await channel.send({ embeds: [statusEmbed], files: [audioPicture] });
+  if (!channel) return console.error(t('statusChannelError'));
+  return await channel.send({ embeds: [statusEmbed] });
 }
 
 export function updatePlaylist(option) {
@@ -126,7 +134,7 @@ export function updatePlaylist(option) {
       audio = inputFiles[integer];
       break;
     case 'stop':
-      audio = 'Not Playing';
+      audio = t('notPlaying');
       break;
   }
 }

@@ -21,33 +21,34 @@
 
 import { EmbedBuilder, version, ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 // import npmPackage from '../package.json' assert { type:'json' }
+import i18next from '../Utilities/i18n.js';
 import { readFileSync } from 'node:fs';
 const npmPackage = JSON.parse(readFileSync('./package.json', 'utf-8'));
-
+const t = i18next.t;
 export default {
   data: new SlashCommandBuilder()
     .setName('about')
     .setDescription('Information about the bot'),
   async execute(interaction, bot) {
     const aboutEmbed = new EmbedBuilder()
-      .setAuthor({ name: `About ${bot.user.username}`, iconURL: bot.user.avatarURL() })
+      .setAuthor({ name: t('aboutBot', { bot: bot.user.username }), iconURL: bot.user.avatarURL() })
       .addFields(
-        { name: 'Information', value: 'A Discord bot that plays local audio tracks.' },
-        { name: 'Version', value: `DLAP ${npmPackage.version}` },
-        { name: 'Original Creator', value: 'Andrew Lee (Alee#4277)' }, // Do not remove this since I created this :)
-        // { name: 'Contributors', value: '[your name] (discord#0000)' },
-        // { name: 'Forked by', value: '[your name] (discord#0000)' },
-        { name: 'Frameworks', value: `Discord.JS ${version} + Voice` },
-        { name: 'License', value: 'GNU General Public License v3.0' }
+        { name: t('aboutInfo'), value: t('aboutInfoValue') },
+        { name: t('aboutBotVersion'), value: `DLAP ${npmPackage.version}` },
+        { name: t('aboutCreator'), value: 'Andrew Lee (alee)' }, // Do not remove this since I created this :)
+        // { name: t('aboutContributors'), value: '[your name] (username)' },
+        // { name: t('aboutForked'), value: '[your name] (username)' },
+        { name: t('aboutFrameworks'), value: `Discord.JS ${version} + Voice` },
+        { name: t('aboutLicense'), value: 'GNU General Public License v3.0' }
       )
-      .setFooter({ text: '© Copyright 2020-2023 Andrew Lee' })
+      .setFooter({ text: '© Copyright 2020-2024 Andrew Lee' })
       .setColor('#0066ff');
 
     const srcOrig = new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()
           .setStyle(ButtonStyle.Link)
-          .setLabel('Original Source Code')
+          .setLabel(t('aboutSrc'))
           .setURL('https://github.com/Alee14/DLAP')
       );
 

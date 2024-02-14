@@ -22,14 +22,17 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { stopBot } from '../AudioBackend/Shutdown.js';
 import { readFileSync } from 'node:fs';
+import i18next from '../Utilities/i18n.js';
+
+const t = i18next.t;
 const { ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 export default {
   data: new SlashCommandBuilder()
     .setName('shutdown')
     .setDescription('Powers off the bot'),
   async execute(interaction, bot) {
-    if (interaction.user.id !== ownerID) return interaction.reply({ content: 'You need to be the creator of this bot to execute this command', ephemeral: true });
-    await interaction.reply({ content: 'Powering off...', ephemeral: true });
+    if (interaction.user.id !== ownerID) return interaction.reply({ content: t('creatorPermission'), ephemeral: true });
+    await interaction.reply({ content: t('powerOff', { bot: bot.user.username }), ephemeral: true });
     return await stopBot(bot, interaction);
   }
 };
