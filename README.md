@@ -32,10 +32,11 @@ docker build -t dlap .
 
 Follow the guide below and when ready type the following
 ```
-docker run -d --name dlap dlap:latest
+docker run -d -v <path to config>:/usr/src/bot/config.json -v <path to music>:/usr/src/bot/music  --name dlap dlap:latest
 ```
 
 - -d flag tells Docker to run the container in detached mode, meaning it will run the container in the background of your terminal and not give us any output from it. If we don't provide it, the run will be giving us the output until the application exits. Discord bots aren't supposed to exit after certain time, so we do need this flag
+- -v flag in Docker is used for volume mounting. It creates a bind mount, which allows you to specify a host path (on your local machine) and a container path (inside the Docker container). When the Docker container is run, the specified host path is mounted into the container at the specified container path.
 - --name assigns a name to the container. By default, container is identified by id that is not human-readable. To conveniently refer to container when needed, we can assign it a name
 - dlap:latest means "latest version of dlap image"
 
