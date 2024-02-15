@@ -65,6 +65,7 @@
   "statusStopped": "Music is currently not playing",
   "alreadyLeave": "Already left the voice chat",
   "alreadyJoin": "Already joined the voice chat",
+  "playerStopped": "Music player is currently not running",
   "reshufflePlaylist": "Reshuffling the playlist...",
   "reshuffleDisabled": "Shuffle mode is disabled, enable it in the configuration file to access this command.",
   "playlistDone": "Playlist Finished",
@@ -78,6 +79,5 @@
   "alreadyVoted": "You have already voted, wait {{votesRequired}} more vote(s) to skip the audio track",
   "enoughVotes": "Enough votes has passed, skipping audio file...",
   "votesNeeded": "{{votesRequired}} more vote(s) needed to skip the audio track.",
-  "cannotPlay": "Cannot play next music. Player is currently stopped...",
   "forceSkip": "Force skipping this audio track..."
 }

@@ -23,7 +23,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import { shufflePlaylist } from '../AudioBackend/QueueSystem.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
-import { audioState } from '../AudioBackend/AudioControl.js';
+import { audioState, playerStatus } from '../AudioBackend/AudioControl.js';
 import i18next from '../Utilities/i18n.js';
 
 // import config from './config.json' assert {type: 'json'}
@@ -36,7 +36,7 @@ export default {
   async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: t('voicePermission'), ephemeral: true });
     if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: t('rolePermission'), ephemeral: true });
-
+    if (playerStatus === 2) return await interaction.reply({ content: t('playerStopped'), ephemeral: true });
     async function shuffleDetected(bot) {
       await interaction.reply({ content: t('reshufflePlaylist'), ephemeral: true });
       await audioState(2);

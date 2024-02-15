@@ -82,7 +82,7 @@ export async function voteSkip(interaction, bot) {
         await interaction.reply({ content: t('votesNeeded', { votesRequired: votesRequired - 1 }) });
       }
     } else if (playerStatus === 2) {
-      return await interaction.reply({ content: t('cannotPlay'), ephemeral: true });
+      return await interaction.reply({ content: t('playerStopped'), ephemeral: true });
     }
   }
 
@@ -94,7 +94,7 @@ export async function voteSkip(interaction, bot) {
       // Do something to skip the audio track here (e.g. player.stop())
       await commandCheck(interaction, bot);
     } else if (playerStatus === 2) {
-      return await interaction.reply({ content: t('cannotPlay'), ephemeral: true });
+      return await interaction.reply({ content: t('playerStopped'), ephemeral: true });
     }
   }
 }
