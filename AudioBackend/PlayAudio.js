@@ -68,7 +68,7 @@ export async function playAudio(bot) {
         const imageBuffer = Buffer.from(common.picture[0].data, 'base64');
 
         // Create a new attachment using the buffer
-        audioPicture = new AttachmentBuilder(imageBuffer, 'albumArt.png');
+        audioPicture = new AttachmentBuilder(imageBuffer, { name: 'albumArt.png' });
       }
     } else {
       metadataEmpty = true;
@@ -105,15 +105,20 @@ export async function playAudio(bot) {
       { name: t('musicDuration'), value: `${duration}` }
     );
 
-    // if (audioPicture) {
-    //   statusEmbed.setThumbnail('attachment://albumArt.png');
-    // }
+    if (audioPicture) {
+      statusEmbed.setThumbnail('attachment://albumArt.png');
+    }
+
     statusEmbed.setFooter({ text: t('playerFooter', { audioAlbum, audioFile }) });
     statusEmbed.setColor('#0066ff');
   }
   const channel = bot.channels.cache.get(statusChannel);
   if (!channel) return console.error(t('statusChannelError'));
-  return await channel.send({ embeds: [statusEmbed] });
+  if (audioPicture) {
+    return await channel.send({ embeds: [statusEmbed], files: [audioPicture] });
+  } else {
+    return await channel.send({ embeds: [statusEmbed] });
+  }
 }
 
 export function updatePlaylist(option) {
