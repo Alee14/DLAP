@@ -15,10 +15,9 @@ If you want to become a maintainer, you must at least know this source code, Jav
 Also you must join my discord server (Support Server) to communicate with me.
 
 # Recommended Software Requirements
-- Latest version of NodeJS (v16.9.0+)
+- Latest version of NodeJS (v16.11.0+)
 - Linux (or WSL for Windows users)
 - Yarn Package Manager
-- NodeJS v18.5.0+
 
 # Docker
 First install Docker then using CMD or a terminal change directory to DLAP root folder and type the following:
@@ -42,7 +41,7 @@ docker run -d -v <path to config>:/usr/src/bot/config.json -v <path to music>:/u
 
 View logs (optional)
 ```
-docker logs -f mybot
+docker logs -f dlap
 ```
 
 - -f flag tells the docker to keep reading logs as they appear in container and is called "follow mode". To exit press CTRL + C.
