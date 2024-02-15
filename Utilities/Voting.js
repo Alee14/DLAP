@@ -60,7 +60,7 @@ export async function voteSkip(interaction, bot) {
     const members = voiceChannel.members.filter(m => !votes.has(m.id));
 
     // Calculate the number of votes required to skip the audio track
-    const votesRequired = Math.ceil((members.size - votes.size) / 2);
+    const votesRequired = Math.ceil(members.size / 2);
 
     // Check if the message author has already voted
     if (votes.has(interaction.user.id)) {

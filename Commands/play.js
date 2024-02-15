@@ -21,7 +21,7 @@
 
 import { SlashCommandBuilder } from 'discord.js';
 import { inputAudio } from '../AudioBackend/QueueSystem.js';
-import { files, isAudioStatePaused, toggleAudioState } from '../AudioBackend/AudioControl.js';
+import { files, isAudioStatePaused, playerStatus, toggleAudioState } from '../AudioBackend/AudioControl.js';
 import { audio } from '../AudioBackend/PlayAudio.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
@@ -51,16 +51,20 @@ export default {
       if (integer < files.length) {
         await inputAudio(bot, integer);
         await votes.clear();
-        return await interaction.reply({ content: t('nowPlayingFile', audio), ephemeral: true });
+        return await interaction.reply({ content: t('nowPlayingFile', { audio }), ephemeral: true });
       } else {
         return await interaction.reply({ content: t('numBig', { files: files.length }), ephemeral: true });
       }
     }
-    if (isAudioStatePaused) {
-      toggleAudioState();
-      return await interaction.reply({ content: t('resumingMusic'), ephemeral: true });
+    if (playerStatus === 2) {
+      return await interaction.reply({ content: t('statusStopped'), ephemeral: true });
     } else {
-      return await interaction.reply({ content: t('resumedAlready'), ephemeral: true });
+      if (isAudioStatePaused) {
+        toggleAudioState();
+        return await interaction.reply({ content: t('resumingMusic'), ephemeral: true });
+      } else {
+        return await interaction.reply({ content: t('resumedAlready'), ephemeral: true });
+      }
     }
   }
 };

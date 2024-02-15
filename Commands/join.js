@@ -23,6 +23,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import { voiceInit } from '../AudioBackend/VoiceInitialization.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
+import { getVoiceConnection } from '@discordjs/voice';
 import i18next from '../Utilities/i18n.js';
 const { djRole, ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const t = i18next.t;
@@ -34,6 +35,10 @@ export default {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: t('voicePermission'), ephemeral: true });
     if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: t('rolePermission'), ephemeral: true });
 
+    const connection = getVoiceConnection(interaction.guild.id);
+    if (connection) {
+      return await interaction.reply({ content: t('alreadyJoin'), ephemeral: true });
+    }
     await interaction.reply({ content: t('joinVoice'), ephemeral: true });
     return await voiceInit(bot);
   }

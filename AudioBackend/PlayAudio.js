@@ -52,6 +52,7 @@ export async function playAudio(bot) {
   console.log(t('nowPlayingFile', { audio }));
 
   audioState(0);
+  audioPicture = null;
 
   const audioFile = audio;
 

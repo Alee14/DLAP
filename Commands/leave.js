@@ -24,6 +24,7 @@ import { destroyAudio } from '../AudioBackend/Shutdown.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
 import i18next from '../Utilities/i18n.js';
+import { playerStatus } from '../AudioBackend/AudioControl.js';
 const { djRole, ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const t = i18next.t;
 export default {
@@ -33,6 +34,7 @@ export default {
   async execute(interaction, bot) {
     if (!interaction.member.voice.channel) return await interaction.reply({ content: t('voicePermission'), ephemeral: true });
     if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: t('rolePermission'), ephemeral: true });
+    if (playerStatus === 2) return await interaction.reply({ content: t('alreadyLeave'), ephemeral: true });
 
     console.log(t('leaveVoice'));
     await destroyAudio(interaction);
