@@ -40,10 +40,10 @@ export default {
 
     // Get the members of the voice channel who have not voted yet
     const voiceChannel = interaction.member.voice.channel;
-    const members = voiceChannel.members.filter(m => !votes.has(m.id));
+    const members = voiceChannel.members.filter(m => !votes.has(m.id) && !m.user.bot);
 
     // Calculate the number of votes required to skip the audio track
-    const votesRequired = Math.ceil((members.size - votes.size) / 2);
+    const votesRequired = Math.ceil(members.size / 2);
 
     if (audioID >= files.length) {
       audioName = t('playlistDone');
@@ -52,12 +52,10 @@ export default {
       if (!metadataEmpty) {
         try {
           const { common } = await parseFile('music/' + audioName);
-          audioName = common.title;
+          audioName = common.title ? common.title : audioName.split('.').slice(0, -1).join('.');
         } catch (error) {
           console.error(error.message);
         }
-      } else {
-        audioName = audioName.split('.').slice(0, -1).join('.');
       }
     }
 

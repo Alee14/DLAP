@@ -57,7 +57,7 @@ export async function voteSkip(interaction, bot) {
   if (interaction.options.getSubcommand() === 'vote') {
     // Get the members of the voice channel who have not voted yet
     const voiceChannel = interaction.member.voice.channel;
-    const members = voiceChannel.members.filter(m => !votes.has(m.id));
+    const members = voiceChannel.members.filter(m => !votes.has(m.id) && !m.user.bot);
 
     // Calculate the number of votes required to skip the audio track
     const votesRequired = Math.ceil(members.size / 2);

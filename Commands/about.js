@@ -36,9 +36,9 @@ export default {
         { name: t('aboutInfo'), value: t('aboutInfoValue') },
         { name: t('aboutBotVersion'), value: `DLAP ${npmPackage.version}` },
         { name: t('aboutCreator'), value: 'Andrew Lee (alee)' }, // Do not remove this since I created this :)
-        // { name: t('aboutContributors'), value: '[your name] (username)' },
+        { name: t('aboutContributors'), value: 'Victor Moraes (Vicktor#7232) (Improving README)' },
         // { name: t('aboutForked'), value: '[your name] (username)' },
-        { name: t('aboutFrameworks'), value: `Discord.JS ${version} + Voice` },
+        { name: t('aboutFrameworks'), value: `Discord.JS ${version}\nmusic-metadata` },
         { name: t('aboutLicense'), value: 'GNU General Public License v3.0' }
       )
       .setFooter({ text: '© Copyright 2020-2024 Andrew Lee' })
