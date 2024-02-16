@@ -1,6 +1,5 @@
 import fs, { readFileSync } from 'node:fs';
 import { REST, Routes } from 'discord.js';
-// import config from './config.json' assert {type: 'json'}
 const { clientID, token } = JSON.parse(readFileSync('./config.json'));
 
 const commands = [];
