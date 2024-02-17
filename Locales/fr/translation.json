@@ -77,7 +77,7 @@
   "upNext": "Suivant",
   "musicNext": "Lecture de la musique suivante",
   "alreadyVoted": "Vous avez déjà voté, attendez {{votesRequired}} plus de vote(s) pour sauter la piste audio.",
-  "enoughVotes": "",
-  "votesNeeded": "",
-  "forceSkip": ""
+  "enoughVotes": "Un nombre suffisant de voix s\u0027est écoulé, sauter le fichier audio...",
+  "votesNeeded": "{{votesRequired}} plus de vote(s) nécessaire(s) pour sauter la piste audio.",
+  "forceSkip": "Forcer le saut de cette piste audio..."
 }
