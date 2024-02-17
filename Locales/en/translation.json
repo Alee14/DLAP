@@ -58,7 +58,7 @@
   "listPage": "Page",
   "pausingMusic": "Pausing music",
   "pausedAlready": "Music is already paused",
-  "pong": "Pong!",
+  "pong": "Pong! {{ms}}ms",
   "numBig": "Number is too big, choose a number that's less than {{files}}.",
   "resumingMusic": "Resuming music",
   "resumedAlready": "Music is already playing",

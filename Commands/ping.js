@@ -27,6 +27,6 @@ export default {
     .setName('ping')
     .setDescription('Pong!'),
   async execute(interaction, bot) {
-    return await interaction.reply(`${t('pong')} ${Math.round(bot.ws.ping)}ms`);
+    return await interaction.reply(t('pong', { ms: Math.round(bot.ws.ping) }));
   }
 };
