@@ -8,8 +8,6 @@ name: Docker Publish GitHub
 on:
   push:
     branches: [ "stable" ]
-  pull_request:
-    branches: [ "stable" ]
 
 env:
   # Use docker.io for Docker Hub if empty
