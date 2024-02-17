@@ -3,7 +3,7 @@
 DLAP is a Discord bot that lets you play local audio tracks in your server. With DLAP, you can access your music files, and share your tunes with your friends and community. DLAP offers seamless integration with Discord, so you can enjoy your music without missing a beat.
 
 [Translate](https://parlance.vicr123.com/projects/dlap) | [Video Tutorial](https://youtu.be/Gvva8LHjOOo) |
-[Support Server](https://discord.gg/EFhRDqG) | [Docker Image](https://hub.docker.com/r/alee14498/dlap)
+[Support Server](https://discord.gg/EFhRDqG)
 
 If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
@@ -20,7 +20,29 @@ Also you must join my discord server (Support Server) to communicate with me.
 - Yarn Package Manager
 
 # Docker
-First install Docker then using CMD or a terminal change directory to DLAP root folder and type the following:
+## Prerequisites
+Before we begin, ensure that Docker is installed on your system. If not, you can download and install Docker from the [official website](https://www.docker.com/get-started).
+
+## Fetching the Docker Image
+
+You can fetch the Docker image for the DLAP bot from either DockerHub or GitHub Packages. Here are the commands for both:
+
+### DockerHub
+
+To fetch the image from DockerHub, use the following command:
+
+```bash
+docker pull alee14498/dlap:latest
+```
+### GitHub Packages
+Alternatively, you can fetch the image from GitHub Packages using this command:
+```bash
+docker pull ghcr.io/alee14/dlap:stable
+```
+After running one of these commands, Docker will download the image to your system. You can then proceed to run the bot using this image.
+
+## Building Docker Image (Optional)
+If you want to build the image then using CMD or a terminal change directory to DLAP root folder and type the following:
 ```
 docker build -t dlap .
 ```
@@ -29,8 +51,10 @@ docker build -t dlap .
 - the dot at the end is basically the path to search for Dockerfile. The dot means current directory (./)
 - Run the container
 
+## Running Docker Image
+
 Follow the guide below and when ready type the following
-```
+```bash
 docker run -d -v <path to config>:/usr/src/bot/config.json -v <path to music>:/usr/src/bot/music  --name dlap dlap:latest
 ```
 
@@ -40,7 +64,7 @@ docker run -d -v <path to config>:/usr/src/bot/config.json -v <path to music>:/u
 - dlap:latest means "latest version of dlap image"
 
 View logs (optional)
-```
+```bash
 docker logs -f dlap
 ```
 
