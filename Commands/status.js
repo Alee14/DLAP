@@ -56,6 +56,8 @@ export default {
         } catch (error) {
           console.error(error.message);
         }
+      } else {
+        audioName = audioName.split('.').slice(0, -1).join('.');
       }
     }
 
