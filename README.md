@@ -2,8 +2,8 @@
 
 DLAP is a Discord bot that lets you play local audio tracks in your server. With DLAP, you can access your music files, and share your tunes with your friends and community. DLAP offers seamless integration with Discord, so you can enjoy your music without missing a beat.
 
-[Video Tutorial](https://youtu.be/Gvva8LHjOOo) | 
-[Support Server](https://discord.gg/EFhRDqG)
+[Translate](https://parlance.vicr123.com/projects/dlap) | [Video Tutorial](https://youtu.be/Gvva8LHjOOo) |
+[Support Server](https://discord.gg/EFhRDqG) | [Docker Image](https://hub.docker.com/r/alee14498/dlap)
 
 If you want to add a feature or there's anything wrong, feel free to make a fork and put a pull request.
 
@@ -149,8 +149,6 @@ Be sure to replace that with your name.
 When contributing, be sure to add yourself to the contributors list in `/commands/about.js`.
 
 # Future Features
-* Custom string support (Basically change what the bot is saying)
-* Convert codebase to TypeScript
 * Easier to use interface
 
 # Credits
