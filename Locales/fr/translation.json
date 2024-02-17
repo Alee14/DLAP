@@ -4,7 +4,7 @@
   "discordVersion": "Exécution sur Discord.JS {{version}}",
   "voiceChannel": "Salon Vocal: {{voiceChannel}}",
   "statusChannel": "Salon Statut: {{statusChannel}}",
-  "djRole": "",
+  "djRole": "Rôle DJ {{djRole}}",
   "ownerID": "",
   "shuffleEnabled": "",
   "repeatEnabled": "",
