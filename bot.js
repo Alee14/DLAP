@@ -21,9 +21,11 @@
 import { Client, Events, GatewayIntentBits, EmbedBuilder, Collection, version, InteractionType } from 'discord.js';
 import { voiceInit } from './AudioBackend/VoiceInitialization.js';
 import { readdirSync, readFileSync } from 'node:fs';
+import i18next from './Utilities/i18n.js';
 // import config from './config.json' assert { type: 'json' } Not supported by ESLint yet
 const { token, statusChannel, voiceChannel, djRole, ownerID, shuffle, repeat, presenceActivity, activityType } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
+const t = i18next.t;
 bot.login(token);
 
 // Slash Command Handler
@@ -37,15 +39,15 @@ for (const file of commandFiles) {
 }
 
 bot.once(Events.ClientReady, async() => {
-  console.log('Bot is ready!');
-  console.log(`Logged in as ${bot.user.tag}!`);
-  console.log(`Running on Discord.JS ${version}`);
-  console.log(`Voice Channel: ${voiceChannel}`);
-  console.log(`Status Channel: ${statusChannel}`);
-  console.log(`DJ Role: ${djRole}`);
-  console.log(`Owner ID: ${ownerID}`);
-  console.log(`Shuffle Enabled: ${shuffle}`);
-  console.log(`Repeat Enabled: ${repeat}`);
+  console.log(t('botReady'));
+  console.log(t('loggedIn', { bot: bot.user.tag }));
+  console.log(t('discordVersion', { version }));
+  console.log(t('voiceChannel', { voiceChannel }));
+  console.log(t('statusChannel', { statusChannel }));
+  console.log(t('djRole', { djRole }));
+  console.log(t('ownerID', { ownerID }));
+  console.log(t('shuffleEnabled', { shuffle }));
+  console.log(t('repeatEnabled', { repeat }));
 
   // Set bots' presence
   bot.user.setPresence({
@@ -57,16 +59,16 @@ bot.once(Events.ClientReady, async() => {
   });
 
   const activity = bot.presence.activities[0];
-  console.log(`Updated bot presence to "${activity.name}"`);
+  console.log(t('presenceSet', { activity: activity.name }));
 
   // Send bots' status to channel
   const readyEmbed = new EmbedBuilder()
     .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL() })
-    .setDescription('Starting bot...')
+    .setDescription(t('startingBot'))
     .setColor('#0066ff');
 
   const channel = bot.channels.cache.get(statusChannel);
-  if (!channel) return console.error('The status channel does not exist! Skipping.');
+  if (!channel) return console.error(t('statusChannelError'));
   await channel.send({ embeds: [readyEmbed] });
 
   return await voiceInit(bot);
@@ -83,6 +85,6 @@ bot.on(Events.InteractionCreate, async interaction => {
     await command.execute(interaction, bot);
   } catch (e) {
     console.error(e);
-    await interaction.reply({ content: `There was an error while executing this command...\nShare this to the bot owner or report it to the git repository in \`/about\`\n\nDetails:\`\`\`${e}\`\`\``, ephemeral: true });
+    await interaction.reply({ content: t('exception', { e }), ephemeral: true });
   }
 });

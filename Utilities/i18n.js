@@ -20,10 +20,12 @@
  ***************************************************************************/
 import i18next from 'i18next';
 import fsBackend from 'i18next-fs-backend';
+import { readFileSync } from 'node:fs';
+const { locale } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 i18next.use(fsBackend).init({
-  lng: 'en', // if you're using a language detector, do not define the lng option
-  debug: true,
+  lng: locale, // if you're using a language detector, do not define the lng option
+  debug: false,
   fallbackLng: 'en',
   backend: {
     loadPath: './Locales/{{lng}}/{{ns}}.json'
@@ -32,7 +34,7 @@ i18next.use(fsBackend).init({
 
 export default {
   i18next,
-  t(key) {
-    return i18next.t(key);
+  t(key, option) {
+    return i18next.t(key, option);
   }
 };

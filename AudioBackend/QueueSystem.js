@@ -20,6 +20,8 @@
  ***************************************************************************/
 import { playAudio, updatePlaylist } from './PlayAudio.js';
 import { files } from './AudioControl.js';
+import i18next from '../Utilities/i18n.js';
+const t = i18next.t;
 
 function shuffleArray(array) {
   // Durstenfeld Shuffle
@@ -29,16 +31,16 @@ function shuffleArray(array) {
   }
 }
 export async function orderPlaylist(bot) {
-  console.log('Playing beats by order...');
+  console.log(t('musicPlayOrder'));
   updatePlaylist('reset');
   console.log(files);
   return await playAudio(bot);
 }
 
 export async function shufflePlaylist(bot) {
-  console.log('Shuffling beats...');
+  console.log(t('musicShuffling'));
   shuffleArray(files);
-  console.log('Playing beats by shuffle...');
+  console.log(t('musicPlayShuffle'));
   updatePlaylist('reset');
   console.log(files);
   return await playAudio(bot);

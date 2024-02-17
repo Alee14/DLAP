@@ -21,9 +21,10 @@
 
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { readdir } from 'node:fs';
+import i18next from '../Utilities/i18n.js';
 
 const musicFolder = './music';
-
+const t = i18next.t;
 export default {
   data: new SlashCommandBuilder()
     .setName('list')
@@ -42,7 +43,7 @@ export default {
         const pageSize = 20; // Number of tracks per page
         const numPages = Math.ceil(trackList.length / pageSize); // Total number of pages
         if (page < 1 || page > numPages) { // Check if the page number is valid
-          return await interaction.reply({ content: `Invalid page number. Please specify a number between 1 and ${numPages}.`, ephemeral: true });
+          return await interaction.reply({ content: t('invalidPage', { numPages }), ephemeral: true });
         }
         // Split the track list into pages
         const pages = [];
@@ -53,9 +54,9 @@ export default {
         }
         // Send the specified page with the page number and total number of pages
         const listEmbed = new EmbedBuilder();
-        listEmbed.setAuthor({ name: `${bot.user.username} List`, iconURL: bot.user.avatarURL() });
-        listEmbed.addFields({ name: `Listing ${trackList.length} audio tracks...`, value: `\`\`\`\n${pages[page - 1].join('\n')}\n\`\`\`` });
-        listEmbed.setFooter({ text: `Page ${page}/${numPages}` });
+        listEmbed.setAuthor({ name: t('listTitle', { bot: bot.user.username }), iconURL: bot.user.avatarURL() });
+        listEmbed.addFields({ name: t('listTracks', { trackList: trackList.length }), value: `\`\`\`\n${pages[page - 1].join('\n')}\n\`\`\`` });
+        listEmbed.setFooter({ text: t('listPage') + ` ${page}/${numPages}` });
         listEmbed.setColor('#0066ff');
         await interaction.reply({ embeds: [listEmbed] });
       }

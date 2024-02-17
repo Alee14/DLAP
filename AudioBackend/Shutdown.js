@@ -24,12 +24,15 @@ import { updatePlaylist } from './PlayAudio.js';
 import { audioState } from './AudioControl.js';
 import { readFileSync, writeFile } from 'node:fs';
 import { getVoiceConnection, VoiceConnectionStatus } from '@discordjs/voice';
+import i18next from '../Utilities/i18n.js';
+
 const { statusChannel, txtFile } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 let fileData;
+const t = i18next.t;
 
 export async function destroyAudio(interaction) {
   if (txtFile) {
-    fileData = 'Now Playing: Nothing';
+    fileData = t('txtNothing');
     writeFile('now-playing.txt', fileData, (err) => {
       if (err) { console.log(err); }
     });
@@ -47,13 +50,13 @@ export async function destroyAudio(interaction) {
 export async function stopBot(bot, interaction) {
   const statusEmbed = new EmbedBuilder()
     .setAuthor({ name: bot.user.username, iconURL: bot.user.avatarURL() })
-    .setDescription(`That's all folks! Powering down ${bot.user.username}...`)
+    .setDescription(t('statusShutdown', { bot: bot.user.username }))
     .setColor('#0066ff');
   const channel = bot.channels.cache.get(statusChannel);
-  if (!channel) return console.error('The status channel does not exist! Skipping.');
+  if (!channel) return console.error(t('statusChannelError'));
   await channel.send({ embeds: [statusEmbed] });
 
-  console.log(`Powering off ${bot.user.username}...`);
+  console.log(t('powerOff', { bot: bot.user.username }));
   await destroyAudio(interaction);
   await bot.destroy();
   return process.exit(0);

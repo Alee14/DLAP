@@ -21,12 +21,14 @@
 
 import { SlashCommandBuilder } from 'discord.js';
 import { inputAudio } from '../AudioBackend/QueueSystem.js';
-import { files, isAudioStatePaused, toggleAudioState } from '../AudioBackend/AudioControl.js';
+import { files, isAudioStatePaused, playerStatus, toggleAudioState } from '../AudioBackend/AudioControl.js';
 import { audio } from '../AudioBackend/PlayAudio.js';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import { readFileSync } from 'node:fs';
 import { votes } from '../Utilities/Voting.js';
+import i18next from '../Utilities/i18n.js';
 
+const t = i18next.t;
 const { djRole, ownerID } = JSON.parse(readFileSync('./config.json', 'utf-8'));
 
 export let integer;
@@ -41,24 +43,28 @@ export default {
     ),
 
   async execute(interaction, bot) {
-    if (!interaction.member.voice.channel) return await interaction.reply({ content: 'You need to be in a voice channel to use this command.', ephemeral: true });
-    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.member.permission.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: 'You need a specific role to execute this command', ephemeral: true });
+    if (!interaction.member.voice.channel) return await interaction.reply({ content: t('voicePermission'), ephemeral: true });
+    if (!interaction.member.roles.cache.has(djRole) && interaction.user.id !== ownerID && !interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) return interaction.reply({ content: t('rolePermission'), ephemeral: true });
 
     integer = interaction.options.getInteger('int');
     if (integer) {
       if (integer < files.length) {
         await inputAudio(bot, integer);
         await votes.clear();
-        return await interaction.reply({ content: `Now playing: ${audio}`, ephemeral: true });
+        return await interaction.reply({ content: t('nowPlayingFile', { audio }), ephemeral: true });
       } else {
-        return await interaction.reply({ content: 'Number is too big, choose a number that\'s less than ' + files.length + '.', ephemeral: true });
+        return await interaction.reply({ content: t('numBig', { files: files.length }), ephemeral: true });
       }
     }
-    if (isAudioStatePaused) {
-      toggleAudioState();
-      return await interaction.reply({ content: 'Resuming music', ephemeral: true });
+    if (playerStatus === 2) {
+      return await interaction.reply({ content: t('statusStopped'), ephemeral: true });
     } else {
-      return await interaction.reply({ content: 'Music is already playing', ephemeral: true });
+      if (isAudioStatePaused) {
+        toggleAudioState();
+        return await interaction.reply({ content: t('resumingMusic'), ephemeral: true });
+      } else {
+        return await interaction.reply({ content: t('resumedAlready'), ephemeral: true });
+      }
     }
   }
 };

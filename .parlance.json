@@ -1,0 +1,11 @@
+{
+  "name": "Discord Local Audio Player",
+  "subprojects": [
+    {
+      "name": "DLAP Bot",
+      "type": "i18next",
+      "path": "/Locales/{lang}/translation.json",
+      "baseLang": "en"
+    }
+  ]
+}
