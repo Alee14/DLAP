@@ -1,7 +1,7 @@
 {
   "botReady": "Le robot est prêt!",
-  "loggedIn": "",
-  "discordVersion": "",
+  "loggedIn": "Connecté en tant que {{bot}}",
+  "discordVersion": "Exécution sur Discord.JS {{version}}",
   "voiceChannel": "",
   "statusChannel": "",
   "djRole": "",
