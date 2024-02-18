@@ -172,6 +172,9 @@ Be sure to replace that with your name.
 # Contributing
 When contributing, be sure to add yourself to the contributors list in `/commands/about.js`.
 
+## Translating
+If you want to translate DLAP with another language, create a Parlance account (Victor Tran Account), and ask Victor Tran (server owner) on the [Victor Tran Discord](https://discord.gg/nBpePYdt7U) for permission to translate DLAP.
+
 # Future Features
 * Easier to use interface
 
