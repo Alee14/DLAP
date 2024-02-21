@@ -1,7 +1,7 @@
 /**************************************************************************
  *
  *  DLAP Bot: A Discord bot that plays local audio tracks.
- *  (C) Copyright 2022
+ *  (C) Copyright 2024
  *  Programmed by Andrew Lee
  *
  *  This program is free software: you can redistribute it and/or modify
